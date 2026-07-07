@@ -113,10 +113,10 @@ function renderStore(){
   }).join("");
 }
 function renderAds(){
+  loadAdSense();
   const slots=["adTop","adMid","adBottom"].filter(id=>$(id));
   if(!slots.length)return;
   if(ADSENSE_CLIENT && ADSENSE_SLOT){
-    loadAdSense();
     slots.forEach(id=>{
       $(id).innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
       try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
