@@ -9,11 +9,12 @@ const API_BASE = "";  // ej: "http://tu-dominio:8770"
    1) Crea cuenta en adsense.google.com y aprueba tu sitio (tu URL de Pages).
    2) Pega aquí tu ID de editor (ca-pub-...) y el ID de un bloque de anuncio.
    Vacío = se muestra un anuncio DEMO. Ver ANUNCIOS.md */
-const ADSENSE_CLIENT = "";  // ej: "ca-pub-1234567890123456"
+const ADSENSE_CLIENT = "ca-pub-2645181840666522";  // tu ID de editor (ya en el <head>)
 const ADSENSE_SLOT   = "";  // ej: "1234567890"
 let _adsenseLoaded = false;
 function loadAdSense(){
   if(_adsenseLoaded || !ADSENSE_CLIENT) return;
+  if(document.querySelector('script[src*="adsbygoogle.js"]')){_adsenseLoaded=true;return;}
   const s=document.createElement("script");
   s.async=true; s.crossOrigin="anonymous";
   s.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+ADSENSE_CLIENT;
