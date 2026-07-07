@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mi panel — SillaMC Survival</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<!-- AdSense: pega tu script con la cuenta aprobada
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="brand">
+      <img src="logo.png" alt="SillaMC" class="brand__logo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'" />
+      <span class="brand__txt" style="display:none"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span></span>
+    </a>
+    <nav class="nav__links"><a href="index.html" data-i18n="nav.home">← Inicio</a></nav>
+    <div class="nav__actions">
+      <button class="lang-toggle" id="langToggle">🇬🇧 EN</button>
+      <button class="btn btn--ghost" id="logoutBtn" style="display:none" data-i18n="dash.logout">Salir</button>
+    </div>
+  </div>
+</header>
+
+<main class="dash">
+
+  <!-- ===== LOGIN / VERIFICAR ===== -->
+  <section id="loginView" class="section">
+    <h2 class="section__title" data-i18n="link.title">Entra: vincula tu cuenta</h2>
+    <p class="section__sub" data-i18n="link.sub">Te enviamos un código al chat del juego y lo pones aquí. Así sabemos que la cuenta es tuya.</p>
+    <div class="link">
+      <div class="link__step" id="linkStep1">
+        <div class="link__num">1</div>
+        <label data-i18n="link.userlabel">Tu nombre de usuario en el servidor</label>
+        <div class="link__row">
+          <input type="text" id="linkUser" placeholder="Ej: urpi" autocomplete="off" maxlength="16" />
+          <button class="btn btn--primary" id="sendCode" data-i18n="link.send">Enviar código</button>
+        </div>
+        <p class="link__hint" data-i18n="link.hint1">Tienes que estar conectado al servidor para recibir el código.</p>
+      </div>
+      <div class="link__step link__step--off" id="linkStep2">
+        <div class="link__num">2</div>
+        <label data-i18n="link.codelabel">Código recibido en el chat del juego</label>
+        <div class="link__row">
+          <input type="text" id="linkCode" placeholder="______" maxlength="6" inputmode="numeric" class="link__code" />
+          <button class="btn btn--primary" id="verifyCode" data-i18n="link.verify">Verificar</button>
+        </div>
+        <p class="link__hint" data-i18n="link.hint2">Mira el chat de Minecraft: te llegó un código de 6 dígitos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DASHBOARD (tras login) ===== -->
+  <section id="dashView" class="section" style="display:none">
+    <div class="dash__head">
+      <div>
+        <p class="dash__hi" data-i18n="dash.hi">Hola,</p>
+        <h2 class="dash__user" id="dashUser">jugador</h2>
+      </div>
+      <div class="dash__coins">
+        <span class="coin__mini">🪙</span>
+        <div><div class="dash__cval" id="coinBalance">0</div><div class="dash__clab">SillaCoins · SC</div></div>
+      </div>
+    </div>
+
+    <div class="dash__grid">
+      <div class="dash__card dash__card--ad">
+        <h3 data-i18n="dash.earn">Gana SillaCoins</h3>
+        <p data-i18n="dash.earndesc">Mira un anuncio corto y recibe SC al instante. 100% opcional.</p>
+        <button class="btn btn--primary btn--lg" id="watchAd" data-i18n="rewards.cta">▶ Ver un anuncio</button>
+      </div>
+      <div class="dash__card">
+        <h3 data-i18n="dash.rank">Tu rango</h3>
+        <div class="rankbadge" id="rankBadge">🪑 Taburete</div>
+        <p data-i18n="dash.rankdesc">Sube de rango en la tienda: Taburete → Sillón → Trono.</p>
+      </div>
+    </div>
+
+    <div class="adslot"><span class="adslot__label" data-i18n="ad.label">Publicidad</span><div class="adslot__box" id="adTop"></div></div>
+
+    <h3 class="dash__section" data-i18n="store.title">Tienda de recompensas</h3>
+    <p class="section__sub" data-i18n="store.sub">Todo cosmético y de comodidad — nada de pay-to-win. Gasta SC o apoya el server.</p>
+    <div class="store__tabs" id="storeTabs"></div>
+    <div class="grid grid--store" id="storeGrid"></div>
+
+    <div class="adslot"><span class="adslot__label" data-i18n="ad.label">Publicidad</span><div class="adslot__box" id="adBottom"></div></div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>

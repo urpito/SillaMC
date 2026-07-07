@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SillaMC Survival — Vanilla++ en español</title>
+<meta name="description" content="SillaMC Survival — Servidor de Minecraft Survival vanilla++. Java + Bedrock. Economía dinámica, claims, trabajos y traductor de chat. ¡Únete!" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="nav">
+  <div class="nav__inner">
+    <a href="#top" class="brand">
+      <img src="logo.png" alt="SillaMC Survival" class="brand__logo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'" />
+      <span class="brand__txt" style="display:none"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span></span>
+    </a>
+    <nav class="nav__links">
+      <a href="#features" data-i18n="nav.features">Características</a>
+      <a href="#start" data-i18n="nav.start">Cómo entrar</a>
+      <a href="#" data-i18n="nav.discord">Discord</a>
+    </nav>
+    <div class="nav__actions">
+      <button class="lang-toggle" id="langToggle">🇬🇧 EN</button>
+      <a class="btn btn--login" href="dashboard.html"><span data-i18n="nav.login">Entrar</span> <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hero__glow"></div>
+    <div class="hero__content">
+      <img src="logo.png" alt="SillaMC Survival" class="hero__logo" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'" />
+      <div id="logoFallback" class="hero__logofb" style="display:none"><span class="fb-silla">SILLAMC</span><span class="fb-survival">SURVIVAL</span></div>
+      <p class="hero__eyebrow" data-i18n="hero.eyebrow">SURVIVAL VANILLA++ · JAVA + BEDROCK · ESPAÑOL</p>
+      <p class="hero__tagline" data-i18n="hero.tagline">Economía viva, claims de terreno, trabajos y traductor de chat en tiempo real. Únete a la comunidad.</p>
+      <div id="play" class="serverip">
+        <div class="serverip__label" data-i18n="hero.iplabel">IP del servidor</div>
+        <div class="serverip__row"><code id="ip">play.sillamc.com</code>
+          <button class="btn btn--copy" id="copyIp" data-i18n="hero.copy">Copiar</button></div>
+        <div class="serverip__status"><span class="dot dot--on"></span> <span data-i18n="hero.online">En línea</span> · <span id="playerCount">0</span> <span data-i18n="hero.players">jugadores</span></div>
+      </div>
+      <div class="hero__cta">
+        <a href="dashboard.html" class="btn btn--primary btn--lg" data-i18n="hero.enter">Entrar a mi panel</a>
+        <a href="#features" class="btn btn--ghost btn--lg" data-i18n="hero.more">Ver más</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <h2 class="section__title" data-i18n="features.title">Qué hace especial a SillaMC</h2>
+    <div class="grid grid--features" id="featuresGrid"></div>
+  </section>
+
+  <section class="section section--band">
+    <div class="band">
+      <div class="band__col"><div class="band__n" data-i18n="band.n1">Cross-play</div><p data-i18n="band.t1">Java y Bedrock juntos: PC, consola y móvil.</p></div>
+      <div class="band__col"><div class="band__n" data-i18n="band.n2">Español + EN</div><p data-i18n="band.t2">Traductor de chat con IA local. Elige idioma.</p></div>
+      <div class="band__col"><div class="band__n" data-i18n="band.n3">Economía justa</div><p data-i18n="band.t3">Precios dinámicos, trabajos y SillaCoins.</p></div>
+    </div>
+  </section>
+
+  <section id="start" class="section section--info">
+    <h2 class="section__title" data-i18n="info.title">Cómo entrar en 4 pasos</h2>
+    <div class="grid grid--info" id="infoGrid"></div>
+    <div class="start__cta"><a href="dashboard.html" class="btn btn--primary btn--lg" data-i18n="start.cta">Entrar a mi panel de jugador</a></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__brand"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span> <span class="footer__surv">Survival</span></div>
+  <p class="footer__ip"><span data-i18n="footer.join">Únete</span>: <code>play.sillamc.com</code> · Java + Bedrock</p>
+  <div class="footer__links"><a href="#">Discord</a><a href="dashboard.html" data-i18n="nav.login">Entrar</a></div>
+  <p class="footer__legal" data-i18n="footer.legal">No afiliado a Mojang ni Microsoft. SillaMC es un servidor comunitario.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
