@@ -5,6 +5,21 @@
    ============================================================ */
 const API_BASE = "";  // ej: "http://tu-dominio:8770"
 
+/* ===== Google AdSense — pon tus 2 IDs para activar anuncios reales =====
+   1) Crea cuenta en adsense.google.com y aprueba tu sitio (tu URL de Pages).
+   2) Pega aquí tu ID de editor (ca-pub-...) y el ID de un bloque de anuncio.
+   Vacío = se muestra un anuncio DEMO. Ver ANUNCIOS.md */
+const ADSENSE_CLIENT = "";  // ej: "ca-pub-1234567890123456"
+const ADSENSE_SLOT   = "";  // ej: "1234567890"
+let _adsenseLoaded = false;
+function loadAdSense(){
+  if(_adsenseLoaded || !ADSENSE_CLIENT) return;
+  const s=document.createElement("script");
+  s.async=true; s.crossOrigin="anonymous";
+  s.src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="+ADSENSE_CLIENT;
+  document.head.appendChild(s); _adsenseLoaded=true;
+}
+
 const I18N = {
  es:{
   "nav.features":"Características","nav.start":"Cómo entrar","nav.discord":"Discord","nav.login":"Entrar","nav.home":"← Inicio",
@@ -98,11 +113,20 @@ function renderStore(){
   }).join("");
 }
 function renderAds(){
-  if(!$("adTop"))return;
+  const slots=["adTop","adMid","adBottom"].filter(id=>$(id));
+  if(!slots.length)return;
+  if(ADSENSE_CLIENT && ADSENSE_SLOT){
+    loadAdSense();
+    slots.forEach(id=>{
+      $(id).innerHTML=`<ins class="adsbygoogle" style="display:block" data-ad-client="${ADSENSE_CLIENT}" data-ad-slot="${ADSENSE_SLOT}" data-ad-format="auto" data-full-width-responsive="true"></ins>`;
+      try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+    });
+    return;
+  }
   const ad=lang==="es"
-    ?`<div class="demoad"><span class="demoad__ico">🎮</span><div><div class="demoad__t">Tu anuncio aquí</div><div class="demoad__d">Espacio patrocinado · se activa con AdSense o patrocinadores</div></div><span class="demoad__cta">Saber más</span></div>`
-    :`<div class="demoad"><span class="demoad__ico">🎮</span><div><div class="demoad__t">Your ad here</div><div class="demoad__d">Sponsored slot · activates with AdSense or sponsors</div></div><span class="demoad__cta">Learn more</span></div>`;
-  $("adTop").innerHTML=ad;if($("adBottom"))$("adBottom").innerHTML=ad;
+    ?`<div class="demoad"><span class="demoad__ico">🎮</span><div><div class="demoad__t">Tu anuncio aquí</div><div class="demoad__d">Espacio patrocinado · se activa con AdSense (ver ANUNCIOS.md)</div></div><span class="demoad__cta">Saber más</span></div>`
+    :`<div class="demoad"><span class="demoad__ico">🎮</span><div><div class="demoad__t">Your ad here</div><div class="demoad__d">Sponsored slot · activates with AdSense (see ANUNCIOS.md)</div></div><span class="demoad__cta">Learn more</span></div>`;
+  slots.forEach(id=>$(id).innerHTML=ad);
 }
 function updateCoins(){if($("coinBalance")){$("coinBalance").textContent=coins.toLocaleString();}localStorage.setItem("sillamc_coins",coins);}
 
@@ -158,5 +182,5 @@ if($("sendCode"))$("sendCode").onclick=sendCode;
 if($("verifyCode"))$("verifyCode").onclick=verifyCode;
 if($("logoutBtn"))$("logoutBtn").onclick=()=>{localStorage.removeItem("sillamc_verified");location.reload();};
 
-applyI18n();renderFeatures();renderInfo();initDashboard();
+applyI18n();renderFeatures();renderInfo();renderAds();initDashboard();
 if($("playerCount"))$("playerCount").textContent=Math.floor(Math.random()*6);
