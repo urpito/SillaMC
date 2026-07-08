@@ -39,7 +39,7 @@ const I18N = {
   "link.codelabel":"Código recibido en el chat del juego","link.verify":"Verificar","link.hint2":"Mira el chat de Minecraft: te llegó un código de 6 dígitos.",
   "dash.logout":"Salir","dash.hi":"Hola,","dash.earn":"Gana SillaCoins","dash.earndesc":"Mira un anuncio corto y recibe SC al instante. 100% opcional.",
   "rewards.cta":"▶ Ver un anuncio","dash.rank":"Tu rango","dash.rankdesc":"Sube de rango en la tienda: Taburete → Sillón → Trono.",
-  "store.title":"Tienda de recompensas","store.sub":"Todo cosmético y de comodidad — nada de pay-to-win. Gasta SC o apoya el server.","ad.label":"Publicidad"
+  "store.title":"Tienda de recompensas","store.sub":"Rangos con prefijo, comodidad (homes, /nick) y packs de SC — nada de pay-to-win. Gasta SC o apoya el server.","ad.label":"Publicidad"
  },
  en:{
   "nav.features":"Features","nav.start":"How to join","nav.discord":"Discord","nav.login":"Log in","nav.home":"← Home",
@@ -58,7 +58,7 @@ const I18N = {
   "link.codelabel":"Code received in the game chat","link.verify":"Verify","link.hint2":"Check Minecraft chat: you got a 6-digit code.",
   "dash.logout":"Log out","dash.hi":"Hi,","dash.earn":"Earn SillaCoins","dash.earndesc":"Watch a short ad and get SC instantly. 100% optional.",
   "rewards.cta":"▶ Watch an ad","dash.rank":"Your rank","dash.rankdesc":"Rank up in the store: Stool → Armchair → Throne.",
-  "store.title":"Rewards store","store.sub":"All cosmetic & convenience — no pay-to-win. Spend SC or support the server.","ad.label":"Advertisement"
+  "store.title":"Rewards store","store.sub":"Prefix ranks, convenience (homes, /nick) and SC packs — no pay-to-win. Spend SC or support the server.","ad.label":"Advertisement"
  }
 };
 
@@ -68,17 +68,14 @@ const FEATURES=[
  {i:"🌐",es:["Traductor de chat","Elige idioma con /idioma. IA local y privada."],en:["Chat translator","Pick language with /idioma. Local, private AI."]},
  {i:"🎮",es:["Java + Bedrock","PC, consola o móvil. Crossplay con Geyser."],en:["Java + Bedrock","PC, console or mobile. Crossplay via Geyser."]},
  {i:"⛏️",es:["Trabajos","Gana SC minando, talando, cultivando."],en:["Jobs","Earn SC mining, chopping, farming."]},
- {i:"🪑",es:["Rangos de sillas","De Taburete a Trono. Solo cosmético."],en:["Chair ranks","From Stool to Throne. Cosmetic only."]}
+ {i:"🪑",es:["Rangos de sillas","De Taburete a Trono: sube y luce prefijo."],en:["Chair ranks","From Stool to Throne: rank up and show your tag."]}
 ];
 const STORE_ITEMS=[
- {cat:"rank",icon:"🪑",tag:"POPULAR",price:5,cur:"eur",es:["Rango Sillón","Prefijo [Sillón], color de chat, /hat y +2 homes."],en:["Sillón Rank","[Sillón] tag, chat color, /hat and +2 homes."]},
- {cat:"rank",icon:"👑",price:12,cur:"eur",es:["Rango Trono","Todo lo de Sillón + partículas, /nick y prefijo [Trono]."],en:["Trono Rank","Everything in Sillón + particles, /nick and [Trono] tag."]},
- {cat:"cosmetic",icon:"🎩",price:500,cur:"coins",es:["Sombreros /hat","Ponte cualquier bloque en la cabeza."],en:["/hat cosmetics","Wear any block on your head."]},
- {cat:"cosmetic",icon:"✨",price:800,cur:"coins",es:["Estelas de partículas","Deja un rastro al caminar."],en:["Particle trails","Leave a trail as you walk."]},
- {cat:"cosmetic",icon:"🪑",price:1000,cur:"coins",es:["Silla decorativa","Siéntate donde quieras."],en:["Sit-anywhere chair","Sit wherever you like."]},
- {cat:"coins",icon:"🪙",tag:"NUEVO",price:2,cur:"eur",es:["Pack 2.000 SC","Apoya el server y gasta en cosméticos."],en:["2,000 SC pack","Support the server and spend on cosmetics."]},
- {cat:"coins",icon:"💎",price:5,cur:"eur",es:["Pack 6.000 SC","Mejor relación."],en:["6,000 SC pack","Best value."]},
- {cat:"perk",icon:"🏠",price:1500,cur:"coins",es:["+1 Home extra","Un teletransporte más. Comodidad, no poder."],en:["+1 extra Home","One more teleport. Convenience, not power."]}
+ {cat:"rank",icon:"🪑",tag:"POPULAR",price:5,cur:"eur",es:["Rango Sillón","Prefijo [Sillón], color de chat, /nick y +2 homes."],en:["Sillón Rank","[Sillón] tag, chat color, /nick and +2 homes."]},
+ {cat:"rank",icon:"👑",price:12,cur:"eur",es:["Rango Trono","Prefijo [Trono], color de chat, /nick, +5 homes y /workbench portátil."],en:["Trono Rank","[Trono] tag, chat color, /nick, +5 homes and portable /workbench."]},
+ {cat:"coins",icon:"🪙",tag:"NUEVO",price:2,cur:"eur",es:["Pack 2.000 SC","Apoya el server y gasta en la tienda."],en:["2,000 SC pack","Support the server and spend in the store."]},
+ {cat:"coins",icon:"💎",price:5,cur:"eur",es:["Pack 6.000 SC","Mejor relación calidad-precio."],en:["6,000 SC pack","Best value."]},
+ {cat:"perk",icon:"🏠",price:1500,cur:"coins",es:["+1 Home extra","Un punto de teletransporte más. Comodidad, no poder."],en:["+1 extra Home","One more teleport point. Convenience, not power."]}
 ];
 const INFO=[
  {n:"01",es:["Consigue Minecraft","Java (PC) o Bedrock (consola/móvil)."],en:["Get Minecraft","Java (PC) or Bedrock (console/mobile)."]},
@@ -104,7 +101,7 @@ function renderFeatures(){if($("featuresGrid"))$("featuresGrid").innerHTML=FEATU
 function renderInfo(){if($("infoGrid"))$("infoGrid").innerHTML=INFO.map(s=>`<div class="icard"><div class="icard__step">${s.n}</div><h3>${L(s)[0]}</h3><p>${L(s)[1]}</p></div>`).join("");}
 function renderStore(){
   if(!$("storeGrid"))return;
-  const tabs=[["all",{es:"Todo",en:"All"}],["rank",{es:"Rangos",en:"Ranks"}],["cosmetic",{es:"Cosméticos",en:"Cosmetics"}],["coins",{es:"Monedas",en:"Coins"}],["perk",{es:"Comodidad",en:"Perks"}]];
+  const tabs=[["all",{es:"Todo",en:"All"}],["rank",{es:"Rangos",en:"Ranks"}],["coins",{es:"Monedas",en:"Coins"}],["perk",{es:"Comodidad",en:"Perks"}]];
   $("storeTabs").innerHTML=tabs.map(([k,l])=>`<button class="tab ${storeFilter===k?'is-active':''}" data-tab="${k}">${l[lang]}</button>`).join("");
   const items=STORE_ITEMS.filter(i=>storeFilter==="all"||i.cat===storeFilter);
   $("storeGrid").innerHTML=items.map(it=>{

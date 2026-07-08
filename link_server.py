@@ -27,6 +27,7 @@ COOLDOWN = 30       # segundos entre peticiones por usuario
 KEY = open(KEYFILE).read().strip()
 _codes = {}         # user -> (code, expiry)
 _last  = {}         # user -> last request ts
+_attempts = {}      # user -> intentos de verificacion (anti fuerza-bruta)
 _lock  = threading.Lock()
 
 def send_console(command):
@@ -69,15 +70,20 @@ class H(BaseHTTPRequestHandler):
                 _last[user] = now
                 code = "%06d" % random.randint(0, 999999)
                 _codes[user] = (code, now + CODE_TTL)
-            msg = "tell %s §6[SillaMC] §fTu código web: §e§l%s §7(válido 5 min)" % (user, code)
+                _attempts[user] = 0
+            msg = "tell %s [SillaMC] Tu codigo de verificacion web es: %s  (valido 5 min)" % (user, code)
             send_console(msg)
             self._cors(200); self.wfile.write(b'{"ok":true}')
         elif self.path.rstrip("/").endswith("verify"):
             code = (body.get("code") or "").strip()
             with _lock:
+                _attempts[user] = _attempts.get(user, 0) + 1
+                if _attempts[user] > 6:            # demasiados intentos: invalida el codigo
+                    _codes.pop(user, None)
                 saved = _codes.get(user)
                 ok = bool(saved) and saved[0] == code and now < saved[1]
-                if ok: _codes.pop(user, None)
+                if ok:
+                    _codes.pop(user, None); _attempts.pop(user, None)
             self._cors(200 if ok else 401)
             self.wfile.write(b'{"ok":true}' if ok else b'{"ok":false}')
         else:
