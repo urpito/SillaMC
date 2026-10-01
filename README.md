@@ -1,28 +1,13 @@
-# SillaMC Survival — Web
+# SillaMC — copia de la web de Urpilandia
 
-Web oficial del servidor de Minecraft **SillaMC Survival** (Survival vanilla++, Java + Bedrock, ES/EN).
-Sitio **estático** (HTML/CSS/JS) pensado para **GitHub Pages**.
+Web actual: https://sillaweb.ddns.net/
 
-🔗 **Demo (al activar Pages):** `https://urpito.github.io/SillaMC/`
+Este repositorio contiene las páginas y recursos públicos de SillaMC sincronizados el 1 de octubre de 2026 desde `/var/www/sillaweb` en Urpilandia. Incluye el panel de jugador, tienda, guías, estadísticas, votación y recursos del servidor.
 
-## Qué incluye
-- **`index.html`** — Landing para atraer jugadores (logo, características, IP, cómo entrar).
-- **`dashboard.html`** — Panel del jugador: login por código → SillaCoins, ganar monedas viendo anuncios, y tienda de recompensas (rangos de sillas: Taburete → Sillón → Trono).
-- **`styles.css`, `script.js`** — estilos y lógica (bilingüe ES/EN, tema oro+verde).
-- **`logo.png`** — logo del servidor.
-- **`link_server.py`** — mini-backend (Python puro) para la verificación real y entregar SillaCoins in-game vía la API de Pterodactyl. *No se sirve en Pages; se ejecuta en el servidor de casa.*
+La API se ejecuta en Urpilandia y no forma parte de esta sincronización. `script.js` usa `/api` en el dominio principal y `https://sillaweb.ddns.net/api` desde otros dominios.
 
-## Activar GitHub Pages
-Settings → Pages → Source: **Deploy from a branch** → Branch: **main** / **/(root)** → Save.
-En 1-2 min estará en `https://urpito.github.io/SillaMC/`.
+Las descargas del launcher permanecen en el servidor. Se excluyen las aplicaciones independientes `estudios-app` y `tarjetasgoogle`.
 
-## Modelo de monedas (sin cobrar a los jugadores)
-Las **SillaCoins (SC)** se ganan **en la web** viendo anuncios (los anuncios de la web = ingresos del server vía AdSense). No hay anuncios dentro del juego. Para que las monedas lleguen a la cuenta in-game, corre `link_server.py` en el servidor y pon su URL en `API_BASE` (arriba de `script.js`). Sin backend, la web funciona en **modo demo** (código de verificación `123456`).
+El sitio de producción usa rutas sin extensión y la configuración del servidor web. GitHub Pages no reproduce esa configuración automáticamente; este repositorio conserva la copia de producción.
 
-## Editar
-- Recompensas de la tienda: array `STORE_ITEMS` en `script.js`.
-- Textos ES/EN: objeto `I18N` en `script.js`.
-- Anuncios AdSense: descomenta el bloque del `<head>` y pon tu `ca-pub-XXXX` (ver `ANUNCIOS.md`).
-
----
-No afiliado a Mojang/Microsoft. Servidor comunitario. Solo se venden cosméticos/comodidad (EULA-safe).
+`link_server.py`, `LEEME.md` y `ANUNCIOS.md` proceden de la versión antigua del repositorio y se conservan como referencia histórica; no representan necesariamente el backend actual.

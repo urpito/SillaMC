@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Votar — SillaMC Survival</title>
+  <meta name="description" content="Vota por SillaMC en las listas de servidores y gana recompensas: una llave de crate y 1000 SillaCoins por cada voto." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2645181840666522" crossorigin="anonymous"></script>
+  <style>
+    .vote-reward{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:center;margin-top:1rem;
+      background:rgba(120,200,80,.12);border:1px solid rgba(120,200,80,.35);border-radius:14px;padding:.7rem 1.1rem}
+    .vote-reward__item{font-weight:800}
+    .vote-reward__plus{opacity:.6}
+    .vote-reward__by{opacity:.7;font-size:.85em;width:100%;text-align:center;margin-top:.15rem}
+    .vote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem;margin:.6rem 0}
+    .vote-card{display:flex;align-items:center;justify-content:space-between;gap:.6rem;
+      padding:.85rem 1rem;border:1px solid rgba(255,255,255,.14);border-radius:12px;
+      background:rgba(255,255,255,.03);text-decoration:none;color:inherit;transition:.15s}
+    .vote-card:hover{border-color:rgba(120,200,80,.6);background:rgba(120,200,80,.08);transform:translateY(-2px)}
+    .vote-card__name{font-weight:700}
+    .vote-card__btn{font-weight:800;color:#7ec850;white-space:nowrap}
+    .vote-card[data-pending="1"] .vote-card__btn::after{content:" (pendiente)";opacity:.5;font-weight:400;font-size:.8em}
+    .draft-note{max-width:960px;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
+      background:rgba(240,180,60,.12);border:1px solid rgba(240,180,60,.4);font-size:.9rem}
+  </style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="brand"><img src="logo.png" alt="SillaMC" class="brand__logo" /></a>
+    <nav class="nav__links"><a href="index.html">Inicio</a><a href="guias.html">Guías</a><a href="votar.html" class="is-active">Votar</a><a href="tienda.html">Tienda</a><a href="finder.html">Finder</a></nav>
+    <div class="nav__actions"><a class="btn btn--access" href="dashboard.html">Mi panel</a></div>
+  </div>
+</header>
+
+<main>
+  <section class="guidehero">
+    <img class="guidehero__logo" src="logo.png" alt="SillaMC Survival" />
+    <h1>Vota por SillaMC</h1>
+    <p>Vota cada día en las listas de servidores: es gratis, tarda 10 segundos y ayudas a que más gente descubra SillaMC. Y encima te llevas premio.</p>
+    <div class="vote-reward">
+      <span class="vote-reward__item">🔑 1 llave de crate</span>
+      <span class="vote-reward__plus">+</span>
+      <span class="vote-reward__item">💰 1000 SillaCoins</span>
+      <span class="vote-reward__by">por cada voto, en cada web</span>
+    </div>
+  </section>
+
+  <div class="guidepage">
+    <article class="guide">
+      <div class="guide__head"><div class="guide__icon">🗳️</div><div><h2>Dónde votar</h2><p class="guide__lead">Haz clic, vota con tu nombre EXACTO de Minecraft y vuelve al juego.</p></div></div>
+      <div class="vote-grid">
+        <a class="vote-card" data-pending="1" href="#" target="_blank" rel="noopener"><span class="vote-card__name">Minecraft-MP</span><span class="vote-card__btn">Votar ›</span></a>
+        <a class="vote-card" data-pending="1" href="#" target="_blank" rel="noopener"><span class="vote-card__name">MinecraftServers.org</span><span class="vote-card__btn">Votar ›</span></a>
+        <a class="vote-card" data-pending="1" href="#" target="_blank" rel="noopener"><span class="vote-card__name">Servers-Minecraft.net</span><span class="vote-card__btn">Votar ›</span></a>
+        <a class="vote-card" data-pending="1" href="#" target="_blank" rel="noopener"><span class="vote-card__name">TopMinecraftServers</span><span class="vote-card__btn">Votar ›</span></a>
+        <a class="vote-card" data-pending="1" href="#" target="_blank" rel="noopener"><span class="vote-card__name">Minecraft-Server-List</span><span class="vote-card__btn">Votar ›</span></a>
+        <a class="vote-card" data-pending="1" href="#" target="_blank" rel="noopener"><span class="vote-card__name">PlanetMinecraft</span><span class="vote-card__btn">Votar ›</span></a>
+      </div>
+      <p class="tip">Escribe tu nombre <b>exacto</b> de Minecraft al votar; si no, la recompensa no te reconoce.</p>
+    </article>
+
+    <article class="guide">
+      <div class="guide__head"><div class="guide__icon">🎁</div><div><h2>Cómo recibes la recompensa</h2><p class="guide__lead">Automático, sin comandos raros.</p></div></div>
+      <ol class="steps">
+        <li>Vota en cualquiera de las webs de arriba con tu nombre de Minecraft.</li>
+        <li>El servidor detecta tu voto solo (Votifier), en segundos.</li>
+        <li>Recibes al instante <b>1 llave de crate</b> y <b>1000 SillaCoins</b>.</li>
+        <li>Abre tu crate dentro del juego para descubrir el premio.</li>
+      </ol>
+      <p class="tip">Puedes votar una vez al día en cada web: cuantas más, más llaves.</p>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer__brand"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span> <span class="footer__surv">Survival</span></div>
+  <div class="footer__links"><a href="index.html">Inicio</a><a href="tienda.html">Tienda</a><a href="dashboard.html">Mi panel</a></div>
+</footer>
+</body>
+</html>

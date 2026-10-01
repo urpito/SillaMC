@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Waypoint compartido — SillaMC</title>
+<meta name="description" content="Waypoint de SillaMC compartido por un jugador." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="nav"><div class="nav__inner"><a href="/" class="brand"><img src="logo.png" alt="SillaMC" class="brand__logo" /></a><nav class="nav__links"><a href="/">Inicio</a><a href="guias">Guías</a></nav></div></header>
+<main class="shared-waypoint">
+  <section class="shared-waypoint__card" id="waypointCard">
+    <img src="favicon.png" alt="" />
+    <span>WAYPOINT COMPARTIDO</span>
+    <h1 id="waypointName">Cargando…</h1>
+    <p id="waypointOwner">Comprobando el enlace</p>
+    <div class="shared-waypoint__coords" id="waypointCoords">—</div>
+    <div class="shared-waypoint__actions">
+      <button class="btn btn--primary" id="copyWaypoint" disabled>Copiar coordenadas</button>
+      <a class="btn btn--ghost" href="/">Volver a SillaMC</a>
+    </div>
+    <small>El enlace caduca automáticamente. Nunca revela homes ni protecciones privadas.</small>
+  </section>
+</main>
+<script>
+const id=new URLSearchParams(location.search).get('id')||'';
+const copy=document.getElementById('copyWaypoint');
+let text='';
+fetch('/api/waypoint?id='+encodeURIComponent(id),{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error();return r.json()}).then(data=>{
+ const w=data.waypoint||{};
+ document.getElementById('waypointName').textContent=w.name||'Waypoint';
+ document.getElementById('waypointOwner').textContent='Compartido por '+(data.owner||'un jugador')+' · '+(w.world||'world');
+ text=`${w.name||'Waypoint'} · ${w.world||'world'} · X ${w.x} Y ${w.y} Z ${w.z}`;
+ document.getElementById('waypointCoords').textContent=`X ${w.x}  ·  Y ${w.y}  ·  Z ${w.z}`;
+ copy.disabled=false;
+}).catch(()=>{document.getElementById('waypointName').textContent='Este enlace no existe o ha caducado';document.getElementById('waypointOwner').textContent='Pide al jugador que vuelva a compartir el waypoint.'});
+copy.addEventListener('click',()=>navigator.clipboard.writeText(text).then(()=>copy.textContent='✓ Copiado'));
+</script>
+</body>
+</html>

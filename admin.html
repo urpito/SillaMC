@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Panel de administración — SillaMC Survival</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="extra.css?v=4" />
+</head>
+<body>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <img src="logo.png" alt="SillaMC" class="sitemenu__logo" />
+  <nav class="sitemenu__links">
+    <a href="index">Inicio</a>
+    <a href="index#features">Características</a>
+    <a href="guias">Guías</a>
+    <a href="tienda">Tienda</a>
+    <a href="finder">Estadísticas</a>
+  </nav>
+  <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
+  <a class="btn btn--access sitemenu__access" href="dashboard">Mi panel</a>
+</div>
+
+<main class="section admin">
+  <h1 class="section__title">🛠️ Panel de administración</h1>
+  <p class="section__sub">Solo dueño y staff con permiso. Los cambios se guardan y recargan en el servidor al momento.</p>
+
+  <div id="adminGate"><p class="finder__msg">Comprobando acceso…</p></div>
+
+  <div id="adminBody" style="display:none">
+   <div class="adminlayout">
+
+    <aside class="adminnav" id="adminNav">
+      <button class="adminnav__item is-active" data-sec="players">🧑‍🤝‍🧑 Jugadores</button>
+      <button class="adminnav__item" data-sec="economy">🪙 SillaCoins</button>
+      <button class="adminnav__item" data-sec="custody">📦 Objetos retenidos</button>
+      <button class="adminnav__item" data-sec="ranks">🏷️ Rangos</button>
+      <button class="adminnav__item" data-sec="store">🛒 Tienda</button>
+      <button class="adminnav__item" data-sec="pass">🎫 Pase</button>
+      <button class="adminnav__item" data-sec="welcome">✉️ Bienvenida</button>
+      <button class="adminnav__item" data-sec="tab">📊 TAB / HUD</button>
+      <button class="adminnav__item" data-sec="ann">📣 Mensajes automáticos</button>
+      <button class="adminnav__item" data-sec="crates">🎁 Cajas</button>
+      <button class="adminnav__item" data-sec="backups">💾 Copias de seguridad</button>
+      <button class="adminnav__item" data-sec="whitelist">📋 Whitelist</button>
+      <button class="adminnav__item" data-sec="estado">📈 Estado del servidor</button>
+      <button class="adminnav__item" data-sec="logins">🔑 Inicios de sesión</button>
+      <button class="adminnav__item" data-sec="sanciones">⚖️ Sanciones</button>
+      <button class="adminnav__item" data-sec="plugins">⚙️ Ajustes</button>
+    </aside>
+
+    <div class="adminmain">
+
+      <!-- ============ jugadores conectados ============ -->
+      <section class="adminsec is-active" id="sec-players">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>🧑‍🤝‍🧑 Jugador conectado</h2>
+            <div class="adminform">
+              <select id="plOnlineSelect"><option value="">Cargando…</option></select>
+              <button class="btn btn--ghost" id="plRefreshBtn">Actualizar</button>
+              <button class="btn btn--ghost btn--danger" id="plFreezeBtn">Congelar</button>
+            </div>
+            <div id="plQuick"><p class="finder__msg">Elige un jugador conectado.</p></div>
+            <p class="admincard__hint">En vivo, vía SillaBridge. Inventario, enderchest y ubicación solo funcionan con el jugador conectado; CoreProtect e IP también si acaba de desconectarse.</p>
+          </section>
+          <section class="admincard">
+            <h2>🎒 Inventario y registros</h2>
+            <div class="admintabs" id="plTabs">
+              <button class="tab is-active" data-pltab="inv">Inventario</button>
+              <button class="tab" data-pltab="ender">Enderchest</button>
+              <button class="tab" data-pltab="cp">CoreProtect</button>
+              <button class="tab" data-pltab="ip">IP</button>
+            </div>
+            <div id="plPanel" class="adminscroll adminscroll--tall"><p class="finder__msg">Elige un jugador conectado.</p></div>
+            <p class="admincard__hint">Pulsa un objeto para <b>retirarlo a custodia</b>: el jugador lo pierde al momento y queda guardado en «Objetos retenidos» tal cual (encantamientos incluidos) hasta que decidas devolverlo. El punto morado marca objetos encantados.</p>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ sillacoins ============ -->
+      <section class="adminsec" id="sec-economy">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2><img class="mc-icon" src="sillacoin.png" alt="" /> Consultar saldo</h2>
+            <div class="adminform">
+              <input type="text" id="scPlayer" placeholder="Nombre del jugador" maxlength="17" autocomplete="off" />
+              <button class="btn btn--ghost" id="scLookupBtn">Buscar saldo</button>
+            </div>
+            <div id="scBalanceBox" class="scbalance" style="display:none">
+              <div class="scbalance__row"><span>Total</span><b id="scBalTotal">0</b></div>
+              <div class="scbalance__row"><span>Normal (enviable)</span><b id="scBalNormal">0</b></div>
+              <div class="scbalance__row"><span>Bloqueado (no enviable)</span><b id="scBalLocked">0</b></div>
+            </div>
+            <p class="admincard__hint">El saldo «bloqueado» es el que se gana viendo anuncios: se puede gastar pero no enviar con <code>/pay</code>.</p>
+          </section>
+          <section class="admincard">
+            <h2>⚖️ Ajustar saldo</h2>
+            <div class="adminform">
+              <input type="number" id="grantAmount" placeholder="Cantidad de SC" min="1" />
+              <button class="btn btn--primary" id="grantBtn">Dar SC</button>
+              <button class="btn btn--ghost" id="chargeBtn">Quitar SC</button>
+              <button class="btn btn--ghost btn--danger" id="wipeBtn">Quitar TODO</button>
+            </div>
+            <p class="admincard__hint">Usa el jugador que hayas buscado a la izquierda. «Quitar TODO» deja el saldo a 0, pide confirmación y no se puede deshacer.</p>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ objetos retenidos (custodia) ============ -->
+      <section class="adminsec" id="sec-custody">
+        <div class="admingrid admingrid--full">
+          <section class="admincard">
+            <h2>📦 Objetos retenidos</h2>
+            <p class="admincard__hint">Objetos que has quitado a jugadores desde el inventario. Se guardan exactamente como eran (encantamientos, nombre, durabilidad). Al devolverlos vuelven idénticos — si al jugador no le cabe, se le sueltan a los pies. El jugador tiene que estar conectado para recibirlo.</p>
+            <div class="adminform">
+              <button class="btn btn--ghost" id="cuRefreshBtn">Actualizar</button>
+              <label class="admincfg__row" style="gap:.5rem"><span style="flex:none">Ver también los ya devueltos</span><input type="checkbox" id="cuShowAll" /></label>
+            </div>
+            <div id="cuList" class="custody adminscroll adminscroll--tall"><p class="finder__msg">Cargando…</p></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ rangos ============ -->
+      <section class="adminsec" id="sec-ranks">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>🏷️ Cambiar el rango de un jugador</h2>
+            <div class="adminform">
+              <input type="text" id="rkPlayer" placeholder="Nombre del jugador" maxlength="17" autocomplete="off" />
+              <button class="btn btn--ghost" id="rkLookupBtn">Ver rango actual</button>
+            </div>
+            <div id="rkCurrent"><p class="finder__msg">Busca un jugador para ver su rango.</p></div>
+            <div class="adminform">
+              <select id="rkGroup"><option value="">Cargando grupos…</option></select>
+              <input type="text" id="rkDuration" placeholder="Duración (opcional: 30d, 12h)" maxlength="6" autocomplete="off" />
+              <button class="btn btn--primary" id="rkSaveBtn">Aplicar rango</button>
+            </div>
+            <p class="admincard__hint">Sin duración el rango es permanente. Con duración es temporal y LuckPerms lo quita solo al caducar (ej. <code>30d</code>, <code>12h</code>, <code>90m</code>).</p>
+          </section>
+          <section class="admincard">
+            <h2>📖 Qué es cada rango</h2>
+            <div class="adminscroll">
+              <div class="wllist">
+                <div class="wlrow"><span><b>Taburete</b> — grupo por defecto</span><code>default</code></div>
+                <div class="wlrow"><span><b>Sillón</b> — VIP de pago (Tebex)</span><code>vip</code></div>
+                <div class="wlrow"><span><b>Trono</b> — MVP de pago (Tebex)</span><code>mvp</code></div>
+                <div class="wlrow"><span><b>Streamer</b> — creadores de contenido</span><code>streamer</code></div>
+                <div class="wlrow"><span><b>Staff</b> — moderación</span><code>staff</code></div>
+                <div class="wlrow"><span><b>Admin</b></span><code>admin</code></div>
+                <div class="wlrow"><span><b>Dueño / Fundador</b></span><code>owner</code></div>
+              </div>
+            </div>
+            <p class="admincard__hint">Los rangos de pago se dan solos al comprar en Tebex — aquí es para arreglos manuales, premios o quitar un rango.</p>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ tienda ============ -->
+      <section class="adminsec" id="sec-store">
+        <div class="admingrid admingrid--full">
+          <section class="admincard">
+            <h2>🛒 Tienda (canjeable con SC)</h2>
+            <p class="admincard__hint"><b>Dar ítem</b>: entrega un objeto de Minecraft. <b>Dar SC</b>: abona SillaCoins. <b>Comando</b>: ejecuta un comando de consola (usa <code>{name}</code> para el nombre del jugador). El cobro es atómico vía SillaBridge — no hay «canje gratis».</p>
+            <div class="adminform">
+              <button class="btn btn--primary" id="siNewBtn">+ Nuevo objeto</button>
+            </div>
+            <div id="storeAdminList" class="storeadmin adminscroll adminscroll--tall"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ pase ============ -->
+      <section class="adminsec" id="sec-pass">
+        <div class="admingrid admingrid--full">
+          <section class="admincard">
+            <h2><img class="mc-icon" src="mc-icons/nether_star.png" alt="" onerror="this.outerHTML='🎫'" /> Recompensas del pase (50 niveles)</h2>
+            <p class="admincard__hint">Tipo <b>SC</b>: cantidad de SillaCoins. <b>Ítem</b>: material de Minecraft (ej. DIAMOND) + cantidad. <b>Permiso/Rango temporal</b>: nodo o nombre de grupo de LuckPerms + horas <i>jugadas</i>. La vía <b>Gratis</b> la tienen todos; la <b>Extra</b> es la de pago.</p>
+            <div id="passRewardsList" class="passadmin"></div>
+            <button class="btn btn--primary" id="passSaveBtn">Guardar y recargar</button>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ mensaje de bienvenida ============ -->
+      <section class="adminsec" id="sec-welcome">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>✉️ Mensaje de bienvenida</h2>
+            <p class="admincard__hint">Códigos de color de Minecraft (<code>&amp;6</code> naranja, <code>&amp;l</code> negrita, <code>&amp;n</code> subrayado…). Los marcadores <code>{discord}</code> <code>{web}</code> <code>{dashboard}</code> salen como enlaces pulsables de verdad en el juego.</p>
+            <div class="placeholders" data-target="welcomeLines">
+              <code>{player}</code><code>{web}</code><code>{discord}</code><code>{dashboard}</code>
+            </div>
+            <div id="welcomeLines" class="lineedit adminscroll"></div>
+            <button class="btn btn--ghost" id="welcomeAddLine">+ Añadir línea</button>
+          </section>
+          <section class="admincard">
+            <h2>👁️ Vista previa</h2>
+            <p class="admincard__hint">Así se vería en el chat del juego.</p>
+            <div id="welcomePreview" class="mcpreview"></div>
+            <button class="btn btn--primary" id="welcomeSaveBtn" style="margin-top:.9rem">Guardar y recargar</button>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ TAB / HUD ============ -->
+      <section class="adminsec" id="sec-tab">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>📊 Cabecera del TAB</h2>
+            <p class="admincard__hint">Lo que sale <b>arriba</b> al pulsar la tecla de tabulador. Pulsa un marcador para copiarlo.</p>
+            <div class="placeholders">
+              <code>{player}</code><code>{online}</code><code>{max}</code><code>{ping}</code><code>{ip}</code><code>{web_short}</code><code>{balance}</code><code>{rank}</code>
+            </div>
+            <div id="tabHeaderLines" class="lineedit adminscroll"></div>
+            <button class="btn btn--ghost" id="tabHeaderAdd">+ Añadir línea</button>
+          </section>
+          <section class="admincard">
+            <h2>📊 Pie del TAB</h2>
+            <p class="admincard__hint">Lo que sale <b>abajo</b> en el tabulador. Una línea vacía deja un hueco.</p>
+            <div class="placeholders">
+              <code>{player}</code><code>{online}</code><code>{max}</code><code>{ping}</code><code>{ip}</code><code>{web_short}</code><code>{balance}</code><code>{rank}</code>
+            </div>
+            <div id="tabFooterLines" class="lineedit adminscroll"></div>
+            <button class="btn btn--ghost" id="tabFooterAdd">+ Añadir línea</button>
+          </section>
+        </div>
+        <div class="admingrid admingrid--full" style="margin-top:1.1rem">
+          <section class="admincard">
+            <h2>👁️ Vista previa del TAB</h2>
+            <div id="tabPreview" class="mcpreview"></div>
+            <button class="btn btn--primary" id="tabSaveBtn" style="margin-top:.9rem">Guardar y recargar</button>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ mensajes automáticos ============ -->
+      <section class="adminsec" id="sec-ann">
+        <div class="admingrid admingrid--full">
+          <section class="admincard">
+            <h2>📣 Mensajes automáticos</h2>
+            <p class="admincard__hint">Se envían en bucle, en orden, cada cierto tiempo. Cada mensaje puede llevar un <b>enlace</b> pulsable, un <b>comando</b> que se escribe solo en el chat, o un <b>texto para copiar</b> — o nada, y sale como texto normal.</p>
+            <div class="adminform">
+              <label class="admincfg__row" style="gap:.5rem"><span style="flex:none">Activados</span><input type="checkbox" id="annEnabled" /></label>
+              <input type="number" id="annInterval" placeholder="Cada X segundos" min="60" />
+              <input type="number" id="annInitial" placeholder="Primer aviso tras X seg" min="1" />
+            </div>
+            <div class="placeholders">
+              <code>{player}</code><code>{online}</code><code>{max}</code><code>{ip}</code><code>{web}</code><code>{discord}</code><code>{balance}</code>
+            </div>
+            <div id="annList" class="lineedit adminscroll adminscroll--tall"></div>
+            <button class="btn btn--ghost" id="annAddBtn">+ Añadir mensaje</button>
+            <h3 class="admincard__subtitle">Vista previa</h3>
+            <div id="annPreview" class="mcpreview"></div>
+            <button class="btn btn--primary" id="annSaveBtn" style="margin-top:.9rem">Guardar y recargar</button>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ copias de seguridad ============ -->
+      <section class="adminsec" id="sec-backups">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>💾 Copias de seguridad</h2>
+            <p class="admincard__hint">Se hacen solas cada noche, justo después del reinicio de las <b>00:00</b>: así el mundo acaba de guardarse entero y la fecha de la copia queda pegada al reinicio (útil para situar cuándo pasó algo). Las viejas se borran solas.</p>
+            <div id="bkStats" class="scbalance" style="display:none">
+              <div class="scbalance__row"><span>Copias guardadas</span><b id="bkCount">—</b></div>
+              <div class="scbalance__row"><span>Ocupan</span><b id="bkUsed">—</b></div>
+              <div class="scbalance__row"><span>Libre en disco</span><b id="bkFree">—</b></div>
+            </div>
+            <div class="adminform">
+              <button class="btn btn--ghost" id="bkRefreshBtn">Actualizar</button>
+            </div>
+            <div id="bkList" class="custody adminscroll adminscroll--tall"><p class="finder__msg">Cargando…</p></div>
+          </section>
+          <section class="admincard">
+            <h2>📋 Registro y restauración</h2>
+            <p class="admincard__hint">Últimas líneas del registro de copias. Si alguna falla, aquí sale el motivo.</p>
+            <div id="bkLog" class="mcpreview adminscroll" style="font-size:.78rem"></div>
+            <h3 class="admincard__subtitle">Qué se guarda y cuánto dura</h3>
+            <div class="wllist">
+              <div class="wlrow"><span><b>datos</b> — BD de la web, plugins, whitelist, permisos</span><code>30 días</code></div>
+              <div class="wlrow"><span><b>mundos</b> — world, nether, end y Pruebas</span><code>7 días</code></div>
+              <div class="wlrow"><span><b>semanal</b> — la copia de los domingos</span><code>56 días</code></div>
+            </div>
+            <p class="admincard__hint" style="margin-top:.9rem"><b>⚠ Ojo:</b> las copias están en el mismo disco que el servidor. Protegen de borrados y errores, pero no de que se estropee el disco.</p>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ cajas web (CS:GO) ============ -->
+      <section class="adminsec" id="sec-crates">
+        <div class="admingrid">
+          <section class="admincard admingrid--full">
+            <h2>📦 Tipos de caja</h2>
+            <p class="admincard__hint">Cada tipo tiene su propia lista de premios. La caja gratuita de las 2h siempre usa <b>Caja Silla</b> (no se puede borrar); los demás tipos se reparten con un código canjeable propio.</p>
+            <div class="adminform">
+              <input type="text" id="ctName" placeholder="Nombre (ej. Caja de evento)" maxlength="40" autocomplete="off" />
+              <input type="color" id="ctColor" value="#d8b4e2" style="width:3.2rem;padding:.2rem" />
+              <button class="btn btn--primary" id="ctCreateBtn">Crear tipo</button>
+            </div>
+            <div id="ctList" class="storeadmin adminscroll"><p class="finder__msg">Cargando…</p></div>
+          </section>
+        </div>
+        <div class="admingrid" style="margin-top:1.1rem">
+          <section class="admincard">
+            <h2>🎁 <span id="crTypeName">Caja Silla</span></h2>
+            <p class="admincard__hint">Se ganan jugando 2 horas activo (sin estar afk) — no se compran, no se pagan con SC de anuncios, y máximo una al día por cuenta. El premio lo decide el servidor antes de que se vea nada en pantalla; la animación es solo cosmética.</p>
+            <div class="adminform" id="crEnabledRow">
+              <label class="wlrow" style="cursor:pointer">
+                <span><b id="crEnabledLabel">Cargando…</b></span>
+                <button class="btn btn--primary" id="crToggleBtn">—</button>
+              </label>
+            </div>
+            <p class="admincard__hint"><b>⚠ Revisa la tabla de premios antes de activarlas</b> — son SC bloqueados (no se pueden mandar con /pay), pensados para tener poco impacto en la economía. Puedes desactivar cualquier premio o cambiar su peso (probabilidad relativa).</p>
+            <div class="adminform">
+              <input type="text" id="crNewLabel" placeholder="Nombre del premio (ej. 75 SC)" maxlength="40" autocomplete="off" />
+              <input type="number" id="crNewAmount" placeholder="SC" min="1" style="max-width:100px" />
+              <input type="number" id="crNewWeight" placeholder="Peso" min="1" style="max-width:100px" value="100" />
+              <input type="color" id="crNewColor" value="#8a8f98" style="width:3.2rem;padding:.2rem" />
+              <button class="btn btn--ghost" id="crNewBtn">+ Nuevo premio (SC)</button>
+            </div>
+            <div id="crRewardsList" class="storeadmin adminscroll adminscroll--tall"><p class="finder__msg">Cargando…</p></div>
+          </section>
+          <section class="admincard">
+            <h2>📜 Historial y entregas</h2>
+            <p class="admincard__hint">Últimas cajas abiertas (de cualquier tipo). Si una entrega falla (jugador desconectado, inventario lleno...) queda "en cola" y se puede reintentar; nunca se pierde el premio ni se vuelve a sortear.</p>
+            <div id="crHistoryList" class="custody adminscroll adminscroll--tall"></div>
+          </section>
+        </div>
+        <div class="admingrid" style="margin-top:1.1rem">
+          <section class="admincard admingrid--full">
+            <h2>🎟️ Códigos canjeables</h2>
+            <p class="admincard__hint">Dan una caja saltándose el requisito de 2h activas y el límite de una al día — pensados para pruebas o promociones puntuales. <code>FREEBOX</code> viene creado de fábrica con usos ilimitados.</p>
+            <div class="adminform">
+              <input type="text" id="rcCode" placeholder="CÓDIGO (ej. FREEBOX)" maxlength="24" autocomplete="off" style="text-transform:uppercase" />
+              <select id="rcCrateType"><option value="default">Caja Silla</option></select>
+              <input type="number" id="rcMaxTotal" placeholder="Usos totales (vacío = ilimitado)" min="1" />
+              <input type="number" id="rcMaxPerPlayer" placeholder="Usos por jugador (vacío = ilimitado)" min="1" />
+              <button class="btn btn--primary" id="rcCreateBtn">Crear / actualizar</button>
+            </div>
+            <div id="rcList" class="storeadmin adminscroll adminscroll--tall"><p class="finder__msg">Cargando…</p></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ whitelist ============ -->
+      <section class="adminsec" id="sec-whitelist">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>📋 Whitelist</h2>
+            <div class="adminform">
+              <input type="text" id="wlName" placeholder="Nombre del jugador" maxlength="17" autocomplete="off" />
+              <button class="btn btn--primary" id="wlAddBtn">Añadir</button>
+            </div>
+            <div id="wlList" class="wllist adminscroll"></div>
+            <p class="admincard__hint" id="wlCount"></p>
+          </section>
+          <section class="admincard">
+            <h2>🔎 Buscar en la whitelist</h2>
+            <div class="adminform">
+              <input type="text" id="wlFilter" placeholder="Filtrar por nombre…" autocomplete="off" />
+            </div>
+            <p class="admincard__hint">Escribe para filtrar la lista de la izquierda. Útil cuando la whitelist crece y no quieres ir pasando páginas.</p>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ ajustes de plugins ============ -->
+      <!-- ============ estado del servidor (SillaWeb) ============ -->
+      <section class="adminsec" id="sec-estado">
+        <div class="admingrid">
+          <section class="admincard admingrid--full">
+            <h2>📈 Estado del servidor</h2>
+            <p class="admincard__hint">TPS, memoria y quién está dentro. Se actualiza solo cada 15 segundos mientras miras esta sección.</p>
+            <div class="adminform"><button class="btn btn--ghost" id="estadoRefresh">Actualizar</button></div>
+            <div id="estadoBox"><p class="finder__msg">Cargando…</p></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ inicios de sesión (SillaWeb + web) ============ -->
+      <section class="adminsec" id="sec-logins">
+        <div class="admingrid">
+          <section class="admincard admingrid--full">
+            <h2>🔑 Inicios de sesión</h2>
+            <p class="admincard__hint">Entradas al juego y a la web, y contraseñas fallidas. Contraseñas fallidas en las últimas 24 h: <b id="loginsFailed">—</b>.
+              «Ubicar» consulta la IP en ip-api.com, solo cuando lo pulsas.</p>
+            <div class="adminform"><button class="btn btn--ghost" id="loginsRefresh">Actualizar</button></div>
+            <div id="loginsBox" class="wllist adminscroll adminscroll--tall"><p class="finder__msg">Cargando…</p></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- ============ sanciones (SillaWeb) ============ -->
+      <section class="adminsec" id="sec-sanciones">
+        <div class="admingrid">
+          <section class="admincard">
+            <h2>⚖️ Sancionar</h2>
+            <p class="admincard__hint">Se aplica al momento con los comandos de Essentials y queda anotado quién lo hizo.</p>
+            <div class="adminform">
+              <select id="sancionAction">
+                <option value="kick">Echar (kick)</option>
+                <option value="mute">Silenciar (mute)</option>
+                <option value="tempban">Banear un tiempo</option>
+                <option value="ban">Banear para siempre</option>
+                <option value="banip">Banear una IP</option>
+              </select>
+              <input type="text" id="sancionTarget" placeholder="Jugador o IP" maxlength="17" autocomplete="off" />
+              <input type="text" id="sancionDuration" placeholder="Duración (30m, 12h, 7d)" maxlength="6" autocomplete="off" />
+              <input type="text" id="sancionReason" placeholder="Motivo" maxlength="120" autocomplete="off" />
+              <button class="btn btn--primary" id="sancionBtn">Aplicar</button>
+            </div>
+            <h3 class="admincard__subtitle">Baneados y silenciados ahora</h3>
+            <div id="sancionesBox" class="wllist"><p class="finder__msg">Cargando…</p></div>
+          </section>
+          <section class="admincard">
+            <h2>📜 Registro del staff</h2>
+            <p class="admincard__hint">Sanciones hechas desde la web y avisos de «No fui yo» de los jugadores.</p>
+            <div id="sancionesLog" class="wllist adminscroll adminscroll--tall"><p class="finder__msg">Cargando…</p></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="adminsec" id="sec-plugins">
+        <div class="admingrid admingrid--full">
+          <section class="admincard">
+            <h2>⚙️ Ajustes de plugins</h2>
+            <p class="admincard__hint">Editor directo del YAML. Cambia los valores y pulsa Guardar — se recarga solo, sin reiniciar el servidor.</p>
+            <div class="admintabs" id="cfgTabs"></div>
+            <div id="cfgForm" class="adminscroll adminscroll--tall"></div>
+            <button class="btn btn--primary" id="cfgSaveBtn" style="display:none;margin-top:.9rem">Guardar y recargar</button>
+          </section>
+        </div>
+      </section>
+
+    </div>
+   </div>
+  </div>
+</main>
+
+<!-- ============ tarjeta-menú para editar un objeto de la tienda ============ -->
+<div class="sheet" id="siSheet" role="dialog" aria-modal="true" aria-labelledby="siSheetTitle">
+  <div class="sheet__backdrop" id="siSheetBackdrop"></div>
+  <div class="sheet__card">
+    <div class="sheet__head">
+      <h3 id="siSheetTitle">Editar objeto</h3>
+      <button class="sheet__close" id="siSheetClose" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="sheet__body">
+      <div class="sheet__fields">
+        <label class="sheet__field"><span>Id interno</span>
+          <input type="text" id="siId" placeholder="pack_manzanas" maxlength="40" autocomplete="off" /></label>
+        <label class="sheet__field"><span>Nombre visible</span>
+          <input type="text" id="siLabel" placeholder="Pack de manzanas" autocomplete="off" /></label>
+        <label class="sheet__field"><span>Descripción (la ve el jugador)</span>
+          <textarea id="siDescription" placeholder="Qué recibe y para qué sirve." maxlength="300"></textarea></label>
+        <label class="sheet__field"><span>Precio en SC</span>
+          <input type="number" id="siPrice" placeholder="100" min="1" /></label>
+        <label class="sheet__field"><span>Qué hace al canjearlo</span>
+          <select id="siKind">
+            <option value="give_item">Dar ítem</option>
+            <option value="currency">Dar SC</option>
+            <option value="command">Ejecutar comando</option>
+          </select></label>
+        <label class="sheet__field" id="siFieldItem"><span>Ítem de Minecraft</span>
+          <input type="text" id="siPayloadItem" placeholder="minecraft:diamond" autocomplete="off" /></label>
+        <label class="sheet__field" id="siFieldAmount"><span>Cantidad</span>
+          <input type="number" id="siPayloadAmount" placeholder="1" min="1" /></label>
+        <label class="sheet__field" id="siFieldCommand"><span>Comando de consola</span>
+          <input type="text" id="siPayloadCommand" placeholder="give {name} minecraft:diamond 1" autocomplete="off" /></label>
+        <label class="sheet__field"><span>Imagen / icono (material de Minecraft)</span>
+          <input type="text" id="siIcon" placeholder="Vacío = se usa el ítem de arriba" autocomplete="off" /></label>
+      </div>
+      <div class="sheet__previewwrap">
+        <p class="sheet__previewlabel">Vista previa en la tienda</p>
+        <div id="siPreview"></div>
+      </div>
+    </div>
+    <div class="sheet__foot">
+      <button class="btn btn--ghost" id="siCancelBtn">Cancelar</button>
+      <button class="btn btn--primary" id="siSaveBtn">Guardar objeto</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="mc-icons-index.js"></script>
+<script src="script.js"></script>
+<script>
+/* escapeHtml ya viene de script.js, no hace falta redeclararla aqui
+   (y redeclarar un "const" del otro script rompia TODO este bloque). */
+
+/* ---- entrada / permiso ---- */
+async function adminInit(){
+  const gate=$("adminGate"), body=$("adminBody");
+  if(!getToken()){
+    gate.innerHTML='<p class="finder__msg">Debes iniciar sesión primero. <a href="dashboard">Ir a mi panel</a>.</p>';
+    return;
+  }
+  const {ok,data}=await api("/admin/panel/configs",{auth:true});
+  if(!ok||data.error){
+    gate.innerHTML='<p class="finder__msg">No tienes permiso para ver esta página.</p>';
+    return;
+  }
+  gate.style.display="none";
+  body.style.display="block";
+  renderConfigTabs(data.plugins||[]);
+  loadWhitelist();
+  loadPassRewardsAdmin();
+  loadStoreAdmin();
+  loadOnlinePlayers();
+  loadWelcomeEditor();
+  loadHudEditor();
+  loadCustody();
+  loadRankGroups();
+  loadBackups();
+  await loadCrates();
+  loadRedeemCodes();
+  startAdminLive();
+}
+
+/* ---- menu lateral: solo se muestra la seccion abierta ---- */
+$("adminNav").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-sec]");
+  if(!btn)return;
+  $("adminNav").querySelectorAll(".adminnav__item").forEach(b=>b.classList.toggle("is-active",b===btn));
+  document.querySelectorAll(".adminsec").forEach(s=>s.classList.toggle("is-active",s.id==="sec-"+btn.dataset.sec));
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+/* Pulsar un marcador lo copia, para no tener que escribirlo a mano. */
+document.addEventListener("click",e=>{
+  const code=e.target.closest(".placeholders code");
+  if(!code)return;
+  navigator.clipboard.writeText(code.textContent).then(()=>toast("Copiado: "+code.textContent),()=>{});
+});
+
+/* ---- colores '&' de Minecraft -> HTML, para las vistas previas ---- */
+const MC_COLORS={
+  "0":"#000000","1":"#0000AA","2":"#00AA00","3":"#00AAAA","4":"#AA0000","5":"#AA00AA","6":"#FFAA00","7":"#AAAAAA",
+  "8":"#555555","9":"#5555FF","a":"#55FF55","b":"#55FFFF","c":"#FF5555","d":"#FF55FF","e":"#FFFF55","f":"#FFFFFF"
+};
+function mcCodeToHtml(raw){
+  const preview=String(raw||"")
+    .replace(/\{player\}/g,"TuNombre")
+    .replace(/\{dashboard\}/g,"https://sillaweb.ddns.net/dashboard.html")
+    .replace(/\{discord\}/g,"https://discord.gg/aTeaB9yQkJ")
+    .replace(/\{web_short\}/g,"sillaweb.ddns.net")
+    .replace(/\{web\}/g,"https://sillaweb.ddns.net")
+    .replace(/\{online\}/g,"7").replace(/\{max\}/g,"20").replace(/\{ping\}/g,"42")
+    .replace(/\{ip\}/g,"sillamc.ddns.net").replace(/\{balance\}/g,"1.234")
+    .replace(/\{rank\}/g,"Taburete");
+  let html="",color="#FFFFFF",bold=false,italic=false,underline=false,strike=false,buf="";
+  const flush=()=>{
+    if(!buf)return;
+    let style="color:"+color;
+    if(bold)style+=";font-weight:900";
+    if(italic)style+=";font-style:italic";
+    const td=[];if(underline)td.push("underline");if(strike)td.push("line-through");
+    if(td.length)style+=";text-decoration:"+td.join(" ");
+    html+=`<span style="${style}">${escapeHtml(buf)}</span>`;
+    buf="";
+  };
+  for(let i=0;i<preview.length;i++){
+    if(preview[i]==="&"&&i+1<preview.length){
+      const code=preview[i+1].toLowerCase();
+      if(MC_COLORS[code]||"lonmr".includes(code)){
+        flush();
+        if(MC_COLORS[code]){color=MC_COLORS[code];bold=italic=underline=strike=false;}
+        else if(code==="l")bold=true;
+        else if(code==="o")italic=true;
+        else if(code==="n")underline=true;
+        else if(code==="m")strike=true;
+        else if(code==="r"){color="#FFFFFF";bold=italic=underline=strike=false;}
+        i++;continue;
+      }
+    }
+    buf+=preview[i];
+  }
+  flush();
+  return html||"&nbsp;";
+}
+
+/* ---- editor de lineas reutilizable (bienvenida, cabecera y pie del TAB) ----
+   Los tres editan una lista de strings, asi que comparten render y eventos. */
+function renderLineEditor(boxId,lines,onChange){
+  const box=$(boxId);
+  box.innerHTML=lines.length?lines.map((l,i)=>
+    `<div class="lineedit__row"><input type="text" data-idx="${i}" value="${escapeHtml(l)}" />
+      <button class="btn btn--ghost" data-del="${i}" aria-label="Quitar línea">✕</button></div>`
+  ).join(""):'<p class="finder__msg">Sin líneas — añade una.</p>';
+  if(box.dataset.bound)return;
+  box.dataset.bound="1";
+  box.addEventListener("input",e=>{
+    const inp=e.target.closest("input[data-idx]");
+    if(!inp)return;
+    lines[Number(inp.dataset.idx)]=inp.value;
+    onChange();
+  });
+  box.addEventListener("click",e=>{
+    const del=e.target.closest("[data-del]");
+    if(!del)return;
+    lines.splice(Number(del.dataset.del),1);
+    renderLineEditor(boxId,lines,onChange);
+    onChange();
+  });
+}
+
+/* ---- mensaje de bienvenida ---- */
+let welcomeCfgData=null;
+async function loadWelcomeEditor(){
+  const {ok,data}=await api("/admin/panel/config?plugin=sillawelcome",{auth:true});
+  if(!ok||!data.ok){$("welcomeLines").innerHTML='<p class="finder__msg">Error al cargar.</p>';return;}
+  welcomeCfgData=data.data||{};
+  if(!Array.isArray(welcomeCfgData["message-lines"]))welcomeCfgData["message-lines"]=[];
+  drawWelcome();
+}
+function drawWelcome(){
+  renderLineEditor("welcomeLines",welcomeCfgData["message-lines"],updateWelcomePreview);
+  updateWelcomePreview();
+}
+function updateWelcomePreview(){
+  const lines=welcomeCfgData?welcomeCfgData["message-lines"]:[];
+  $("welcomePreview").innerHTML=lines.length?lines.map(l=>`<div>${mcCodeToHtml(l)}</div>`).join(""):'<p class="finder__msg">Sin líneas.</p>';
+}
+$("welcomeAddLine").addEventListener("click",()=>{
+  if(!welcomeCfgData)return;
+  welcomeCfgData["message-lines"].push("&f");
+  drawWelcome();
+});
+$("welcomeSaveBtn").addEventListener("click",async()=>{
+  if(!welcomeCfgData)return;
+  const {ok,data}=await api("/admin/panel/config",{method:"POST",auth:true,body:{plugin:"sillawelcome",data:welcomeCfgData}});
+  if(ok&&data.ok)toast("Mensaje guardado y recargado"+(data.reloaded?"":" (el plugin no confirmó la recarga)")+".");
+  else toast("No se pudo guardar.");
+});
+
+/* ---- TAB / HUD y mensajes automaticos (los dos viven en el config de sillahud) ---- */
+let hudCfgData=null;
+async function loadHudEditor(){
+  const {ok,data}=await api("/admin/panel/config?plugin=sillahud",{auth:true});
+  if(!ok||!data.ok){
+    $("tabHeaderLines").innerHTML='<p class="finder__msg">Error al cargar.</p>';
+    $("annList").innerHTML='<p class="finder__msg">Error al cargar.</p>';
+    return;
+  }
+  hudCfgData=data.data||{};
+  hudCfgData.tab=hudCfgData.tab||{};
+  if(!Array.isArray(hudCfgData.tab.header))hudCfgData.tab.header=[];
+  if(!Array.isArray(hudCfgData.tab.footer))hudCfgData.tab.footer=[];
+  hudCfgData.announcements=hudCfgData.announcements||{};
+  if(!Array.isArray(hudCfgData.announcements.messages))hudCfgData.announcements.messages=[];
+  drawTab();
+  drawAnnouncements();
+}
+function drawTab(){
+  renderLineEditor("tabHeaderLines",hudCfgData.tab.header,updateTabPreview);
+  renderLineEditor("tabFooterLines",hudCfgData.tab.footer,updateTabPreview);
+  updateTabPreview();
+}
+function updateTabPreview(){
+  if(!hudCfgData)return;
+  const head=hudCfgData.tab.header.map(l=>`<div>${mcCodeToHtml(l)}</div>`).join("");
+  const foot=hudCfgData.tab.footer.map(l=>`<div>${mcCodeToHtml(l)}</div>`).join("");
+  $("tabPreview").innerHTML=head
+    +`<div style="margin:.5rem 0;padding:.35rem .6rem;background:#1a1a1a;border-radius:4px;color:#888;font-size:.8rem">`
+    +`(aquí va la lista de jugadores)</div>`+foot;
+}
+$("tabHeaderAdd").addEventListener("click",()=>{if(hudCfgData){hudCfgData.tab.header.push("&f");drawTab();}});
+$("tabFooterAdd").addEventListener("click",()=>{if(hudCfgData){hudCfgData.tab.footer.push("&f");drawTab();}});
+$("tabSaveBtn").addEventListener("click",()=>saveHudCfg("TAB guardado y recargado"));
+
+const ANN_ACTIONS=[["","Solo texto"],["url","Enlace pulsable"],["command","Comando en el chat"],["copy","Copiar al portapapeles"]];
+/* OJO: se comprueba con "in", NO con el valor. Al elegir "Enlace pulsable" el
+   valor arranca vacio, y comprobando la verdad ("" es falso) la accion se perdia
+   al instante: el desplegable volvia a "Solo texto" y el campo seguia bloqueado. */
+function annActionOf(m){
+  if("url" in m)return "url";
+  if("command" in m)return "command";
+  if("copy" in m)return "copy";
+  return "";
+}
+function drawAnnouncements(){
+  const list=hudCfgData.announcements.messages;
+  $("annEnabled").checked=hudCfgData.announcements.enabled!==false;
+  $("annInterval").value=hudCfgData.announcements["interval-seconds"]||600;
+  $("annInitial").value=hudCfgData.announcements["initial-delay-seconds"]||180;
+  const box=$("annList");
+  box.innerHTML=list.length?list.map((m,i)=>{
+    const act=annActionOf(m);
+    return `<div class="lineedit__row annrow" data-i="${i}">
+      <input type="text" data-f="text" value="${escapeHtml(m.text||"")}" placeholder="&eTexto del mensaje" />
+      <select data-f="action">${ANN_ACTIONS.map(([v,l])=>`<option value="${v}"${act===v?" selected":""}>${l}</option>`).join("")}</select>
+      <input type="text" data-f="value" value="${escapeHtml(m[act]||"")}" placeholder="${act?"valor":"—"}" ${act?"":"disabled"} />
+      <button class="btn btn--ghost" data-anndel="${i}" aria-label="Quitar mensaje">✕</button></div>`;
+  }).join(""):'<p class="finder__msg">Sin mensajes — añade uno.</p>';
+  updateAnnPreview();
+}
+function updateAnnPreview(){
+  const list=hudCfgData?hudCfgData.announcements.messages:[];
+  $("annPreview").innerHTML=list.length?list.map(m=>{
+    const act=annActionOf(m);
+    const tag=act==="url"?" &7[enlace]":act==="command"?" &7[comando]":act==="copy"?" &7[copiar]":"";
+    return `<div>${mcCodeToHtml("&8[&6SillaMC&8] &r"+(m.text||"")+tag)}</div>`;
+  }).join(""):'<p class="finder__msg">Sin mensajes.</p>';
+}
+$("annList").addEventListener("input",e=>{
+  const row=e.target.closest(".annrow");
+  if(!row)return;
+  const m=hudCfgData.announcements.messages[Number(row.dataset.i)];
+  const f=e.target.dataset.f;
+  if(f==="text")m.text=e.target.value;
+  else if(f==="value"){
+    const act=row.querySelector('[data-f="action"]').value;
+    if(act)m[act]=e.target.value;
+  }
+  updateAnnPreview();
+});
+$("annList").addEventListener("change",e=>{
+  const sel=e.target.closest('[data-f="action"]');
+  if(!sel)return;
+  const row=sel.closest(".annrow");
+  const m=hudCfgData.announcements.messages[Number(row.dataset.i)];
+  // Solo una accion por mensaje: al cambiarla se limpian las otras.
+  delete m.url;delete m.command;delete m.copy;
+  if(sel.value)m[sel.value]="";
+  drawAnnouncements();
+});
+$("annList").addEventListener("click",e=>{
+  const del=e.target.closest("[data-anndel]");
+  if(!del)return;
+  hudCfgData.announcements.messages.splice(Number(del.dataset.anndel),1);
+  drawAnnouncements();
+});
+$("annAddBtn").addEventListener("click",()=>{
+  if(!hudCfgData)return;
+  hudCfgData.announcements.messages.push({text:"&eNuevo mensaje"});
+  drawAnnouncements();
+});
+$("annSaveBtn").addEventListener("click",()=>{
+  // Una accion elegida pero sin rellenar no se guarda: dejaria "url: ''" en el
+  // YAML y el mensaje saldria como texto plano igualmente.
+  hudCfgData.announcements.messages.forEach(m=>{
+    ["url","command","copy"].forEach(k=>{ if(k in m && !String(m[k]).trim()) delete m[k]; });
+  });
+  hudCfgData.announcements.enabled=$("annEnabled").checked;
+  hudCfgData.announcements["interval-seconds"]=Math.max(60,Number($("annInterval").value)||600);
+  hudCfgData.announcements["initial-delay-seconds"]=Math.max(1,Number($("annInitial").value)||180);
+  saveHudCfg("Mensajes automáticos guardados y recargados");
+});
+async function saveHudCfg(okMsg){
+  if(!hudCfgData)return;
+  const {ok,data}=await api("/admin/panel/config",{method:"POST",auth:true,body:{plugin:"sillahud",data:hudCfgData}});
+  if(ok&&data.ok)toast(okMsg+(data.reloaded?"":" (el plugin no confirmó la recarga)")+".");
+  else toast("No se pudo guardar.");
+}
+
+/* ---- jugadores conectados: inventario/enderchest/ubicacion/congelar en vivo ---- */
+let plPlayers=[];
+let plCurrentTab="inv";
+
+/* ---- inventario tipo Minecraft real: armadura+mano izq., mochila 3x9 + barra rápida der. ----
+   El bridge solo manda los huecos NO vacíos (con su "slot" real de Bukkit: en la
+   mochila 0-8 es la barra rápida y 9-35 el resto); aquí se rellenan los vacíos
+   para que la rejilla se vea y se pueda pulsar igual que el inventario real. */
+const MC_ARMOR_ORDER=[3,2,1,0]; // getArmorContents(): 0 botas,1 pantalones,2 peto,3 casco — se enseña casco arriba
+let plSelected=null;      // {source, slot} del hueco pulsado, a la espera de un destino
+let plPanelCache=null;    // último inv/ender cargado, para redibujar la selección sin repedir al server
+
+function mcSlotHtml(item,source,slot){
+  const selected=plSelected&&plSelected.source===source&&plSelected.slot===slot;
+  if(!item){
+    return `<div class="mcinv__slot${selected?" mcinv__slot--selected":""}" data-slot="${slot}" data-source="${source}"></div>`;
+  }
+  const ench=(item.enchants||[]).map(e=>e.name+" "+e.level).join(", ");
+  const title=(item.name||humanMaterial(item.material))+" ×"+item.amount+(ench?" · "+ench:"");
+  return `<div class="mcinv__slot${ench?" mcinv__slot--ench":""}${selected?" mcinv__slot--selected":""}"
+     data-slot="${slot}" data-source="${source}" data-mat="${escapeHtml(item.material)}" title="${escapeHtml(title)}">
+     ${mcIconImgHtml(item.material,"")}
+     <span class="mcinv__amt">${item.amount}</span>
+   </div>`;
+}
+function mcInventoryHtml(mainItems,armorItems,offhandItems){
+  const bySlot={};(mainItems||[]).forEach(it=>bySlot[it.slot]=it);
+  let storage='<div class="mcinv__main">';
+  for(let real=9;real<36;real++)storage+=mcSlotHtml(bySlot[real],"main",real);
+  storage+='</div>';
+  let hotbar='<div class="mcinv__hotbar">';
+  for(let real=0;real<9;real++)hotbar+=mcSlotHtml(bySlot[real],"main",real);
+  hotbar+='</div>';
+  const armorBySlot={};(armorItems||[]).forEach(it=>armorBySlot[it.slot]=it);
+  let armor='<div class="mcinv__armorcol">';
+  MC_ARMOR_ORDER.forEach(real=>armor+=mcSlotHtml(armorBySlot[real],"armor",real));
+  armor+=mcSlotHtml((offhandItems||[])[0],"offhand",0);
+  armor+='</div>';
+  return `<div class="mcinv">${armor}<div style="flex:1;min-width:280px">${storage}${hotbar}</div></div>`;
+}
+function mcEnderHtml(items){
+  const bySlot={};(items||[]).forEach(it=>bySlot[it.slot]=it);
+  let html='<div class="mcinv__main">';
+  for(let slot=0;slot<27;slot++)html+=mcSlotHtml(bySlot[slot],"ender",slot);
+  return html+'</div>';
+}
+function mcFindItem(source,slot){
+  if(!plPanelCache)return null;
+  if(plPanelCache.tab==="inv"){
+    if(source==="main")return (plPanelCache.main||[]).find(it=>it.slot===slot);
+    if(source==="armor")return (plPanelCache.armor||[]).find(it=>it.slot===slot);
+    if(source==="offhand")return (plPanelCache.offhand||[])[0];
+  }else if(plPanelCache.tab==="ender"&&source==="ender"){
+    return (plPanelCache.items||[]).find(it=>it.slot===slot);
+  }
+  return null;
+}
+function mcInspectHtml(){
+  if(!plSelected)return "";
+  const item=mcFindItem(plSelected.source,plSelected.slot);
+  if(!item)return "";
+  const ench=(item.enchants||[]).map(e=>e.name+" "+e.level).join(", ");
+  return `<div class="mcinv__inspect">
+    ${mcIconImgHtml(item.material,"")}
+    <div class="mcinv__inspect__body">
+      <b>${escapeHtml(item.name||humanMaterial(item.material))}</b>
+      <code>${escapeHtml(item.material)}</code> × ${item.amount}
+      ${ench?`<div class="mcinv__inspect__ench">✨ ${escapeHtml(ench)}</div>`
+            :'<div class="mcinv__inspect__ench" style="color:var(--muted)">Sin encantamientos</div>'}
+      <div class="mcinv__inspect__actions">
+        <button class="btn btn--ghost btn--danger" id="mcTakeBtn">Retirar a custodia</button>
+        <button class="btn btn--ghost" id="mcCloseBtn">Cancelar</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderPlPanelFromCache(){
+  if(!plPanelCache)return;
+  const panel=$("plPanel");
+  if(plPanelCache.tab==="inv"){
+    panel.innerHTML=`<p class="admincard__subtitle">Inventario</p>`+mcInventoryHtml(plPanelCache.main,plPanelCache.armor,plPanelCache.offhand)
+      +`<p class="mcinv__hint">${plSelected?"Pulsa el hueco destino para mover el objeto (o el mismo hueco para cancelar).":"Pulsa un objeto para ver sus detalles, moverlo o retirarlo."}</p>`
+      +mcInspectHtml();
+  }else if(plPanelCache.tab==="ender"){
+    panel.innerHTML=mcEnderHtml(plPanelCache.items)
+      +`<p class="mcinv__hint">${plSelected?"Pulsa el hueco destino para mover el objeto (o el mismo hueco para cancelar).":"Pulsa un objeto para ver sus detalles, moverlo o retirarlo."}</p>`
+      +mcInspectHtml();
+  }
+}
+
+/* Los refrescos automaticos van en modo "silent": ni ponen "Cargando…" ni
+   reescriben el DOM si los datos son identicos a la vuelta anterior. Sin esto el
+   panel parpadeaba cada 3s y no dejaba ni pulsar un boton. */
+const _snap={};
+function changed(key,data){
+  const s=JSON.stringify(data);
+  if(_snap[key]===s)return false;
+  _snap[key]=s;
+  return true;
+}
+async function loadOnlinePlayers(silent){
+  const sel=$("plOnlineSelect");
+  const prev=sel.value;
+  if(!silent)sel.innerHTML='<option value="">Cargando…</option>';
+  const {ok,data}=await api("/admin/panel/online",{auth:true});
+  if(!ok||!data.players){
+    if(!silent)sel.innerHTML='<option value="">Error al cargar</option>';
+    return;
+  }
+  plPlayers=data.players;
+  if(!plPlayers.length){
+    if(changed("online",[])){
+      sel.innerHTML='<option value="">Nadie conectado ahora mismo</option>';
+      $("plPanel").innerHTML='<p class="finder__msg">No hay nadie conectado.</p>';
+      $("plQuick").innerHTML='<p class="finder__msg">No hay nadie conectado.</p>';
+    }
+    return;
+  }
+  // Reconstruir el <select> cierra el desplegable y pierde el foco: solo se toca
+  // si de verdad cambio la lista de conectados.
+  if(changed("online",plPlayers.map(p=>p.name+":"+(p.frozen?1:0)))){
+    sel.innerHTML=plPlayers.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}${p.frozen?" ❄️ congelado":""}</option>`).join("");
+    if(prev&&plPlayers.some(p=>p.name===prev))sel.value=prev;
+  }
+  loadPlayerQuick(silent);
+  loadPlayerPanel(silent);
+}
+$("plRefreshBtn").addEventListener("click",()=>loadOnlinePlayers(false));
+$("plOnlineSelect").addEventListener("change",()=>{plSelected=null;loadPlayerQuick();loadPlayerPanel();});
+$("plTabs").addEventListener("click",e=>{
+  const btn=e.target.closest("[data-pltab]");
+  if(!btn)return;
+  plCurrentTab=btn.dataset.pltab;
+  plSelected=null;
+  $("plTabs").querySelectorAll(".tab").forEach(b=>b.classList.toggle("is-active",b===btn));
+  loadPlayerPanel();
+});
+
+/* Ficha rapida del jugador (mundo, coordenadas, /tp) en la columna izquierda. */
+async function loadPlayerQuick(silent){
+  const player=$("plOnlineSelect").value;
+  const box=$("plQuick");
+  const p=plPlayers.find(x=>x.name===player);
+  $("plFreezeBtn").textContent=p&&p.frozen?"Descongelar":"Congelar";
+  if(!player){box.innerHTML='<p class="finder__msg">Elige un jugador conectado.</p>';return;}
+  if(!silent)box.innerHTML='<p class="finder__msg">Cargando…</p>';
+  const {ok,data}=await api("/admin/panel/location?player="+encodeURIComponent(player),{auth:true});
+  if(!ok||!data.ok){
+    if(!silent)box.innerHTML='<p class="finder__msg">No se pudo leer la ubicación.</p>';
+    return;
+  }
+  // Las coordenadas cambian al andar: se redondean para no repintar por un decimal.
+  if(silent&&!changed("quick",[player,data.world,data.x.toFixed(1),data.y.toFixed(1),data.z.toFixed(1),p&&p.frozen]))return;
+  const coords=data.x.toFixed(1)+" "+data.y.toFixed(1)+" "+data.z.toFixed(1);
+  box.innerHTML=`<div class="scbalance">
+      <div class="scbalance__row"><span>Mundo</span><b>${escapeHtml(data.world)}</b></div>
+      <div class="scbalance__row"><span>Coordenadas</span><b>${escapeHtml(coords)}</b></div>
+      ${p&&p.frozen?'<div class="scbalance__row"><span>Estado</span><b>❄️ Congelado</b></div>':""}
+    </div>
+    <button class="btn btn--ghost" id="plCopyCoords">Copiar comando /tp</button>`;
+  $("plCopyCoords").addEventListener("click",()=>{
+    navigator.clipboard.writeText("/tp "+coords);
+    toast("Comando copiado.");
+  });
+}
+
+/* Historial de CoreProtect: se pide poco de primeras (es lento, va por consola) y
+   el admin puede ampliarlo con los botones. */
+let cpDays=7, cpLimit=60;
+const CP_STEPS=[[7,60,"7 días"],[30,200,"30 días"],[90,500,"90 días"],[365,2000,"1 año"]];
+
+async function loadPlayerPanel(silent){
+  const player=$("plOnlineSelect").value;
+  const panel=$("plPanel");
+  if(!player){panel.innerHTML='<p class="finder__msg">Elige un jugador conectado.</p>';return;}
+  // CoreProtect e IP no se auto-refrescan: son lentos y consultan servicios
+  // externos/consola. Solo se cargan cuando el admin lo pide.
+  if(silent&&(plCurrentTab==="cp"||plCurrentTab==="ip"))return;
+  if(!silent)panel.innerHTML='<p class="finder__msg">Cargando…</p>';
+  if(plCurrentTab==="inv"){
+    const {ok,data}=await api("/admin/panel/inventory?player="+encodeURIComponent(player),{auth:true});
+    if(!ok||!data.ok){
+      if(!silent)panel.innerHTML='<p class="finder__msg">No se pudo cargar (¿sigue conectado?).</p>';
+      return;
+    }
+    if(_adminBusy)return;   // no repintar bajo el raton mientras hay un dialogo abierto
+    if(silent&&!changed("inv",[player,data.main,data.armor,data.offhand]))return;
+    plPanelCache={tab:"inv",main:data.main,armor:data.armor,offhand:data.offhand};
+    if(plSelected&&!mcFindItem(plSelected.source,plSelected.slot))plSelected=null;
+    renderPlPanelFromCache();
+    return;
+  }else if(plCurrentTab==="ender"){
+    const {ok,data}=await api("/admin/panel/enderchest?player="+encodeURIComponent(player),{auth:true});
+    if(!ok||!data.ok){
+      if(!silent)panel.innerHTML='<p class="finder__msg">No se pudo cargar.</p>';
+      return;
+    }
+    if(_adminBusy)return;
+    if(silent&&!changed("ender",[player,data.items]))return;
+    plPanelCache={tab:"ender",items:data.items};
+    if(plSelected&&!mcFindItem(plSelected.source,plSelected.slot))plSelected=null;
+    renderPlPanelFromCache();
+    return;
+  }else if(plCurrentTab==="cp"){
+    panel.innerHTML='<p class="finder__msg">Consultando CoreProtect ('+cpDays+' días, puede tardar unos segundos)…</p>';
+    const {ok,data}=await api("/admin/panel/coreprotect?player="+encodeURIComponent(player)
+      +"&days="+cpDays+"&limit="+cpLimit,{auth:true});
+    const steps=`<div class="admintabs" id="cpSteps">`+CP_STEPS.map(([d,l,lab])=>
+        `<button class="tab${d===cpDays?" is-active":""}" data-cpdays="${d}" data-cplimit="${l}">${lab}</button>`).join("")
+      +`<button class="tab" data-cpmore="1">＋ Más historial</button></div>`;
+    if(!ok||!data.ok){panel.innerHTML=steps+'<p class="finder__msg">No se pudo consultar CoreProtect.</p>';return;}
+    const entries=data.entries||[];
+    if(!entries.length){panel.innerHTML=steps+'<p class="finder__msg">Sin actividad registrada en ese periodo.</p>';return;}
+    panel.innerHTML=steps
+      +`<p class="admincard__hint">${entries.length} registros de los últimos ${cpDays} días (romper, poner, coger, matar).</p>`
+      +`<div class="cplog">`+entries.slice().reverse().map(en=>
+        `<div class="cplog__row"><span class="cplog__sign cplog__sign--${en.sign==='+'?'add':en.sign==='-'?'del':'mid'}">${escapeHtml(en.sign)}</span>
+          <span class="cplog__desc">${escapeHtml(en.action)}</span>
+          <span class="cplog__meta">hace ${escapeHtml(en.time_ago)} · ${en.x}/${en.y}/${en.z} (${escapeHtml(en.world)})</span></div>`
+      ).join("")+`</div>`;
+  }else if(plCurrentTab==="ip"){
+    const p2=plPlayers.find(x=>x.name===player);
+    if(!p2||!p2.ip){panel.innerHTML='<p class="finder__msg">No se conoce la IP (¿sigue conectado?).</p>';return;}
+    panel.innerHTML='<p class="finder__msg">Consultando geolocalización…</p>';
+    const {ok,data}=await api("/admin/panel/geoip?ip="+encodeURIComponent(p2.ip),{auth:true});
+    if(!ok||!data.ok){panel.innerHTML=`<p><b>IP:</b> <code>${escapeHtml(p2.ip)}</code></p><p class="finder__msg">No se pudo geolocalizar.</p>`;return;}
+    panel.innerHTML=`<p><b>IP:</b> <code>${escapeHtml(p2.ip)}</code></p>
+      <p><b>Ubicación aproximada:</b> ${escapeHtml(data.city||"?")}, ${escapeHtml(data.region||"?")}, ${escapeHtml(data.country||"?")}</p>
+      <p><b>Proveedor:</b> ${escapeHtml(data.isp||"?")}</p>
+      ${data.suspicious?'<p class="cplog__sign cplog__sign--del" style="display:inline-block;padding:.3rem .6rem;border-radius:6px">⚠ Parece VPN/proxy/hosting — sospechoso para un jugador normal</p>':'<p class="finder__msg">Sin señales de VPN/proxy.</p>'}`;
+  }
+}
+
+/* Botones del historial de CoreProtect (periodos fijos y "más historial"). */
+$("plPanel").addEventListener("click",e=>{
+  const step=e.target.closest("[data-cpdays]");
+  if(step){
+    cpDays=Number(step.dataset.cpdays);
+    cpLimit=Number(step.dataset.cplimit);
+    loadPlayerPanel(false);
+    return;
+  }
+  const more=e.target.closest("[data-cpmore]");
+  if(more){
+    // Cada pulsacion dobla lo que se pide, hasta un tope razonable.
+    cpDays=Math.min(cpDays*2,365);
+    cpLimit=Math.min(cpLimit*2,5000);
+    loadPlayerPanel(false);
+  }
+});
+
+/* Inventario tipo Minecraft: pulsar un hueco lo selecciona (y enseña su ficha);
+   pulsar OTRO hueco mueve el objeto ahí; pulsar el mismo cancela la selección. */
+$("plPanel").addEventListener("click",async(e)=>{
+  if(e.target.id==="mcCloseBtn"){ plSelected=null; renderPlPanelFromCache(); return; }
+
+  if(e.target.id==="mcTakeBtn"){
+    if(!plSelected)return;
+    const item=mcFindItem(plSelected.source,plSelected.slot);
+    if(!item)return;
+    const player=$("plOnlineSelect").value;
+    if(!player)return;
+    _adminBusy=true;   // el refresco en vivo se pausa mientras hay un diálogo abierto
+    let note="";
+    try{
+      if(!confirm("¿Retirar "+humanMaterial(item.material)+" de "+player+"?\n\nEl jugador lo pierde ahora mismo y queda guardado en «Objetos retenidos». Podrás devolvérselo cuando quieras.")){
+        _adminBusy=false; return;
+      }
+      note=prompt("Motivo (opcional, para acordarte de por qué se lo quitaste):")||"";
+    }finally{ _adminBusy=false; }
+    const {ok,data}=await api("/admin/panel/custody/take",{method:"POST",auth:true,
+      body:{player,slot:plSelected.slot,source:plSelected.source,material:item.material,note}});
+    plSelected=null;
+    if(ok&&data.ok){
+      toast("Retirado: "+humanMaterial(data.material||item.material)+" ×"+(data.amount||1));
+      loadPlayerPanel(); loadCustody();
+    }else{
+      const err=data&&data.error;
+      toast(err==="changed"?"El jugador movió el objeto — actualiza y reinténtalo."
+        :err==="empty"?"Ese hueco ya está vacío."
+        :err==="offline"?"El jugador se ha desconectado."
+        :"No se pudo retirar ("+(err||"error")+").");
+      loadPlayerPanel();
+    }
+    return;
+  }
+
+  const slotEl=e.target.closest(".mcinv__slot");
+  if(!slotEl)return;
+  const player=$("plOnlineSelect").value;
+  if(!player)return;
+  const source=slotEl.dataset.source, slot=Number(slotEl.dataset.slot);
+
+  if(plSelected&&plSelected.source===source&&plSelected.slot===slot){
+    plSelected=null; renderPlPanelFromCache(); return;
+  }
+  if(plSelected){
+    const from=plSelected;
+    plSelected=null;
+    const {ok,data}=await api("/admin/panel/inventory/move",{method:"POST",auth:true,
+      body:{player,fromSource:from.source,fromSlot:from.slot,toSource:source,toSlot:slot}});
+    if(ok&&data.ok)toast("Objeto movido.");
+    else toast("No se pudo mover ("+((data&&data.error)||"error")+").");
+    loadPlayerPanel();
+    return;
+  }
+  if(!slotEl.dataset.mat)return;   // hueco vacío y nada seleccionado: no hay nada que hacer
+  plSelected={source,slot};
+  renderPlPanelFromCache();
+});
+
+$("plFreezeBtn").addEventListener("click",async()=>{
+  const player=$("plOnlineSelect").value;
+  if(!player){toast("Elige un jugador conectado.");return;}
+  const p=plPlayers.find(x=>x.name===player);
+  const want=!(p&&p.frozen);
+  const {ok,data}=await api("/admin/panel/freeze",{method:"POST",auth:true,body:{player,frozen:want}});
+  if(ok&&data.ok){
+    toast(data.frozen?player+" congelado.":player+" descongelado.");
+    if(p)p.frozen=data.frozen;
+    $("plFreezeBtn").textContent=data.frozen?"Descongelar":"Congelar";
+  }else toast("No se pudo cambiar (¿sigue conectado?).");
+});
+
+/* ---- refresco en vivo ----
+   El inventario, la ubicacion y quien esta conectado cambian solos en el juego,
+   asi que la seccion de Jugadores se refresca cada 3s. Solo cuando esa seccion
+   esta abierta y la pestaña visible, para no castigar al servidor.
+   Se salta el refresco si hay un dialogo abierto (confirm/prompt de retirada). */
+let _adminLiveTimer=null;
+let _adminBusy=false;
+function adminSectionIsOpen(id){
+  const s=$("sec-"+id);
+  return !!s && s.classList.contains("is-active");
+}
+function startAdminLive(){
+  if(_adminLiveTimer)return;
+  _adminLiveTimer=setInterval(()=>{
+    if(document.visibilityState!=="visible"||_adminBusy)return;
+    if(adminSectionIsOpen("players")){
+      loadOnlinePlayers(true);       // silencioso: arrastra ficha rapida + panel
+    }else if(adminSectionIsOpen("custody")){
+      loadCustody(true);
+    }
+  },3000);
+}
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible"&&adminSectionIsOpen("players"))loadOnlinePlayers(true);
+});
+
+/* ---- objetos retenidos (custodia) ---- */
+function timeAgoShort(ts){
+  const s=Math.max(0,Math.floor(Date.now()/1000-ts));
+  if(s<60)return "hace "+s+"s";
+  if(s<3600)return "hace "+Math.floor(s/60)+" min";
+  if(s<86400)return "hace "+Math.floor(s/3600)+" h";
+  return "hace "+Math.floor(s/86400)+" días";
+}
+const CU_SOURCE_ES={main:"mochila",armor:"armadura",offhand:"mano secundaria",ender:"enderchest"};
+async function loadCustody(silent){
+  const box=$("cuList");
+  const all=$("cuShowAll").checked?"1":"0";
+  const {ok,data}=await api("/admin/panel/custody?all="+all,{auth:true});
+  if(!ok||!data.ok){
+    if(!silent)box.innerHTML='<p class="finder__msg">Error al cargar.</p>';
+    return;
+  }
+  const items=data.items||[];
+  if(silent&&!changed("custody",items))return;
+  if(!items.length){box.innerHTML='<p class="finder__msg">No hay objetos retenidos. Quita alguno desde el inventario de un jugador.</p>';return;}
+  box.innerHTML=items.map(it=>`
+    <div class="custody__row${it.returned_at?" is-returned":""}">
+      ${mcIconImgHtml(it.material,"custody__icon")}
+      <div class="custody__info">
+        <b>${escapeHtml(humanMaterial(it.material))} ×${it.amount}</b>
+        <span class="custody__meta">de <b>${escapeHtml(it.player)}</b> · ${escapeHtml(CU_SOURCE_ES[it.source]||it.source)} · ${timeAgoShort(it.taken_at)} por ${escapeHtml(it.taken_by)}</span>
+        ${it.note?`<span class="custody__note">“${escapeHtml(it.note)}”</span>`:""}
+        ${it.returned_at?`<span class="custody__meta">✅ Devuelto a ${escapeHtml(it.returned_to||"?")} ${timeAgoShort(it.returned_at)}</span>`:""}
+      </div>
+      ${it.returned_at?"":`<div class="custody__actions">
+        <button class="btn btn--primary" data-curet="${it.id}">Devolver</button>
+        <button class="btn btn--ghost" data-cuother="${it.id}">Devolver a otro…</button>
+      </div>`}
+    </div>`).join("");
+}
+$("cuRefreshBtn").addEventListener("click",loadCustody);
+$("cuShowAll").addEventListener("change",loadCustody);
+$("cuList").addEventListener("click",async(e)=>{
+  const ret=e.target.closest("[data-curet]");
+  const other=e.target.closest("[data-cuother]");
+  if(!ret&&!other)return;
+  const id=Number((ret||other).dataset.curet||(ret||other).dataset.cuother);
+  let to=null;
+  if(other){
+    _adminBusy=true;
+    try{ to=prompt("¿A qué jugador se lo damos? (tiene que estar conectado)"); }
+    finally{ _adminBusy=false; }
+    if(!to)return;
+  }
+  const {ok,data}=await api("/admin/panel/custody/return",{method:"POST",auth:true,body:{id,to}});
+  if(ok&&data.ok){
+    toast("Devuelto a "+data.returned_to+(data.dropped?" (parte al suelo, no le cabía)":"")+".");
+    loadCustody();
+  }else{
+    const err=data&&data.error;
+    toast(err==="offline"?"Ese jugador no está conectado."
+      :err==="already_returned"?"Ya estaba devuelto."
+      :"No se pudo devolver ("+(err||"error")+").");
+    loadCustody();
+  }
+});
+
+/* ---- copias de seguridad (solo lectura: crearlas/borrarlas lo hace el script) ---- */
+function humanBytes(n){
+  if(n==null)return "—";
+  const u=["B","KB","MB","GB","TB"];
+  let i=0,v=n;
+  while(v>=1024&&i<u.length-1){v/=1024;i++;}
+  return (v>=10||i===0?Math.round(v):v.toFixed(1))+" "+u[i];
+}
+const BK_LABEL={datos:"Datos",mundos:"Mundos",semanal:"Semanal"};
+const BK_ICON={datos:"🗄️",mundos:"🌍",semanal:"📅"};
+async function loadBackups(){
+  const box=$("bkList");
+  const {ok,data}=await api("/admin/panel/backups",{auth:true});
+  if(!ok||!data.ok){
+    box.innerHTML='<p class="finder__msg">No se pudo leer la carpeta de copias'
+      +(data&&data.detail?" ("+escapeHtml(data.detail)+")":"")+'.</p>';
+    return;
+  }
+  const list=data.backups||[];
+  $("bkStats").style.display="flex";
+  $("bkCount").textContent=list.length;
+  $("bkUsed").textContent=humanBytes(data.used);
+  $("bkFree").textContent=humanBytes(data.free);
+  $("bkLog").innerHTML=(data.log||[]).length
+    ? (data.log||[]).map(l=>`<div>${escapeHtml(l)}</div>`).join("")
+    : '<p class="finder__msg">Sin registro todavía.</p>';
+  if(!list.length){
+    box.innerHTML='<p class="finder__msg">Todavía no hay copias. La primera se hará esta noche a las 00:05.</p>';
+    return;
+  }
+  box.innerHTML=list.map(b=>{
+    // Avisar cuando a una copia le queda poco: ayuda a bajarla antes de perderla.
+    const pronto=b.expires_in_days<=2;
+    return `<div class="custody__row">
+      <span class="custody__icon" style="display:flex;align-items:center;justify-content:center;font-size:1.1rem">${BK_ICON[b.kind]||"💾"}</span>
+      <div class="custody__info">
+        <b>${BK_LABEL[b.kind]||b.kind} · ${humanBytes(b.size)}</b>
+        <span class="custody__meta">${escapeHtml(fechaLarga(b.at))} · ${b.age_days<1?"de hoy":"hace "+b.age_days+" días"}</span>
+        <span class="custody__meta" style="${pronto?"color:var(--red)":""}">
+          ${b.expires_in_days<=0?"se borra en el próximo repaso"
+            :"se borra en "+b.expires_in_days+" días (se guardan "+b.keep_days+")"}</span>
+      </div>
+      <code style="font-size:.7rem;opacity:.6">${escapeHtml(b.name)}</code>
+    </div>`;
+  }).join("");
+}
+/* Fecha en hora española y en formato de aquí, para no tener que traducir nada. */
+function fechaLarga(ts){
+  try{
+    return new Date(ts*1000).toLocaleString("es-ES",
+      {day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit",timeZone:"Europe/Madrid"});
+  }catch(e){ return new Date(ts*1000).toLocaleString(); }
+}
+$("bkRefreshBtn").addEventListener("click",loadBackups);
+
+/* ---- cajas web (CS:GO) ---- */
+const CR_STATUS_LABEL={pending:"pendiente",delivered:"entregado",queued:"en cola (reintentar)"};
+let crCurrentType="default";
+async function loadCrates(){
+  const {ok,data}=await api("/admin/panel/crates?type="+encodeURIComponent(crCurrentType),{auth:true});
+  if(!ok||!data.ok){
+    $("crRewardsList").innerHTML='<p class="finder__msg">No se pudo cargar.</p>';
+    return;
+  }
+  loadCrates._enabled=data.enabled;
+  loadCrates._types=data.types||[];
+
+  const isDefault=crCurrentType==="default";
+  $("crEnabledRow").style.display=isDefault?"":"none";
+  if(isDefault){
+    $("crEnabledLabel").textContent=data.enabled?"✅ Cajas ACTIVADAS — los jugadores ya pueden abrirlas":"⛔ Cajas desactivadas — nadie puede abrirlas todavía";
+    $("crToggleBtn").textContent=data.enabled?"Desactivar":"Activar";
+    $("crToggleBtn").className="btn "+(data.enabled?"btn--danger":"btn--primary");
+  }
+  const t=(data.types||[]).find(x=>x.id===crCurrentType);
+  $("crTypeName").textContent=t?t.name:crCurrentType;
+
+  // ---- lista de tipos de caja ----
+  $("ctList").innerHTML=(data.types||[]).map(t=>{
+    const isCurrent=t.id===crCurrentType;
+    return `<div class="storeadmin__row${t.active?"":" is-disabled"}${isCurrent?"":""}" style="${isCurrent?"outline:2px solid var(--gold)":""}">
+      <span class="custody__icon" style="background:${t.color};display:flex;align-items:center;justify-content:center">📦</span>
+      <div class="storeadmin__info"><b>${escapeHtml(t.name)}</b> <span class="storeadmin__id">${escapeHtml(t.id)}</span>
+        <span class="storeadmin__detail">${t.active?"":"(desactivado)"}</span></div>
+      <div class="storeadmin__actions">
+        <button class="btn ${isCurrent?"btn--primary":"btn--ghost"}" data-ctselect="${escapeHtml(t.id)}">${isCurrent?"Viendo":"Ver premios"}</button>
+        ${t.id!=="default"?`<button class="btn btn--ghost" data-cttoggle="${escapeHtml(t.id)}" data-active="${t.active?1:0}">${t.active?"Desactivar":"Activar"}</button>
+        <button class="btn btn--ghost btn--danger" data-ctdelete="${escapeHtml(t.id)}">Borrar</button>`:""}
+      </div></div>`;
+  }).join("")||'<p class="finder__msg">Sin tipos todavía.</p>';
+
+  // ---- premios del tipo actual ----
+  const rewards=data.rewards||[];
+  const totalWeight=rewards.filter(r=>r.active).reduce((s,r)=>s+r.weight,0)||1;
+  $("crRewardsList").innerHTML=rewards.length?rewards.map(r=>{
+    const pct=r.active?(100*r.weight/totalWeight).toFixed(1):"0.0";
+    return `<div class="storeadmin__row${r.active?"":" is-disabled"}">
+      <span class="custody__icon" style="background:${r.color};display:flex;align-items:center;justify-content:center">🎁</span>
+      <div class="storeadmin__info"><b>${escapeHtml(r.label)}</b> <span class="storeadmin__id">${escapeHtml(r.id)}</span>
+        <span class="storeadmin__detail">peso ${r.weight} · ${pct}% de probabilidad ${r.active?"":"(desactivado)"}</span></div>
+      <div class="storeadmin__actions">
+        <button class="btn btn--ghost" data-crweight="${escapeHtml(r.id)}">Cambiar peso</button>
+        <button class="btn btn--ghost" data-crtoggle="${escapeHtml(r.id)}" data-active="${r.active?1:0}">${r.active?"Desactivar":"Activar"}</button>
+        <button class="btn btn--ghost btn--danger" data-crdelete="${escapeHtml(r.id)}">Borrar</button>
+      </div></div>`;
+  }).join(""):'<p class="finder__msg">Sin premios configurados en esta caja todavía.</p>';
+  loadCrates._rewards=rewards;
+
+  const recent=data.recent||[];
+  $("crHistoryList").innerHTML=recent.length?recent.map(o=>{
+    const needsRetry=o.delivery_status==="queued";
+    return `<div class="custody__row">
+      <span class="custody__icon" style="display:flex;align-items:center;justify-content:center;font-size:1.1rem">🎁</span>
+      <div class="custody__info">
+        <b>${escapeHtml(o.player_name)} · ${escapeHtml(o.reward_label)}</b>
+        <span class="custody__meta">${escapeHtml(fechaLarga(o.opened_at))} · ${escapeHtml(o.crate_type_id||"default")}</span>
+        <span class="custody__meta" style="${needsRetry?"color:var(--red)":""}">${CR_STATUS_LABEL[o.delivery_status]||o.delivery_status}</span>
+      </div>
+      ${needsRetry?`<button class="btn btn--ghost" data-crretry="${o.id}">Reintentar</button>`:""}
+    </div>`;
+  }).join(""):'<p class="finder__msg">Todavía no se ha abierto ninguna caja.</p>';
+}
+$("crToggleBtn").addEventListener("click",async()=>{
+  const want=!loadCrates._enabled;
+  if(want&&!confirm("¿Activar las cajas para todos los jugadores? Revisa antes la tabla de premios."))return;
+  const {ok,data}=await api("/admin/panel/crates/enabled",{method:"POST",auth:true,body:{enabled:want}});
+  if(ok&&data.ok){toast(want?"Cajas activadas.":"Cajas desactivadas.");loadCrates();}
+  else toast("No se pudo cambiar.");
+});
+$("ctCreateBtn").addEventListener("click",async()=>{
+  const name=($("ctName").value||"").trim();
+  if(!name){toast("Escribe un nombre.");return;}
+  const res=await api("/admin/panel/cratetypes",{method:"POST",auth:true,
+    body:{id:name,name,color:$("ctColor").value}});
+  if(res.ok&&res.data.ok){
+    toast("Tipo de caja «"+name+"» creado.");
+    $("ctName").value="";
+    crCurrentType=res.data.id;
+    loadCrates();
+  }else toast("No se pudo crear.");
+});
+$("ctList").addEventListener("click",async(e)=>{
+  const selectBtn=e.target.closest("[data-ctselect]");
+  if(selectBtn){crCurrentType=selectBtn.dataset.ctselect;loadCrates();return;}
+  const toggleBtn=e.target.closest("[data-cttoggle]");
+  if(toggleBtn){
+    await api("/admin/panel/cratetypes/active",{method:"POST",auth:true,
+      body:{id:toggleBtn.dataset.cttoggle,active:toggleBtn.dataset.active!=="1"}});
+    loadCrates();
+    return;
+  }
+  const delBtn=e.target.closest("[data-ctdelete]");
+  if(delBtn){
+    if(!confirm("¿Borrar el tipo «"+delBtn.dataset.ctdelete+"» y todos sus premios? No se puede deshacer."))return;
+    if(crCurrentType===delBtn.dataset.ctdelete)crCurrentType="default";
+    await api("/admin/panel/cratetypes/delete",{method:"POST",auth:true,body:{id:delBtn.dataset.ctdelete}});
+    loadCrates();
+  }
+});
+$("crNewBtn").addEventListener("click",async()=>{
+  const label=($("crNewLabel").value||"").trim();
+  const amount=parseInt($("crNewAmount").value,10);
+  const weight=parseInt($("crNewWeight").value,10);
+  const color=$("crNewColor").value;
+  if(!label||!Number.isFinite(amount)||amount<=0||!Number.isFinite(weight)||weight<=0){
+    toast("Rellena nombre, SC y peso.");return;
+  }
+  const id=crCurrentType+"_"+label.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_+|_+$/g,"")+"_"+Date.now().toString(36);
+  const res=await api("/admin/panel/crates/reward",{method:"POST",auth:true,
+    body:{id,crateType:crCurrentType,label,kind:"sc",payload:{amount},weight,color}});
+  if(res.ok&&res.data.ok){
+    toast("Premio «"+label+"» creado.");
+    $("crNewLabel").value="";$("crNewAmount").value="";
+    loadCrates();
+  }else toast("No se pudo crear.");
+});
+$("crRewardsList").addEventListener("click",async(e)=>{
+  const rewards=loadCrates._rewards||[];
+  const toggleBtn=e.target.closest("[data-crtoggle]");
+  if(toggleBtn){
+    const id=toggleBtn.dataset.crtoggle;
+    const active=toggleBtn.dataset.active!=="1";
+    await api("/admin/panel/crates/reward/active",{method:"POST",auth:true,body:{id,active}});
+    loadCrates();
+    return;
+  }
+  const delBtn=e.target.closest("[data-crdelete]");
+  if(delBtn){
+    if(!confirm("¿Borrar este premio? No se puede deshacer."))return;
+    await api("/admin/panel/crates/reward/delete",{method:"POST",auth:true,body:{id:delBtn.dataset.crdelete}});
+    loadCrates();
+    return;
+  }
+  const weightBtn=e.target.closest("[data-crweight]");
+  if(weightBtn){
+    const id=weightBtn.dataset.crweight;
+    const r=rewards.find(x=>x.id===id);
+    if(!r)return;
+    const v=prompt("Nuevo peso para «"+r.label+"» (número más alto = más probable):",r.weight);
+    if(v==null)return;
+    const weight=parseInt(v,10);
+    if(!Number.isFinite(weight)||weight<=0){toast("Peso no válido.");return;}
+    const res=await api("/admin/panel/crates/reward",{method:"POST",auth:true,
+      body:{id:r.id,crateType:r.crate_type_id,label:r.label,kind:r.kind,payload:r.payload,weight,color:r.color}});
+    if(res.ok&&res.data.ok)loadCrates();else toast("No se pudo guardar.");
+  }
+});
+$("crHistoryList").addEventListener("click",async(e)=>{
+  const btn=e.target.closest("[data-crretry]");
+  if(!btn)return;
+  btn.disabled=true;btn.textContent="Reintentando…";
+  const res=await api("/admin/panel/crates/retry",{method:"POST",auth:true,body:{id:parseInt(btn.dataset.crretry,10)}});
+  toast(res.ok&&res.data.ok?"Entregado.":"Sigue sin poder entregarse (¿está desconectado?).");
+  loadCrates();
+});
+
+/* ---- códigos canjeables ---- */
+function rcFillTypeSelect(){
+  const sel=$("rcCrateType");
+  const types=(loadCrates._types||[]).length?loadCrates._types:[{id:"default",name:"Caja Silla"}];
+  const prev=sel.value;
+  sel.innerHTML=types.map(t=>`<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)}</option>`).join("");
+  if(types.some(t=>t.id===prev))sel.value=prev;
+}
+async function loadRedeemCodes(){
+  rcFillTypeSelect();
+  const {ok,data}=await api("/admin/panel/redeemcodes",{auth:true});
+  if(!ok||!data.ok){$("rcList").innerHTML='<p class="finder__msg">No se pudo cargar.</p>';return;}
+  const codes=data.codes||[];
+  $("rcList").innerHTML=codes.length?codes.map(c=>{
+    const total=c.max_uses_total==null?"∞":c.max_uses_total;
+    const perPlayer=c.max_uses_per_player==null?"∞":c.max_uses_per_player;
+    const type=(c.payload&&c.payload.crate_type)||"default";
+    return `<div class="storeadmin__row${c.active?"":" is-disabled"}">
+      <span class="custody__icon" style="display:flex;align-items:center;justify-content:center">🎟️</span>
+      <div class="storeadmin__info"><b>${escapeHtml(c.code)}</b>
+        <span class="storeadmin__detail">caja: ${escapeHtml(type)} · usados ${c.uses_total}/${total} · máx ${perPlayer} por jugador ${c.active?"":"(desactivado)"}</span></div>
+      <div class="storeadmin__actions">
+        <button class="btn btn--ghost" data-rctoggle="${escapeHtml(c.code)}" data-active="${c.active?1:0}">${c.active?"Desactivar":"Activar"}</button>
+        <button class="btn btn--ghost btn--danger" data-rcdelete="${escapeHtml(c.code)}">Borrar</button>
+      </div></div>`;
+  }).join(""):'<p class="finder__msg">Sin códigos todavía.</p>';
+}
+$("rcCreateBtn").addEventListener("click",async()=>{
+  const code=($("rcCode").value||"").trim().toUpperCase();
+  if(!code){toast("Escribe un código.");return;}
+  const crateType=$("rcCrateType").value||"default";
+  const res=await api("/admin/panel/redeemcodes",{method:"POST",auth:true,body:{
+    code,kind:"crate",payload:crateType==="default"?{}:{crate_type:crateType},
+    maxUsesTotal:$("rcMaxTotal").value||null,maxUsesPerPlayer:$("rcMaxPerPlayer").value||null,
+  }});
+  if(res.ok&&res.data.ok){
+    toast("Código «"+code+"» guardado.");
+    $("rcCode").value="";$("rcMaxTotal").value="";$("rcMaxPerPlayer").value="";
+    loadRedeemCodes();
+  }else toast("No se pudo guardar.");
+});
+$("rcList").addEventListener("click",async(e)=>{
+  const toggleBtn=e.target.closest("[data-rctoggle]");
+  if(toggleBtn){
+    await api("/admin/panel/redeemcodes/active",{method:"POST",auth:true,
+      body:{code:toggleBtn.dataset.rctoggle,active:toggleBtn.dataset.active!=="1"}});
+    loadRedeemCodes();
+    return;
+  }
+  const delBtn=e.target.closest("[data-rcdelete]");
+  if(delBtn){
+    if(!confirm("¿Borrar el código «"+delBtn.dataset.rcdelete+"»? No se puede deshacer."))return;
+    await api("/admin/panel/redeemcodes/delete",{method:"POST",auth:true,body:{code:delBtn.dataset.rcdelete}});
+    loadRedeemCodes();
+  }
+});
+
+/* ---- rangos ---- */
+async function loadRankGroups(){
+  const {ok,data}=await api("/admin/panel/ranks",{auth:true});
+  if(!ok||!data.ok)return;
+  $("rkGroup").innerHTML=(data.groups||[]).map(g=>`<option value="${escapeHtml(g.id)}">${escapeHtml(g.label)}</option>`).join("");
+}
+$("rkLookupBtn").addEventListener("click",async()=>{
+  const player=$("rkPlayer").value.trim();
+  if(!player){toast("Escribe un nombre.");return;}
+  $("rkCurrent").innerHTML='<p class="finder__msg">Consultando…</p>';
+  const {ok,data}=await api("/admin/panel/ranks?player="+encodeURIComponent(player),{auth:true});
+  if(!ok||!data.ok){$("rkCurrent").innerHTML='<p class="finder__msg">No se pudo consultar.</p>';return;}
+  if(!data.current){
+    $("rkCurrent").innerHTML='<p class="finder__msg">No encuentro a ese jugador (¿ha entrado alguna vez al servidor?).</p>';
+    return;
+  }
+  const label=(data.groups||[]).find(g=>g.id===data.current);
+  $("rkCurrent").innerHTML=`<div class="scbalance"><div class="scbalance__row">
+      <span>Rango actual de ${escapeHtml(player)}</span><b>${escapeHtml(label?label.label:data.current)}</b></div></div>`;
+  if(data.current)$("rkGroup").value=data.current;
+});
+$("rkSaveBtn").addEventListener("click",async()=>{
+  const player=$("rkPlayer").value.trim(), group=$("rkGroup").value, duration=$("rkDuration").value.trim();
+  if(!player||!group){toast("Escribe el jugador y elige un rango.");return;}
+  if(!confirm("¿Poner a "+player+" en el rango "+group+(duration?" durante "+duration:" (permanente)")+"?"))return;
+  const {ok,data}=await api("/admin/panel/rank",{method:"POST",auth:true,body:{player,group,duration}});
+  if(ok&&data.ok){
+    toast("Rango de "+player+" cambiado a "+group+(duration?" ("+duration+")":"")+".");
+    $("rkLookupBtn").click();
+  }else{
+    const err=data&&data.error;
+    toast(err==="bad_duration"?"Duración no válida: usa 30d, 12h, 90m…"
+      :err==="bad_player"?"Nombre de jugador no válido."
+      :"No se pudo cambiar el rango ("+(err||"error")+").");
+  }
+});
+
+/* ---- tienda: lista + tarjeta-menu de edicion con vista previa ---- */
+const SI_KIND_LABEL={give_item:"Dar ítem",currency:"Dar SC",command:"Comando"};
+
+async function loadStoreAdmin(){
+  const list=$("storeAdminList");
+  list.innerHTML='<p class="finder__msg">Cargando…</p>';
+  const {ok,data}=await api("/admin/store/items",{auth:true});
+  if(!ok){list.innerHTML='<p class="finder__msg">Error al cargar.</p>';return;}
+  const items=data.items||[];
+  list.innerHTML=items.length?items.map(it=>{
+    const detail=it.kind==="give_item"?`${(it.payload.item||"").replace("minecraft:","")} ×${it.payload.amount}`
+      :it.kind==="currency"?`+${it.payload.amount} SC`
+      :escapeHtml(it.payload.command||"");
+    return `<div class="storeadmin__row${it.enabled?"":" is-disabled"}">
+      ${mcIconImgHtml(it.icon||(it.payload.item||"").replace("minecraft:","")||"paper","custody__icon")}
+      <div class="storeadmin__info"><b>${escapeHtml(it.label)}</b> <span class="storeadmin__id">${escapeHtml(it.id)}</span>
+        <span class="storeadmin__detail">${SI_KIND_LABEL[it.kind]||it.kind}: ${detail} · ${it.price} SC</span></div>
+      <div class="storeadmin__actions">
+        <button class="btn btn--ghost" data-siedit="${escapeHtml(it.id)}">Editar</button>
+        <button class="btn btn--ghost" data-sitoggle="${escapeHtml(it.id)}" data-enabled="${it.enabled?1:0}">${it.enabled?"Desactivar":"Activar"}</button>
+        <button class="btn btn--ghost btn--danger" data-sidelete="${escapeHtml(it.id)}">Borrar</button>
+      </div></div>`;
+  }).join(""):'<p class="finder__msg">Sin objetos todavía — crea el primero con «+ Nuevo objeto».</p>';
+  loadStoreAdmin._items=items;
+}
+
+function siUpdateKindFields(){
+  const kind=$("siKind").value;
+  $("siFieldItem").style.display=kind==="give_item"?"":"none";
+  $("siFieldAmount").style.display=(kind==="give_item"||kind==="currency")?"":"none";
+  $("siFieldCommand").style.display=kind==="command"?"":"none";
+  siUpdatePreview();
+}
+/* La vista previa imita la tarjeta real de la tienda, para ver el resultado
+   antes de guardar (icono, nombre, descripcion y precio). */
+function siUpdatePreview(){
+  const kind=$("siKind").value;
+  const label=$("siLabel").value.trim()||"Sin nombre";
+  const desc=$("siDescription").value.trim();
+  const price=Number($("siPrice").value)||0;
+  const iconMat=$("siIcon").value.trim()
+    ||(kind==="give_item"?$("siPayloadItem").value.trim().replace("minecraft:",""):"")
+    ||(kind==="currency"?"":"paper");
+  const icon=kind==="currency"&&!$("siIcon").value.trim()
+    ? `<img class="scard__icon-img" src="sillacoin.png" alt="" />`
+    : mcIconImgHtml(iconMat||"paper","scard__icon-img");
+  $("siPreview").innerHTML=`<div class="scard">${icon}
+    <h3>${escapeHtml(label)}</h3>
+    <p>${desc?escapeHtml(desc):'<i style="opacity:.6">Sin descripción</i>'}</p>
+    <div class="scard__foot"><span class="scard__price">${price.toLocaleString()} <small>SC</small></span>
+      <button class="btn btn--primary" type="button">Canjear</button></div></div>`;
+}
+["siLabel","siDescription","siPrice","siPayloadItem","siPayloadAmount","siIcon"].forEach(id=>
+  $(id).addEventListener("input",siUpdatePreview));
+$("siKind").addEventListener("change",siUpdateKindFields);
+
+function openSiSheet(item){
+  $("siSheetTitle").textContent=item?"Editar «"+item.label+"»":"Nuevo objeto";
+  $("siId").value=item?item.id:"";
+  $("siId").disabled=!!item;   // cambiar el id crearia otro objeto en vez de editar este
+  $("siLabel").value=item?item.label:"";
+  $("siDescription").value=item?(item.description||""):"";
+  $("siPrice").value=item?item.price:"";
+  $("siKind").value=item?item.kind:"give_item";
+  $("siIcon").value=item?(item.icon||""):"";
+  const p=(item&&item.payload)||{};
+  $("siPayloadItem").value=item&&item.kind==="give_item"?(p.item||""):"";
+  $("siPayloadAmount").value=item&&(item.kind==="give_item"||item.kind==="currency")?(p.amount||""):"";
+  $("siPayloadCommand").value=item&&item.kind==="command"?(p.command||""):"";
+  siUpdateKindFields();
+  $("siSheet").classList.add("is-open");
+}
+function closeSiSheet(){$("siSheet").classList.remove("is-open");}
+$("siNewBtn").addEventListener("click",()=>openSiSheet(null));
+$("siSheetClose").addEventListener("click",closeSiSheet);
+$("siCancelBtn").addEventListener("click",closeSiSheet);
+$("siSheetBackdrop").addEventListener("click",closeSiSheet);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSiSheet();});
+
+$("storeAdminList").addEventListener("click",async(e)=>{
+  const items=loadStoreAdmin._items||[];
+  const editBtn=e.target.closest("[data-siedit]");
+  if(editBtn){
+    const it=items.find(i=>i.id===editBtn.dataset.siedit);
+    if(it)openSiSheet(it);
+    return;
+  }
+  const toggleBtn=e.target.closest("[data-sitoggle]");
+  if(toggleBtn){
+    const enabled=toggleBtn.dataset.enabled!=="1";
+    const {ok}=await api("/admin/store/items/toggle",{method:"POST",auth:true,body:{id:toggleBtn.dataset.sitoggle,enabled}});
+    if(ok){toast(enabled?"Objeto activado.":"Objeto desactivado.");loadStoreAdmin();}
+    else toast("No se pudo cambiar.");
+    return;
+  }
+  const delBtn=e.target.closest("[data-sidelete]");
+  if(delBtn){
+    if(!confirm("¿Borrar este objeto de la tienda? No se puede deshacer."))return;
+    const {ok}=await api("/admin/store/items/delete",{method:"POST",auth:true,body:{id:delBtn.dataset.sidelete}});
+    if(ok){toast("Objeto borrado.");loadStoreAdmin();}
+    else toast("No se pudo borrar.");
+  }
+});
+
+$("siSaveBtn").addEventListener("click",async()=>{
+  const id=$("siId").value.trim(), label=$("siLabel").value.trim();
+  const price=Number($("siPrice").value), kind=$("siKind").value;
+  if(!/^[a-z0-9_]{2,40}$/.test(id)){toast("El id debe ser minúsculas/números/guion bajo, 2-40 caracteres.");return;}
+  if(!label||!price||price<=0){toast("Rellena nombre y precio.");return;}
+  let payload;
+  if(kind==="give_item"){
+    const item=$("siPayloadItem").value.trim(), amount=Number($("siPayloadAmount").value);
+    if(!item||!amount){toast("Rellena el ítem y la cantidad.");return;}
+    payload={item,amount};
+  }else if(kind==="currency"){
+    const amount=Number($("siPayloadAmount").value);
+    if(!amount){toast("Rellena la cantidad de SC.");return;}
+    payload={amount};
+  }else{
+    const command=$("siPayloadCommand").value.trim();
+    if(!command){toast("Rellena el comando.");return;}
+    payload={command};
+  }
+  const {ok,data}=await api("/admin/store/items",{method:"POST",auth:true,body:{
+    id,label,price,kind,payload,
+    description:$("siDescription").value.trim(),icon:$("siIcon").value.trim()}});
+  if(ok&&data.ok){
+    toast("Objeto guardado.");
+    closeSiSheet();
+    loadStoreAdmin();
+  }else toast("No se pudo guardar ("+(data&&data.error||"error")+").");
+});
+
+/* ---- SillaCoins de un jugador (buscar saldo + dar/quitar/vaciar) ---- */
+async function lookupBalance(){
+  const player=$("scPlayer").value.trim();
+  if(!player){toast("Escribe un nombre.");return;}
+  const {ok,data}=await api("/admin/panel/balance?player="+encodeURIComponent(player),{auth:true});
+  if(!ok||!data.ok){toast("No se pudo consultar el saldo.");$("scBalanceBox").style.display="none";return;}
+  const total=data.balance||0, locked=data.locked||0;
+  $("scBalTotal").textContent=total.toLocaleString();
+  $("scBalNormal").textContent=(data.transferable!=null?data.transferable:(total-locked)).toLocaleString();
+  $("scBalLocked").textContent=locked.toLocaleString();
+  $("scBalanceBox").style.display="flex";
+}
+$("scLookupBtn").addEventListener("click",lookupBalance);
+$("scPlayer").addEventListener("keydown",e=>{if(e.key==="Enter")lookupBalance();});
+$("grantBtn").addEventListener("click",async()=>{
+  const player=$("scPlayer").value.trim();
+  const amount=$("grantAmount").value;
+  if(!player||!amount||Number(amount)<=0){toast("Busca un jugador y escribe la cantidad.");return;}
+  const {ok,data}=await api("/admin/panel/grant",{method:"POST",auth:true,body:{player,amount}});
+  if(ok&&data.ok){toast("SC dado a "+player+(data.balance!=null?" · nuevo saldo: "+data.balance:""));$("grantAmount").value="";lookupBalance();}
+  else toast("No se pudo dar SC ("+(data&&data.error||"error")+").");
+});
+$("chargeBtn").addEventListener("click",async()=>{
+  const player=$("scPlayer").value.trim();
+  const amount=$("grantAmount").value;
+  if(!player||!amount||Number(amount)<=0){toast("Busca un jugador y escribe la cantidad.");return;}
+  const {ok,data}=await api("/admin/panel/charge",{method:"POST",auth:true,body:{player,amount}});
+  if(ok&&data.ok){toast("Se quitaron "+amount+" SC a "+player+(data.balance!=null?" · nuevo saldo: "+data.balance:""));$("grantAmount").value="";lookupBalance();}
+  else toast("No se pudo quitar SC (¿tiene suficiente saldo?).");
+});
+$("wipeBtn").addEventListener("click",async()=>{
+  const player=$("scPlayer").value.trim();
+  if(!player){toast("Busca primero un jugador.");return;}
+  if(!confirm("¿Seguro que quieres quitarle TODO el saldo a "+player+"? No se puede deshacer."))return;
+  const {ok,data}=await api("/admin/panel/wipe",{method:"POST",auth:true,body:{player}});
+  if(ok&&data.ok){toast("Saldo de "+player+" puesto a 0 (se quitaron "+(data.charged||0).toLocaleString()+" SC).");lookupBalance();}
+  else toast("No se pudo vaciar el saldo.");
+});
+
+/* ---- whitelist (lista con scroll propio + filtro, ya no hace falta paginar) ---- */
+let wlAllPlayers=[];
+async function loadWhitelist(){
+  const {ok,data}=await api("/admin/panel/whitelist",{auth:true});
+  if(!ok){$("wlList").innerHTML='<p class="finder__msg">Error al cargar.</p>';return;}
+  wlAllPlayers=data.players||[];
+  renderWhitelist();
+}
+function renderWhitelist(){
+  const list=$("wlList");
+  const q=$("wlFilter").value.trim().toLowerCase();
+  const shown=q?wlAllPlayers.filter(p=>(p.name||"").toLowerCase().includes(q)):wlAllPlayers;
+  if(!wlAllPlayers.length){list.innerHTML='<p class="finder__msg">Whitelist vacía.</p>';$("wlCount").textContent="";return;}
+  list.innerHTML=shown.length?shown.map(p=>
+    `<div class="wlrow"><span>${escapeHtml(p.name)}</span><button class="btn btn--ghost" data-wlremove="${escapeHtml(p.name)}">Quitar</button></div>`
+  ).join(""):'<p class="finder__msg">Ningún jugador coincide con el filtro.</p>';
+  $("wlCount").textContent=q?shown.length+" de "+wlAllPlayers.length+" jugadores":wlAllPlayers.length+" jugadores en la whitelist";
+}
+$("wlFilter").addEventListener("input",renderWhitelist);
+$("wlAddBtn").addEventListener("click",async()=>{
+  const name=$("wlName").value.trim();
+  if(!name){toast("Escribe un nombre.");return;}
+  const {ok,data}=await api("/admin/panel/whitelist/add",{method:"POST",auth:true,body:{name}});
+  if(ok&&data.ok){
+    toast(name+" añadido a la whitelist."+(data.bedrock?" (jugador de Bedrock, con su UUID real)":""));
+    $("wlName").value="";loadWhitelist();
+  }else if(data&&data.error==="bedrock_uuid_unknown"){
+    // Sin un intento de conexion previo no sabemos su UUID de Floodgate.
+    toast("Ese jugador de Bedrock tiene que intentar entrar UNA vez (le dirá que no está en la whitelist) y luego lo añades.");
+  }else toast("No se pudo añadir.");
+});
+$("wlList").addEventListener("click",async(e)=>{
+  const btn=e.target.closest("[data-wlremove]");
+  if(!btn)return;
+  const name=btn.dataset.wlremove;
+  const {ok}=await api("/admin/panel/whitelist/remove",{method:"POST",auth:true,body:{name}});
+  if(ok){toast(name+" quitado de la whitelist.");loadWhitelist();}
+  else toast("No se pudo quitar.");
+});
+
+/* ---- ajustes de plugins (formulario generico a partir del YAML) ---- */
+let currentCfgPlugin=null;
+
+function renderConfigTabs(plugins){
+  const tabs=$("cfgTabs");
+  tabs.innerHTML=plugins.map((p,i)=>`<button class="tab${i===0?" is-active":""}" data-cfg="${p.id}">${escapeHtml(p.label)}</button>`).join("");
+  tabs.addEventListener("click",e=>{
+    const btn=e.target.closest("[data-cfg]");
+    if(!btn)return;
+    tabs.querySelectorAll(".tab").forEach(b=>b.classList.toggle("is-active",b===btn));
+    loadConfig(btn.dataset.cfg);
+  });
+  if(plugins.length)loadConfig(plugins[0].id);
+}
+
+async function loadConfig(pluginId){
+  currentCfgPlugin=pluginId;
+  const form=$("cfgForm");
+  form.innerHTML='<p class="finder__msg">Cargando…</p>';
+  const {ok,data}=await api("/admin/panel/config?plugin="+encodeURIComponent(pluginId),{auth:true});
+  if(!ok){form.innerHTML='<p class="finder__msg">Error al cargar.</p>';return;}
+  form.innerHTML="";
+  form.appendChild(buildFieldsForObject(data.data||{},""));
+  $("cfgSaveBtn").style.display="inline-flex";
+}
+
+function buildFieldsForObject(obj,prefix){
+  const wrap=document.createElement("div");
+  wrap.className="admincfg";
+  for(const [key,val] of Object.entries(obj)){
+    const path=prefix?prefix+"."+key:key;
+    if(val!==null&&typeof val==="object"&&!Array.isArray(val)){
+      const fs=document.createElement("fieldset");
+      fs.className="admincfg__group";
+      const legend=document.createElement("legend");
+      legend.textContent=key;
+      fs.appendChild(legend);
+      fs.appendChild(buildFieldsForObject(val,path));
+      wrap.appendChild(fs);
+      continue;
+    }
+    // Las listas de objetos (ej. los mensajes automaticos) no caben en un input
+    // de texto: se editan en su propia seccion, aqui se avisa y no se tocan.
+    if(Array.isArray(val)&&val.some(v=>v!==null&&typeof v==="object")){
+      const note=document.createElement("p");
+      note.className="admincard__hint";
+      note.textContent=key+": se edita en su propia sección del menú.";
+      wrap.appendChild(note);
+      continue;
+    }
+    const row=document.createElement("label");
+    row.className="admincfg__row";
+    const span=document.createElement("span");
+    span.textContent=key+(Array.isArray(val)?" (separado por comas)":"");
+    row.appendChild(span);
+    let input;
+    if(typeof val==="boolean"){
+      input=document.createElement("input");input.type="checkbox";input.checked=val;
+    }else if(Array.isArray(val)){
+      input=document.createElement("input");input.type="text";input.value=val.join(", ");input.dataset.isList="1";
+    }else if(typeof val==="number"){
+      input=document.createElement("input");input.type="number";input.value=val;
+    }else{
+      input=document.createElement("input");input.type="text";input.value=val==null?"":String(val);
+    }
+    input.dataset.path=path;
+    row.appendChild(input);
+    wrap.appendChild(row);
+  }
+  return wrap;
+}
+
+function collectFieldsFromForm(){
+  const form=$("cfgForm");
+  const result={};
+  form.querySelectorAll("[data-path]").forEach(input=>{
+    const parts=input.dataset.path.split(".");
+    let obj=result;
+    for(let i=0;i<parts.length-1;i++){obj[parts[i]]=obj[parts[i]]||{};obj=obj[parts[i]];}
+    const key=parts[parts.length-1];
+    let value;
+    if(input.type==="checkbox")value=input.checked;
+    else if(input.dataset.isList)value=input.value.split(",").map(s=>s.trim()).filter(Boolean);
+    else if(input.type==="number")value=Number(input.value);
+    else value=input.value;
+    obj[key]=value;
+  });
+  return result;
+}
+
+$("cfgSaveBtn").addEventListener("click",async()=>{
+  if(!currentCfgPlugin)return;
+  const data=collectFieldsFromForm();
+  const {ok,data:res}=await api("/admin/panel/config",{method:"POST",auth:true,body:{plugin:currentCfgPlugin,data}});
+  if(ok&&res.ok){
+    toast("Guardado y recargado"+(res.reloaded?"":" (el plugin no confirmó la recarga, revísalo)")+".");
+    // El editor generico puede haber tocado sillahud/sillawelcome: recargar sus
+    // editores para no quedarnos con datos viejos en pantalla.
+    if(currentCfgPlugin==="sillahud")loadHudEditor();
+    if(currentCfgPlugin==="sillawelcome")loadWelcomeEditor();
+  }
+  else toast("No se pudo guardar.");
+});
+
+/* ---- recompensas del pase (50 niveles) ---- */
+let passTiersEditData=[];
+
+async function loadPassRewardsAdmin(){
+  const list=$("passRewardsList");
+  list.innerHTML='<p class="finder__msg">Cargando…</p>';
+  const {ok,data}=await api("/admin/panel/passrewards",{auth:true});
+  if(!ok){list.innerHTML='<p class="finder__msg">Error al cargar.</p>';return;}
+  passTiersEditData=data.tiers||[];
+  renderPassRewardsAdmin();
+}
+
+function rewardTypeOptions(sel){
+  const types=[["SC","SC"],["ITEM","Ítem"],["TEMP_PERMISSION","Permiso temporal"],["TEMP_RANK","Rango temporal"]];
+  return types.map(([v,l])=>`<option value="${v}"${sel===v?" selected":""}>${l}</option>`).join("");
+}
+
+function rewardRowHtml(tier,track,reward){
+  reward=reward||{type:"SC",amount:0};
+  const t=reward.type||"SC";
+  const mat=t==="ITEM"?(reward.material||""):"";
+  return `<div class="passadmin__reward" data-tier="${tier}" data-track="${track}">
+    <label>${track==="normal"?"Gratis":"★ Extra"}</label>
+    <select class="pr-type">${rewardTypeOptions(t)}</select>
+    <input class="pr-amount" type="number" placeholder="Cantidad SC" value="${t==="SC"?(reward.amount??0):""}" style="display:${t==="SC"?"":"none"}" />
+    <img class="pr-preview" src="${mat?mcItemIconUrl(mat):""}" alt="" style="display:${mat?"":"none"}" onerror="this.style.display='none'" />
+    <input class="pr-material" type="text" placeholder="Material" value="${mat}" style="display:${t==="ITEM"?"":"none"}" />
+    <input class="pr-itemamt" type="number" placeholder="Cantidad" value="${t==="ITEM"?(reward.amount??0):""}" style="display:${t==="ITEM"?"":"none"}" />
+    <input class="pr-node" type="text" placeholder="Permiso o grupo" value="${(t==="TEMP_PERMISSION"||t==="TEMP_RANK")?(reward.node||""):""}" style="display:${(t==="TEMP_PERMISSION"||t==="TEMP_RANK")?"":"none"}" />
+    <input class="pr-hours" type="number" placeholder="Horas jugadas" value="${(t==="TEMP_PERMISSION"||t==="TEMP_RANK")?(reward.hours??0):""}" style="display:${(t==="TEMP_PERMISSION"||t==="TEMP_RANK")?"":"none"}" />
+  </div>`;
+}
+
+function renderPassRewardsAdmin(){
+  const list=$("passRewardsList");
+  list.innerHTML=passTiersEditData.map(t=>
+    `<div class="passadmin__row"><div class="passadmin__tier">${t.tier}</div>`
+    +rewardRowHtml(t.tier,"normal",t.normal)
+    +rewardRowHtml(t.tier,"premium",t.premium)
+    +`</div>`
+  ).join("");
+}
+
+$("passRewardsList").addEventListener("change",e=>{
+  const sel=e.target.closest(".pr-type");
+  if(!sel)return;
+  const box=sel.closest(".passadmin__reward");
+  const t=sel.value;
+  box.querySelector(".pr-amount").style.display=t==="SC"?"":"none";
+  box.querySelector(".pr-material").style.display=t==="ITEM"?"":"none";
+  box.querySelector(".pr-itemamt").style.display=t==="ITEM"?"":"none";
+  box.querySelector(".pr-node").style.display=(t==="TEMP_PERMISSION"||t==="TEMP_RANK")?"":"none";
+  box.querySelector(".pr-hours").style.display=(t==="TEMP_PERMISSION"||t==="TEMP_RANK")?"":"none";
+  const prev=box.querySelector(".pr-preview");
+  if(t==="ITEM"&&box.querySelector(".pr-material").value.trim()){
+    prev.src=mcItemIconUrl(box.querySelector(".pr-material").value.trim());prev.style.display="";
+  }else prev.style.display="none";
+});
+/* Previsualizacion en vivo del icono mientras el admin escribe el material. */
+$("passRewardsList").addEventListener("input",e=>{
+  const inp=e.target.closest(".pr-material");
+  if(!inp)return;
+  const prev=inp.closest(".passadmin__reward").querySelector(".pr-preview");
+  const mat=inp.value.trim();
+  if(mat){prev.src=mcItemIconUrl(mat);prev.style.display="";}
+  else prev.style.display="none";
+});
+
+function collectPassRewards(){
+  const rows=$("passRewardsList").querySelectorAll(".passadmin__reward");
+  const byTier={};
+  rows.forEach(box=>{
+    const tier=Number(box.dataset.tier), track=box.dataset.track;
+    const type=box.querySelector(".pr-type").value;
+    let reward;
+    if(type==="SC")reward={type,amount:Number(box.querySelector(".pr-amount").value)||0};
+    else if(type==="ITEM")reward={type,material:(box.querySelector(".pr-material").value||"STONE").toUpperCase(),amount:Number(box.querySelector(".pr-itemamt").value)||1};
+    else reward={type,node:box.querySelector(".pr-node").value||"",hours:Number(box.querySelector(".pr-hours").value)||0};
+    byTier[tier]=byTier[tier]||{tier};
+    byTier[tier][track]=reward;
+  });
+  return Object.values(byTier).sort((a,b)=>a.tier-b.tier);
+}
+
+$("passSaveBtn").addEventListener("click",async()=>{
+  const tiers=collectPassRewards();
+  const {ok,data}=await api("/admin/panel/passrewards",{method:"POST",auth:true,body:{tiers}});
+  if(ok&&data.ok)toast("Recompensas del pase guardadas y recargadas"+(data.reloaded?"":" (el plugin no confirmó la recarga)")+".");
+  else toast("No se pudo guardar ("+(data&&data.error||"error")+").");
+});
+
+adminInit();
+</script>
+<script src="admin-extra.js?v=2"></script>
+</body>
+</html>

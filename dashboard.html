@@ -5,78 +5,225 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mi panel — SillaMC Survival</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="extra.css?v=4" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2645181840666522" crossorigin="anonymous"></script>
 </head>
 <body>
-<header class="nav">
-  <div class="nav__inner">
-    <a href="index.html" class="brand">
-      <img src="logo.png" alt="SillaMC" class="brand__logo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'" />
-      <span class="brand__txt" style="display:none"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span></span>
-    </a>
-    <nav class="nav__links"><a href="index.html" data-i18n="nav.home">← Inicio</a></nav>
-    <div class="nav__actions">
-      <button class="lang-toggle" id="langToggle">🇬🇧 EN</button>
-      <button class="btn btn--ghost" id="logoutBtn" style="display:none" data-i18n="dash.logout">Salir</button>
-    </div>
-  </div>
-</header>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <img src="logo.png" alt="SillaMC" class="sitemenu__logo" />
+  <nav class="sitemenu__links">
+    <a href="index" data-i18n="nav.home">← Inicio</a>
+    <a href="index#features">Características</a>
+    <a href="guias">Guías</a>
+    <a href="tienda">Tienda</a>
+    <a href="finder">Estadísticas</a>
+    <a href="precios">Precios</a>
+  </nav>
+  <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
+  <button class="btn btn--ghost sitemenu__access" id="logoutBtn" style="display:none" data-i18n="dash.logout">Salir</button>
+</div>
 
 <main class="dash">
 
-  <!-- ===== LOGIN / VERIFICAR ===== -->
+  <!-- ===== ACCESO ===== -->
   <section id="loginView" class="section">
-    <h2 class="section__title" data-i18n="link.title">Entra: vincula tu cuenta</h2>
-    <p class="section__sub" data-i18n="link.sub">Te enviamos un código al chat del juego y lo pones aquí. Así sabemos que la cuenta es tuya.</p>
-    <div class="link">
-      <div class="link__step" id="linkStep1">
+    <h2 class="section__title" data-i18n="link.title">Entra a tu panel</h2>
+    <p class="section__sub" data-i18n="link.sub">La primera vez entras con un código que te damos dentro del juego. Después puedes crear una contraseña si quieres.</p>
+
+    <div class="authtabs" id="authTabs">
+      <button class="tab is-active" data-auth="code" data-i18n="auth.tabcode">Con código</button>
+      <button class="tab" data-auth="pass" data-i18n="auth.tabpass">Con contraseña</button>
+    </div>
+
+    <!-- --- entrar con código --- -->
+    <div class="link" id="authCode">
+      <div class="link__step">
         <div class="link__num">1</div>
-        <label data-i18n="link.userlabel">Tu nombre de usuario en el servidor</label>
-        <div class="link__row">
-          <input type="text" id="linkUser" placeholder="Ej: urpi" autocomplete="off" maxlength="16" />
-          <button class="btn btn--primary" id="sendCode" data-i18n="link.send">Enviar código</button>
+        <label data-i18n="auth.getcode">Consigue tu código</label>
+        <div class="authbox">
+          <p class="authbox__main"><span data-i18n="auth.ingame1">Dentro de Minecraft, escribe</span> <code>/cuentaweb</code></p>
+          <p class="authbox__sub" data-i18n="auth.ingame2">Funciona en PC, móvil y consola. Debes haber hecho <code>/login</code> antes.</p>
         </div>
-        <p class="link__hint" data-i18n="link.hint1">Tienes que estar conectado al servidor para recibir el código.</p>
+        <p class="link__hint" data-i18n="link.hint1">Te aparecerá un código de 6 dígitos, solo para ti.</p>
       </div>
-      <div class="link__step link__step--off" id="linkStep2">
+      <div class="link__step">
         <div class="link__num">2</div>
-        <label data-i18n="link.codelabel">Código recibido en el chat del juego</label>
-        <div class="link__row">
-          <input type="text" id="linkCode" placeholder="______" maxlength="6" inputmode="numeric" class="link__code" />
-          <button class="btn btn--primary" id="verifyCode" data-i18n="link.verify">Verificar</button>
+        <label data-i18n="link.codelabel">Escribe el código que te ha llegado</label>
+        <div class="link__row link__row--code">
+          <input type="text" id="linkCode" placeholder="000000" maxlength="6" inputmode="numeric" class="link__code" autocomplete="one-time-code" />
+          <button class="btn btn--primary" id="verifyCode" data-i18n="link.verify">Entrar</button>
         </div>
-        <p class="link__hint" data-i18n="link.hint2">Mira el chat de Minecraft: te llegó un código de 6 dígitos.</p>
+        <p class="link__hint" data-i18n="link.hint2">Caduca a los 5 minutos. No hace falta tu nombre: el código ya sabe quién eres.</p>
       </div>
+    </div>
+
+    <!-- --- entrar con contraseña --- -->
+    <div class="link" id="authPass" style="display:none">
+      <div class="link__step">
+        <div class="link__num">→</div>
+        <label data-i18n="auth.passlabel">Nombre y contraseña</label>
+        <div class="link__row">
+          <input type="text" id="passUser" placeholder="Nombre de usuario" autocomplete="username" maxlength="17" />
+          <input type="password" id="passPw" placeholder="Contraseña" autocomplete="current-password" />
+          <button class="btn btn--primary" id="doLogin" data-i18n="auth.enter">Entrar</button>
+        </div>
+        <p class="link__hint" data-i18n="auth.forgot">¿La olvidaste? Entra con código, o pide a un admin que use <code>/cuentaweb reset TuNombre</code>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== OFRECER CONTRASEÑA (tras entrar con código) ===== -->
+  <section id="pwOfferView" class="section" style="display:none">
+    <div class="pwoffer">
+      <img class="mc-icon--lg" src="mc-icons/trial_key.png" alt="" />
+      <h2 data-i18n="pw.title">¿Quieres crear una contraseña? (opcional)</h2>
+      <p data-i18n="pw.sub">No hace falta — siempre podrás entrar con el código del juego. Créala solo si quieres entrar más rápido la próxima vez.</p>
+      <div class="pwoffer__form">
+        <input type="password" id="newPw" placeholder="Contraseña nueva (mínimo 8 caracteres)" autocomplete="new-password" />
+        <input type="email" id="newPwEmail" placeholder="Tu correo (opcional)" autocomplete="email" />
+        <div class="pwoffer__btns">
+          <button class="btn btn--primary" id="savePw" data-i18n="pw.save">Guardar</button>
+          <button class="btn btn--ghost" id="skipPw" data-i18n="pw.skip">Ahora no</button>
+        </div>
+      </div>
+      <p class="link__hint" data-i18n="pw.hint">No uses la misma contraseña que en el juego. El correo es por si necesitas recuperar la cuenta más adelante.</p>
     </div>
   </section>
 
   <!-- ===== DASHBOARD (tras login) ===== -->
   <section id="dashView" class="section" style="display:none">
+    <div class="evento-banner" id="eventoBanner" style="display:none"></div>
     <div class="dash__head">
-      <div>
-        <p class="dash__hi" data-i18n="dash.hi">Hola,</p>
-        <h2 class="dash__user" id="dashUser">jugador</h2>
+      <div class="dash__id">
+        <img id="dashAvatar" class="dash__avatar" alt="" width="64" height="64" />
+        <div>
+          <p class="dash__hi" data-i18n="dash.hi">Hola,</p>
+          <h2 class="dash__user" id="dashUser">jugador</h2>
+          <div class="rankbadge rankbadge--inline" id="rankBadge">Taburete</div>
+        </div>
       </div>
       <div class="dash__coins">
-        <span class="coin__mini">🪙</span>
-        <div><div class="dash__cval" id="coinBalance">0</div><div class="dash__clab">SillaCoins · SC</div></div>
+        <span class="coin__mini"><img class="coin__mini-img" src="sillacoin.png" alt="SC" /></span>
+        <div>
+          <div class="dash__cval" id="coinBalance">—</div>
+          <div class="dash__clab">SillaCoins · SC</div>
+          <div class="dash__locked" id="lockedNote" style="display:none"></div>
+          <div class="dash__rankpos" id="rankPos" style="display:none"></div>
+        </div>
       </div>
     </div>
 
+    <div id="avisosSection">
+      <div class="avisos__head"><h3 class="dash__section">🔔 Avisos <span class="avisos-count" id="avisosBadge" style="display:none">0</span></h3><button class="btn btn--ghost" id="avisosReadAll">Marcar todo como leído</button></div>
+      <div id="avisosList" class="avisos__list"><p class="finder__msg">Cargando…</p></div>
+    </div>
+
     <div class="dash__grid">
+      <div class="dash__card dash__card--daily">
+        <h3 id="dailyTitle">Recompensa diaria</h3>
+        <p id="dailyDesc">Entra cada día y llévate SillaCoins. Cuantos más días seguidos, más SC.</p>
+        <button class="btn btn--primary btn--lg" id="dailyBtn" disabled>—</button>
+        <p class="dash__adnote" id="dailyNote"></p>
+      </div>
       <div class="dash__card dash__card--ad">
         <h3 data-i18n="dash.earn">Gana SillaCoins</h3>
-        <p data-i18n="dash.earndesc">Mira un anuncio corto y recibe SC al instante. 100% opcional.</p>
-        <button class="btn btn--primary btn--lg" id="watchAd" data-i18n="rewards.cta">▶ Ver un anuncio</button>
-      </div>
-      <div class="dash__card">
-        <h3 data-i18n="dash.rank">Tu rango</h3>
-        <div class="rankbadge" id="rankBadge">🪑 Taburete</div>
-        <p data-i18n="dash.rankdesc">Sube de rango en la tienda: Taburete → Sillón → Trono.</p>
+        <p data-i18n="dash.earndesc">Muy pronto podrás ver un anuncio corto y recibir SC al instante.</p>
+        <button class="btn btn--primary btn--lg" id="watchAd" disabled data-i18n="rewards.soon">Próximamente</button>
+        <p class="dash__adnote" id="adNote"></p>
       </div>
     </div>
+
+    <div class="crate-modal" id="crateModal" style="display:none">
+      <div class="crate-modal__box">
+        <h3 class="crate-modal__title">Abriendo tu caja…</h3>
+        <div class="crate-reel__viewport">
+          <div class="crate-reel__pointer"></div>
+          <div class="crate-reel__track" id="crateReelTrack"></div>
+        </div>
+        <p class="crate-modal__result" id="crateResult" style="display:none"></p>
+        <button class="btn btn--primary" id="crateModalClose" style="display:none">Cerrar</button>
+      </div>
+    </div>
+
+    <div class="passcard" id="passCard" style="display:none">
+      <div class="passcard__head">
+        <span class="passcard__title"><img class="mc-icon" src="mc-icons/nether_star.png" alt="" onerror="this.outerHTML='🎫'" /> Pase de temporada — Nivel <span id="passTier">0</span>/<span id="passMaxTier">50</span></span>
+        <span class="passcard__premium" id="passTypeTag">Sin pase</span>
+      </div>
+      <div class="passbar"><div class="passbar__fill" id="passBarFill" style="width:0%"></div></div>
+      <p class="passcard__xp" id="passXpText">0 / 150 XP de temporada</p>
+      <p class="passcard__account">Nivel de cuenta: <b id="passAccountLevel">1</b> · <span id="passAccountXp">0/100 XP</span></p>
+
+      <div class="passtabs" id="passTabs">
+        <button class="passtabs__btn is-active" data-passtab="pase"><img class="mc-icon" src="mc-icons/nether_star.png" alt="" onerror="this.outerHTML='🎫'" /> Recompensas</button>
+        <button class="passtabs__btn" data-passtab="misiones"><img class="mc-icon" src="mc-icons/writable_book.png" alt="" onerror="this.outerHTML='📋'" /> Misiones</button>
+      </div>
+
+      <div class="passtab-panel is-active" data-passpanel="pase">
+        <div class="pass-track-wrap">
+          <p class="pass-track__legend"><b>■</b> Extra (arriba) &nbsp;·&nbsp; <b>■</b> Gratis (abajo)</p>
+          <div class="pass-track" id="passTrack"></div>
+        </div>
+        <p class="passcard__hint">Compra el pase Extra o salta de nivel en la sección de Tienda de recompensas, más abajo.</p>
+      </div>
+
+      <div class="passtab-panel" data-passpanel="misiones">
+        <div class="missions" id="onboardingWrap">
+          <h4 class="pass-track__title">Misiones iniciales</h4>
+          <div class="missions__list" id="onboardingList"></div>
+        </div>
+        <div class="missions" id="missionsWrap">
+          <h4 class="pass-track__title">Misiones de hoy</h4>
+          <div class="missions__list" id="missionsDaily"></div>
+          <h4 class="pass-track__title" style="margin-top:1rem">Misiones de esta semana</h4>
+          <div class="missions__list" id="missionsWeekly"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cratesec" id="crateSection" style="display:none">
+      <h3 class="dash__section">🎁 Cajas SillaMC</h3>
+      <p class="section__sub" id="crateDesc">Juega 2 horas activo (sin estar afk) y llévate una caja gratis al día.</p>
+      <div class="crate__bar"><div class="crate__barfill" id="crateBarFill" style="width:0%"></div></div>
+      <button class="btn btn--primary btn--lg" id="crateBtn" disabled>—</button>
+      <p class="dash__adnote" id="crateNote"></p>
+
+      <div class="cratesec__redeem">
+        <input type="text" id="crateCodeInput" placeholder="¿Tienes un código?" maxlength="24" autocomplete="off" />
+        <button class="btn btn--ghost" id="crateCodeBtn">Canjear código</button>
+      </div>
+
+      <div id="crateHistory" class="cratesec__history"></div>
+    </div>
+
+    <h3 class="dash__section">Mis protecciones</h3>
+    <p class="section__sub">Tus terrenos protegidos. Puedes dar permiso a tus amigos, cambiar los ajustes y compartir las coordenadas.</p>
+    <div id="protectionsList"><p class="finder__msg">Cargando…</p></div>
+
+    <h3 class="dash__section">Mis casas</h3>
+    <p class="section__sub">Tus puntos guardados con <code>/sethome</code>. Copia las coordenadas para mandárselas a quien quieras.</p>
+    <div id="homesList"><p class="finder__msg">Cargando…</p></div>
+
+    <h3 class="dash__section">📍 Dónde apareces al entrar</h3>
+    <p class="section__sub">Cada vez que entras al juego puedes aparecer donde te desconectaste, en el spawn o en una de tus casas.</p>
+    <div class="aparecer">
+      <select id="aparecerSelect"><option value="">Cargando…</option></select>
+      <button class="btn btn--primary" id="aparecerGuardar">Guardar</button>
+      <span class="aparecer__msg" id="aparecerMsg"></span>
+    </div>
+
+    <div class="avisos__head"><h3 class="dash__section">🏷️ Casa de subastas</h3><button class="btn btn--ghost" id="subastasRefresh">Actualizar</button></div>
+    <p class="section__sub">Lo que venden ahora mismo otros jugadores. Para comprar tienes que estar conectado al juego: el objeto va directo a tu inventario.</p>
+    <div id="subastasList"><p class="finder__msg">Cargando…</p></div>
+
+    <div class="avisos__head"><h3 class="dash__section">📒 Historial de SillaCoins</h3><button class="btn btn--ghost" id="historialRefresh">Actualizar</button></div>
+    <p class="section__sub">Lo que ganas y gastas: tienda, trabajos, pagos, web… ¿Cuánto vale cada cosa? Mira los <a href="precios">precios de la tienda</a>.</p>
+    <div id="historialList"><p class="finder__msg">Cargando…</p></div>
 
     <div class="adslot"><span class="adslot__label" data-i18n="ad.label">Publicidad</span><div class="adslot__box" id="adTop"></div></div>
 
@@ -91,6 +238,8 @@
 </main>
 
 <div class="toast" id="toast"></div>
+<script src="mc-icons-index.js"></script>
 <script src="script.js"></script>
+<script src="panel-extra.js?v=5"></script>
 </body>
 </html>

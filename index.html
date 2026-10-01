@@ -6,28 +6,36 @@
 <title>SillaMC Survival — Vanilla++ en español</title>
 <meta name="description" content="SillaMC Survival — Servidor de Minecraft Survival vanilla++. Java + Bedrock. Economía dinámica, claims, trabajos y traductor de chat. ¡Únete!" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2645181840666522" crossorigin="anonymous"></script>
 </head>
 <body>
-<header class="nav">
-  <div class="nav__inner">
-    <a href="#top" class="brand">
-      <img src="logo.png" alt="SillaMC Survival" class="brand__logo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'" />
-      <span class="brand__txt" style="display:none"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span></span>
-    </a>
-    <nav class="nav__links">
-      <a href="#features" data-i18n="nav.features">Características</a>
-      <a href="#start" data-i18n="nav.start">Cómo entrar</a>
-      <a href="#" data-i18n="nav.discord">Discord</a>
-    </nav>
-    <div class="nav__actions">
-      <button class="lang-toggle" id="langToggle">🇬🇧 EN</button>
-      <a class="btn btn--login" href="dashboard.html"><span data-i18n="nav.login">Entrar</span> <span aria-hidden="true">→</span></a>
-    </div>
-  </div>
-</header>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <img src="logo.png" alt="SillaMC" class="sitemenu__logo" />
+  <nav class="sitemenu__links">
+    <a href="#top" class="is-active">Inicio</a>
+    <a href="#features" data-i18n="nav.features">Características</a>
+    <a href="guias">Guías</a>
+    <a href="tienda">Tienda</a>
+    <a href="finder" data-i18n="nav.finder">Estadísticas</a>
+    <a href="precios">Precios</a>
+  </nav>
+  <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
+  <a class="btn btn--access sitemenu__access" id="accessBtn" href="dashboard" title="Panel de jugador">
+    <svg class="btn__head" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <rect x="2" y="2" width="12" height="12" rx="1" fill="#8b5a2b"/>
+      <rect x="2" y="2" width="12" height="5" fill="#4a3018"/>
+      <rect x="4" y="7" width="2.5" height="2.5" fill="#fff"/>
+      <rect x="9.5" y="7" width="2.5" height="2.5" fill="#fff"/>
+    </svg>
+    <img class="btn__avatar" alt="" width="18" height="18" style="display:none" />
+    <span class="btn__label">Acceder</span>
+  </a>
+</div>
 
 <main id="top">
   <section class="hero">
@@ -39,15 +47,25 @@
       <p class="hero__tagline" data-i18n="hero.tagline">Economía viva, claims de terreno, trabajos y traductor de chat en tiempo real. Únete a la comunidad.</p>
       <div id="play" class="serverip">
         <div class="serverip__label" data-i18n="hero.iplabel">IP del servidor</div>
-        <div class="serverip__row"><code id="ip">play.sillamc.com</code>
+        <div class="serverip__row"><code id="ip">sillamc.ddns.net</code>
           <button class="btn btn--copy" id="copyIp" data-i18n="hero.copy">Copiar</button></div>
-        <div class="serverip__status"><span class="dot dot--on"></span> <span data-i18n="hero.online">En línea</span> · <span id="playerCount">0</span> <span data-i18n="hero.players">jugadores</span></div>
+        <div class="serverip__meta">
+          <span class="serverip__version"><b>Versión</b> 1.7 – 1.21.10</span>
+          <span class="serverip__bedrock"><b data-i18n="hero.bedrock">Bedrock</b> <code>19132</code></span>
+        </div>
+        <div class="serverip__status">
+          <span class="dot dot--wait" id="statusDot"></span>
+          <span id="statusText" data-i18n="hero.checking">Consultando…</span>
+        </div>
       </div>
       <div class="hero__cta">
-        <a href="dashboard.html" class="btn btn--primary btn--lg" data-i18n="hero.enter">Entrar a mi panel</a>
-        <a href="#features" class="btn btn--ghost btn--lg" data-i18n="hero.more">Ver más</a>
+        <a href="dashboard" class="btn btn--primary btn--lg">Mi panel</a>
+        <a href="guias" class="btn btn--ghost btn--lg">Guías</a>
+        <a href="finder" class="btn btn--ghost btn--lg">Estadísticas</a>
+        <a href="tienda" class="btn btn--ghost btn--lg">Tienda</a>
       </div>
     </div>
+    <div class="hero__scroll" aria-hidden="true">⌄</div>
   </section>
 
   <section id="features" class="section">
@@ -58,15 +76,15 @@
   <section class="section section--band">
     <div class="band">
       <div class="band__col"><div class="band__n" data-i18n="band.n1">Cross-play</div><p data-i18n="band.t1">Java y Bedrock juntos: PC, consola y móvil.</p></div>
-      <div class="band__col"><div class="band__n" data-i18n="band.n2">Español + EN</div><p data-i18n="band.t2">Traductor de chat con IA local. Elige idioma.</p></div>
+      <div class="band__col"><div class="band__n" data-i18n="band.n2">Todo en español</div><p data-i18n="band.t2">Traductor de chat con IA local. Servidor 100% en castellano.</p></div>
       <div class="band__col"><div class="band__n" data-i18n="band.n3">Economía justa</div><p data-i18n="band.t3">Precios dinámicos, trabajos y SillaCoins.</p></div>
     </div>
   </section>
 
-  <section id="start" class="section section--info">
-    <h2 class="section__title" data-i18n="info.title">Cómo entrar en 4 pasos</h2>
-    <div class="grid grid--info" id="infoGrid"></div>
-    <div class="start__cta"><a href="dashboard.html" class="btn btn--primary btn--lg" data-i18n="start.cta">Entrar a mi panel de jugador</a></div>
+  <section id="top-players" class="section">
+    <h2 class="section__title" data-i18n="top.title">Top jugadores</h2>
+    <p class="section__sub" data-i18n="top.sub">Los que más SillaCoins han amasado. ¿Te cuelas tú?</p>
+    <ol class="lb" id="leaderboard"><li class="lb__msg" data-i18n="top.loading">Cargando…</li></ol>
   </section>
 
   <div class="adslot"><span class="adslot__label" data-i18n="ad.label">Publicidad</span><div class="adslot__box" id="adMid"></div></div>
@@ -74,12 +92,13 @@
 
 <footer class="footer">
   <div class="footer__brand"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span> <span class="footer__surv">Survival</span></div>
-  <p class="footer__ip"><span data-i18n="footer.join">Únete</span>: <code>play.sillamc.com</code> · Java + Bedrock</p>
-  <div class="footer__links"><a href="#">Discord</a><a href="dashboard.html" data-i18n="nav.login">Entrar</a></div>
+  <p class="footer__ip"><span data-i18n="footer.join">Únete</span>: <code>sillamc.ddns.net</code> · Java + Bedrock</p>
+  <div class="footer__links"><a href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener">Discord</a><a href="dashboard" data-i18n="nav.login">Acceder</a></div>
   <p class="footer__legal" data-i18n="footer.legal">No afiliado a Mojang ni Microsoft. SillaMC es un servidor comunitario.</p>
 </footer>
 
 <div class="toast" id="toast"></div>
+<script src="mc-icons-index.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

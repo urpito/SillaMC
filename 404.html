@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>404 — Página no encontrada · SillaMC Survival</title>
+<meta name="robots" content="noindex" />
+<meta name="description" content="Esta página no existe en SillaMC Survival." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  .e404{text-align:center}
+  .e404__code{font-family:'Archivo Black',sans-serif;font-size:clamp(2.6rem,11vw,5.5rem);line-height:1;margin:.5rem 0 1.2rem;letter-spacing:2px}
+  .e404__links{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin:1.8rem 0 .5rem}
+  .e404__ip{margin-top:2rem;opacity:.75;font-size:.95rem}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="brand">
+      <img src="logo.png" alt="SillaMC" class="brand__logo" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-flex'" />
+      <span class="brand__txt" style="display:none"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span></span>
+    </a>
+    <nav class="nav__links">
+      <a href="index.html">← Inicio</a>
+      <a href="guias.html">Guías</a>
+      <a href="finder.html">Finder</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--access" href="dashboard.html" title="Panel de jugador">
+        <span class="btn__label">Acceder</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="section e404">
+  <p class="e404__code">404</p>
+  <h1 class="section__title">Esta página no existe</h1>
+  <p class="section__sub">El enlace está roto o la página se movió de sitio. No te preocupes, desde aquí vuelves a lo importante.</p>
+
+  <div class="e404__links">
+    <a class="btn btn--access" href="index.html">Volver al inicio</a>
+    <a class="btn" href="guias.html">Guías del servidor</a>
+    <a class="btn" href="dashboard.html">Mi panel</a>
+    <a class="btn" href="finder.html">Finder</a>
+  </div>
+
+  <p class="e404__ip">SillaMC Survival · Java + Bedrock · Español</p>
+</main>
+</body>
+</html>

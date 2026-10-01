@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tienda — SillaMC Survival</title>
+  <meta name="description" content="Apoya SillaMC y consigue rangos de comodidad (EULA-safe, sin pay-to-win) desde nuestra propia web, sin salir a otra página." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1rem 0}
+    .shop-card{border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.2rem;background:rgba(255,255,255,.03);position:relative}
+    .shop-card--sillon{border-color:rgba(212,83,126,.5)}
+    .shop-card--trono{border-color:rgba(232,178,58,.55)}
+    .shop-card__name{font-weight:800;font-size:1.25rem;margin:0 0 .2rem}
+    .shop-card__price{opacity:.8;font-size:.95rem;margin:0 0 .8rem}
+    .shop-card ul{margin:0;padding-left:1.1rem;line-height:1.7}
+    .shop-card__soon{position:absolute;top:.8rem;right:.8rem;font-size:.72rem;font-weight:700;
+      background:rgba(240,180,60,.18);border:1px solid rgba(240,180,60,.5);border-radius:999px;padding:.15rem .55rem}
+    #tebex-store{min-height:160px;margin:1rem 0}
+    #tebex-store .cargando{display:flex;align-items:center;justify-content:center;text-align:center;
+      min-height:160px;border:2px dashed rgba(255,255,255,.18);border-radius:16px;padding:2rem;opacity:.85}
+    /* Tarjeta de un paquete real de Tebex, con el mismo aire que el resto de la web */
+    .tbx-card{border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:1.2rem;
+      background:rgba(255,255,255,.03);display:flex;flex-direction:column;position:relative}
+    .tbx-card__name{font-weight:800;font-size:1.25rem;margin:0 0 .15rem}
+    .tbx-card__sub{opacity:.7;font-size:.82rem;margin:0 0 .7rem}
+    .tbx-card__desc{margin:0 0 1rem;line-height:1.6;font-size:.92rem}
+    .tbx-card__desc ul{margin:0;padding-left:1.1rem}
+    .tbx-card__foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap}
+    .tbx-card__price{font-size:1.35rem;font-weight:800}
+    .tbx-card__tax{display:block;font-size:.72rem;opacity:.65;font-weight:400}
+    /* Ventanita para pedir el nombre antes de ir a pagar */
+    .tbxbuy{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;padding:1.2rem}
+    .tbxbuy.is-open{display:flex}
+    .tbxbuy__bg{position:absolute;inset:0;background:rgba(0,0,0,.72)}
+    .tbxbuy__card{position:relative;z-index:1;width:100%;max-width:420px;background:var(--card);
+      border:1px solid var(--line);border-radius:16px;padding:1.4rem}
+    .tbxbuy__card h3{margin:0 0 .4rem}
+    .tbxbuy__card p{opacity:.75;font-size:.88rem;margin:0 0 .9rem}
+    /* El "." de Bedrock va FUERA del input, asi no se puede borrar por error */
+    .tbxbuy__field{display:flex;align-items:center;background:var(--card2);border:1px solid var(--line);
+      border-radius:10px;padding:0 .9rem;margin-bottom:.7rem}
+    .tbxbuy__prefix{font-size:1.05rem;font-weight:800;color:var(--gold);padding-right:.15rem;user-select:none}
+    .tbxbuy__card input[type="text"]{flex:1;width:100%;background:none;border:none;color:inherit;
+      border-radius:10px;padding:.7rem 0;font-size:1rem;outline:none}
+    .tbxbuy__toggle{display:flex;align-items:center;gap:.55rem;font-size:.9rem;cursor:pointer;margin-bottom:.5rem}
+    .tbxbuy__toggle input{width:20px;height:20px;accent-color:var(--gold);flex:none}
+    .tbxbuy__hint{font-size:.8rem;opacity:.7;margin:0 0 .6rem;line-height:1.5}
+    .tbxbuy__row{display:flex;gap:.6rem;justify-content:flex-end}
+    .tbxbuy__err{color:var(--red);font-size:.85rem;min-height:1.2em;margin:.2rem 0 .6rem}
+    .draft-note{max-width:960px;margin:1rem auto 0;padding:.7rem 1rem;border-radius:12px;
+      background:rgba(240,180,60,.12);border:1px solid rgba(240,180,60,.4);font-size:.9rem}
+    .eula{max-width:960px;margin:.6rem auto 0;font-size:.85rem;opacity:.7;text-align:center}
+    /* ---- tabla comparativa de rangos ---- */
+    .cmpwrap{overflow-x:auto;margin:1rem 0}
+    .cmp{width:100%;border-collapse:separate;border-spacing:0;min-width:640px}
+    .cmp th,.cmp td{padding:.65rem .8rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.1)}
+    .cmp thead th{font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;opacity:.75;font-weight:700}
+    .cmp td:first-child,.cmp th:first-child{text-align:left;font-weight:600}
+    .cmp td:first-child small{display:block;font-weight:400;opacity:.65;font-size:.75rem;
+      line-height:1.4;margin-top:.15rem;white-space:normal}
+    .cmp td:first-child code{font-size:.82em;background:rgba(255,255,255,.08);border-radius:4px;padding:.05rem .3rem}
+    .cmp col.c-taburete{background:rgba(163,177,138,.06)}
+    .cmp col.c-sillon{background:rgba(231,194,168,.08)}
+    .cmp col.c-trono{background:rgba(179,205,239,.10)}
+    .cmp thead th.h-taburete{color:#A3B18A}
+    .cmp thead th.h-sillon{color:#E7C2A8}
+    .cmp thead th.h-trono{color:#B3CDEF}
+    .cmp .yes{color:#7ec241;font-weight:800}
+    .cmp .no{opacity:.35}
+    /* ---- insignia "mejor opcion" en la tarjeta de compra ---- */
+    .tbx-card{position:relative}
+    .tbx-card--best{border-color:#B3CDEF}
+    .tbx-card__ribbon{position:absolute;top:-.7rem;left:1rem;font-size:.68rem;font-weight:800;
+      letter-spacing:.04em;background:#B3CDEF;color:#1a2233;border-radius:999px;padding:.2rem .7rem;
+      box-shadow:0 2px 6px rgba(0,0,0,.35)}
+  </style>
+</head>
+<body>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <img src="logo.png" alt="SillaMC" class="sitemenu__logo" />
+  <nav class="sitemenu__links">
+    <a href="index">Inicio</a>
+    <a href="index#features">Características</a>
+    <a href="guias">Guías</a>
+    <a href="tienda" class="is-active">Tienda</a>
+    <a href="finder">Estadísticas</a>
+  </nav>
+  <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
+  <a class="btn btn--primary btn--lg sitemenu__access" href="dashboard">Acceder a mi panel</a>
+</div>
+
+<main>
+  <section class="guidehero">
+    <img class="guidehero__logo" src="logo.png" alt="SillaMC Survival" />
+    <h1>Tienda de SillaMC</h1>
+    <p>Apoya el servidor y consigue ventajas de <b>comodidad</b>. Todo es EULA-safe: nada de pay-to-win, no rompe el PvP ni la economía. La compra se hará <b>aquí mismo</b>, sin salir a otra web.</p>
+  </section>
+
+  <div class="guidepage">
+    <article class="guide">
+      <div class="guide__head"><div class="guide__icon">💳</div><div><h2>Comprar</h2><p class="guide__lead">Pago seguro con Tebex. Eliges aquí y solo sales para pagar.</p></div></div>
+      <div id="tebex-store"><div class="cargando">Cargando la tienda…</div></div>
+      <p class="eula">SillaMC solo vende artículos de comodidad permitidos por el EULA de Minecraft. No se venden ventajas que afecten al PvP ni a la economía.</p>
+    </article>
+
+    <article class="guide">
+      <div class="guide__head"><div class="guide__icon">📊</div><div><h2>Compara los rangos</h2><p class="guide__lead">Todo es de comodidad — nada que rompa el PvP ni la economía.</p></div></div>
+      <div class="cmpwrap">
+        <table class="cmp">
+          <colgroup><col /><col class="c-taburete" /><col class="c-sillon" /><col class="c-trono" /></colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th class="h-taburete">Taburete<br /><small>gratis</small></th>
+              <th class="h-sillon">Sillón<br /><small>6,99 €/mes</small></th>
+              <th class="h-trono">Trono<br /><small>8,99 €/mes</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Protecciones activas <small>cuántas zonas de 20×20 puedes tener protegidas a la vez con ProtectionStones</small></td><td>1</td><td>3</td><td>5</td></tr>
+            <tr><td>Homes <small>puntos guardados con <code>/sethome</code> a los que volver con <code>/home</code></small></td><td>3</td><td>6</td><td>10</td></tr>
+            <tr><td>Espera antes de teletransportarte <small>al usar <code>/rtp</code> (un sitio aleatorio), cuánto tarda en llevarte</small></td><td>5 s</td><td>3 s</td><td>1 s</td></tr>
+            <tr><td>Elegir bioma al azar <small><code>/rtp &lt;bioma&gt;</code>, ej. <code>/rtp desert</code> — sin esto te lleva a cualquiera</small></td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Espera entre <code>/home</code> y <code>/tp</code> <small>cuánto tienes que esperar para volver a teletransportarte</small></td><td>60 s</td><td>30 s</td><td>15 s</td></tr>
+            <tr><td>Precio de venta en la tienda del server <small>tus objetos se pagan más caro al venderlos</small></td><td>normal</td><td>+10 %</td><td>+20 %</td></tr>
+            <tr><td>Scythe <small>al cosechar con la mano, el cultivo se vuelve a plantar solo — necesitas semillas igualmente</small></td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Mesa de crafteo portátil <small><code>/workbench</code> (o <code>/craft</code>) — te la abre estés donde estés, no hace falta llevar una</small></td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Sombrero al vuelo <small><code>/hat</code> — te pones en la cabeza el bloque que llevas en la mano</small></td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Apodo <small><code>/nick &lt;nombre&gt;</code> — cambia tu nombre visible; <code>/nick off</code> lo quita</small></td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+            <tr><td>Enderchest portátil <small><code>/enderchest</code> (o <code>/ec</code>) — accede a tu baúl del End sin llevarlo encima</small></td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Estaciones de trabajo portátiles <small>yunque (<code>/anvil</code>), amoladora (<code>/grindstone</code>), telar (<code>/loom</code>), mesa de cartografía (<code>/cartographytable</code>), mesa de herrería (<code>/smithingtable</code>) y cortapiedras (<code>/stonecutter</code>) — todas sin tener que buscarlas ni construirlas</small></td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Papelera portátil <small><code>/disposal</code> (o <code>/trash</code>) — para tirar basura del inventario sin ir a por un cubo de lava</small></td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+            <tr><td>Condensar objetos <small><code>/condense</code> — convierte un montón de objetos sueltos en bloques compactos, para ocupar menos inventario</small></td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tip"><b>Importante:</b> estas estaciones (yunque, mesa de crafteo, etc.) son las mismas que ya existen gratis en el juego — cualquiera puede construir y usar una real en el mundo. Lo que da el rango es la versión <b>portátil</b>: la abres al momento con un comando, sin tener que ir a buscarla o construirla.</p>
+      <p class="tip">Trono incluye siempre todo lo de Sillón, más las filas que solo tiene Trono.</p>
+    </article>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer__brand"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span> <span class="footer__surv">Survival</span></div>
+  <div class="footer__links"><a href="index">Inicio</a><a href="dashboard">Mi panel</a></div>
+</footer>
+<!-- Pide el nombre de Minecraft antes de ir a pagar: Tebex necesita saber a quien
+     darle el rango, y el servidor es offline asi que no hay login de Mojang. -->
+<div class="tbxbuy" id="tbxBuy" role="dialog" aria-modal="true" aria-labelledby="tbxBuyTitle">
+  <div class="tbxbuy__bg" id="tbxBuyBg"></div>
+  <div class="tbxbuy__card">
+    <h3 id="tbxBuyTitle">¿Para qué cuenta es?</h3>
+    <p id="tbxBuyPkg"></p>
+    <label class="tbxbuy__field">
+      <span class="tbxbuy__prefix" id="tbxBuyPrefix" hidden>.</span>
+      <input type="text" id="tbxBuyName" placeholder="Tu nombre de Minecraft" maxlength="16"
+             autocomplete="off" spellcheck="false" />
+    </label>
+    <label class="tbxbuy__toggle">
+      <input type="checkbox" id="tbxBuyBedrock" />
+      <span>Soy jugador de <b>Bedrock</b> (móvil, consola, Windows)</span>
+    </label>
+    <p class="tbxbuy__hint" id="tbxBuyHint" hidden>En Bedrock tu nombre lleva un <b>.</b> delante dentro del
+      servidor, y los espacios se convierten en <b>_</b>. Lo hacemos por ti.</p>
+
+    <label class="tbxbuy__toggle">
+      <input type="checkbox" id="tbxBuyGift" />
+      <span>Es un <b>regalo</b> para otra persona</span>
+    </label>
+
+    <!-- Regalo: a quien se le da -->
+    <div id="tbxBuyGiftBox" hidden>
+      <p class="tbxbuy__hint">Pagas tú, pero el rango se le da a esta cuenta.</p>
+      <label class="tbxbuy__field">
+        <span class="tbxbuy__prefix" id="tbxBuyGiftPrefix" hidden>.</span>
+        <input type="text" id="tbxBuyGiftName" placeholder="Nombre de quien lo recibe" maxlength="16"
+               autocomplete="off" spellcheck="false" />
+      </label>
+      <label class="tbxbuy__toggle">
+        <input type="checkbox" id="tbxBuyGiftBedrock" />
+        <span>Juega en <b>Bedrock</b></span>
+      </label>
+    </div>
+
+    <!-- Discord: solo tiene sentido si te lo compras para ti -->
+    <div id="tbxBuyDiscordBox">
+      <label class="tbxbuy__toggle">
+        <input type="checkbox" id="tbxBuyWantDiscord" />
+        <span>Quiero también el <b>rol en Discord</b></span>
+      </label>
+      <div id="tbxBuyDiscordFields" hidden>
+        <label class="tbxbuy__field">
+          <input type="text" id="tbxBuyDiscordId" placeholder="Tu ID de Discord (solo números)"
+                 maxlength="20" inputmode="numeric" autocomplete="off" />
+        </label>
+        <p class="tbxbuy__hint">
+          En Discord: <b>Ajustes → Avanzado → Modo desarrollador</b>, luego clic derecho en tu nombre →
+          <b>Copiar ID</b>. Así sabemos quién eres para darte soporte.
+        </p>
+      </div>
+    </div>
+    <div class="tbxbuy__err" id="tbxBuyErr"></div>
+    <div class="tbxbuy__row">
+      <button class="btn btn--ghost" id="tbxBuyCancel">Cancelar</button>
+      <button class="btn btn--primary" id="tbxBuyGo">Ir a pagar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="mc-icons-index.js"></script>
+<script src="script.js"></script>
+<script>
+/* ---- Tienda de Tebex (API headless): pintamos los paquetes con NUESTRO diseño
+   en vez de incrustar su tienda, para que no parezca que te vas a otra web.
+   El token es publico a proposito: va pensado para usarse desde el navegador. ---- */
+const TEBEX_TOKEN="145ei-d647515ee786572d9f5fcfc5083f08983e473f32";
+const TEBEX_API="https://headless.tebex.io/api";
+
+function tbxPeriodo(p){
+  if(!p||!p.count)return "";
+  const u={day:"día",week:"semana",month:"mes",year:"año"}[p.unit]||p.unit;
+  return p.count===1?("cada "+u):("cada "+p.count+" "+u+"s");
+}
+async function cargarTiendaTebex(){
+  const box=document.getElementById("tebex-store");
+  if(!box)return;
+  try{
+    const r=await fetch(`${TEBEX_API}/accounts/${TEBEX_TOKEN}/categories?includePackages=1`,{cache:"no-store"});
+    if(!r.ok)throw new Error("HTTP "+r.status);
+    const {data}=await r.json();
+    const packs=(data||[]).flatMap(c=>(c.packages||[]).map(p=>({...p,_cat:c.name})));
+    if(!packs.length){
+      box.innerHTML='<div class="cargando">Todavía no hay nada a la venta. ¡Vuelve pronto!</div>';
+      return;
+    }
+    // Solo se repinta si algo cambio en Tebex: asi el refresco automatico no
+    // parpadea ni corta al que este leyendo.
+    const huella=JSON.stringify(packs.map(p=>[p.id,p.name,p.description,p.base_price,p.expiry_period]));
+    if(huella===cargarTiendaTebex._huella)return;
+    cargarTiendaTebex._huella=huella;
+    box.innerHTML='<div class="shop-grid">'+packs.map(p=>{
+      const per=tbxPeriodo(p.expiry_period);
+      // El total lo calcula Tebex segun el pais de quien mira, asi que se muestra
+      // tal cual viene y se aclara que lleva impuestos incluidos.
+      // Se muestra el precio SIN impuestos: el IVA depende del pais del comprador
+      // y Tebex se lo suma al pagar, asi que lo asume el cliente.
+      const base=Number(p.base_price).toFixed(2).replace(".",",");
+      // Insignia "Mejor opción" en el paquete de Trono: se detecta por el nombre
+      // que tú le pones en Tebex, asi no hay que tocar el codigo si lo renombras
+      // un poco (solo si cambia del todo, ej. deja de decir "Trono").
+      const esMejorOpcion=/trono/i.test(p.name);
+      return `<div class="tbx-card${esMejorOpcion?" tbx-card--best":""}">
+        ${esMejorOpcion?'<span class="tbx-card__ribbon">★ Mejor opción</span>':""}
+        <p class="tbx-card__name">${escapeHtml(p.name)}</p>
+        <p class="tbx-card__sub">${escapeHtml(p._cat||"")}${per?" · "+per:""}</p>
+        <div class="tbx-card__desc">${p.description||""}</div>
+        <div class="tbx-card__foot">
+          <span class="tbx-card__price">${base} €
+            <small class="tbx-card__tax">+ IVA según tu país</small>
+          </span>
+          <button class="btn btn--primary" data-tbx="${p.id}" data-nombre="${escapeHtml(p.name)}">Comprar</button>
+        </div>
+      </div>`;
+    }).join("")+'</div>';
+  }catch(e){
+    box.innerHTML='<div class="cargando">No se pudo cargar la tienda ahora mismo. Inténtalo en un rato.</div>';
+  }
+}
+
+/* ---- comprar: pedimos el nombre, creamos la cesta y mandamos a pagar ---- */
+let tbxPaqueteId=null;
+const tbxModal=document.getElementById("tbxBuy");
+
+/* En Bedrock el nombre lleva un "." delante dentro del servidor (lo pone
+   Floodgate) y los espacios se guardan como "_". Se hace por el jugador para que
+   no tenga que saberlo ni escribirlo. */
+function tbxEsBedrock(){ return document.getElementById("tbxBuyBedrock").checked; }
+function tbxPintarBedrock(){
+  const on=tbxEsBedrock();
+  document.getElementById("tbxBuyPrefix").hidden=!on;
+  document.getElementById("tbxBuyHint").hidden=!on;
+  const inp=document.getElementById("tbxBuyName");
+  inp.placeholder=on?"Tu nombre de Bedrock":"Tu nombre de Minecraft";
+  if(on)inp.value=inp.value.replace(/^\.+/,"").replace(/ /g,"_");
+}
+document.getElementById("tbxBuyBedrock").addEventListener("change",()=>{
+  tbxPintarBedrock();
+  document.getElementById("tbxBuyErr").textContent="";
+});
+/* Misma limpieza para el campo del comprador y el del regalo. */
+function tbxLimpiarNombre(inp,bedrock){
+  const pos=inp.selectionStart;
+  let v=inp.value.replace(/^\.+/,"");   // el punto se pinta aparte, no se escribe
+  if(bedrock)v=v.replace(/ /g,"_");
+  if(v!==inp.value){ inp.value=v; inp.setSelectionRange(pos,pos); }
+}
+document.getElementById("tbxBuyName").addEventListener("input",e=>tbxLimpiarNombre(e.target,tbxEsBedrock()));
+document.getElementById("tbxBuyGiftName").addEventListener("input",e=>
+  tbxLimpiarNombre(e.target,document.getElementById("tbxBuyGiftBedrock").checked));
+
+/* Regalo: si lo es, se pide a quien va y se oculta lo de Discord (el rol no se
+   le puede dar a alguien cuyo Discord no conocemos). */
+function tbxPintarRegalo(){
+  const esRegalo=document.getElementById("tbxBuyGift").checked;
+  document.getElementById("tbxBuyGiftBox").hidden=!esRegalo;
+  document.getElementById("tbxBuyDiscordBox").hidden=esRegalo;
+  document.getElementById("tbxBuyName").placeholder=esRegalo
+    ? (tbxEsBedrock()?"Tu nombre de Bedrock":"Tu nombre (quien paga)")
+    : (tbxEsBedrock()?"Tu nombre de Bedrock":"Tu nombre de Minecraft");
+  document.getElementById("tbxBuyErr").textContent="";
+}
+document.getElementById("tbxBuyGift").addEventListener("change",tbxPintarRegalo);
+document.getElementById("tbxBuyGiftBedrock").addEventListener("change",()=>{
+  const on=document.getElementById("tbxBuyGiftBedrock").checked;
+  document.getElementById("tbxBuyGiftPrefix").hidden=!on;
+  const inp=document.getElementById("tbxBuyGiftName");
+  if(on)inp.value=inp.value.replace(/^\.+/,"").replace(/ /g,"_");
+});
+document.getElementById("tbxBuyWantDiscord").addEventListener("change",e=>{
+  document.getElementById("tbxBuyDiscordFields").hidden=!e.target.checked;
+  document.getElementById("tbxBuyErr").textContent="";
+});
+
+function abrirCompra(id,nombre){
+  tbxPaqueteId=id;
+  document.getElementById("tbxBuyPkg").textContent=nombre+" — te daremos el rango a esta cuenta.";
+  document.getElementById("tbxBuyErr").textContent="";
+  const inp=document.getElementById("tbxBuyName");
+  const guardado=localStorage.getItem("sillamc_name")||"";
+  document.getElementById("tbxBuyBedrock").checked=guardado.startsWith(".");
+  inp.value=guardado.replace(/^\.+/,"");
+  tbxPintarBedrock();
+  tbxModal.classList.add("is-open");
+  setTimeout(()=>inp.focus(),50);
+}
+function cerrarCompra(){ tbxModal.classList.remove("is-open"); }
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-tbx]");
+  if(b)abrirCompra(b.dataset.tbx,b.dataset.nombre);
+});
+document.getElementById("tbxBuyCancel").addEventListener("click",cerrarCompra);
+document.getElementById("tbxBuyBg").addEventListener("click",cerrarCompra);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")cerrarCompra();});
+document.getElementById("tbxBuyName").addEventListener("keydown",e=>{
+  if(e.key==="Enter")document.getElementById("tbxBuyGo").click();
+});
+
+document.getElementById("tbxBuyGo").addEventListener("click",async()=>{
+  const btn=document.getElementById("tbxBuyGo");
+  const err=document.getElementById("tbxBuyErr");
+  const escrito=document.getElementById("tbxBuyName").value.trim().replace(/^\.+/,"");
+  if(!/^[A-Za-z0-9_]{3,16}$/.test(escrito)){
+    err.textContent=tbxEsBedrock()
+      ? "Escribe tu nombre de Bedrock (sin el punto, ya lo ponemos nosotros)."
+      : "Escribe tu nombre de Minecraft (letras, números y _).";
+    return;
+  }
+  // Al servidor le llega con el punto delante si es de Bedrock.
+  const name=(tbxEsBedrock()?".":"")+escrito;
+
+  const esRegalo=document.getElementById("tbxBuyGift").checked;
+  let destinatario=null;
+  if(esRegalo){
+    const g=document.getElementById("tbxBuyGiftName").value.trim().replace(/^\.+/,"");
+    if(!/^[A-Za-z0-9_]{3,16}$/.test(g)){
+      err.textContent="Escribe el nombre de quien recibe el regalo.";
+      return;
+    }
+    destinatario=(document.getElementById("tbxBuyGiftBedrock").checked?".":"")+g;
+  }
+  // Discord solo si se lo compra para si mismo y lo pide.
+  let discordId="";
+  if(!esRegalo&&document.getElementById("tbxBuyWantDiscord").checked){
+    discordId=document.getElementById("tbxBuyDiscordId").value.trim();
+    if(!/^\d{17,20}$/.test(discordId)){
+      err.textContent="El ID de Discord son solo números (17-20 dígitos).";
+      return;
+    }
+  }
+  // La pestaña se abre AHORA, en el clic: si se abriera despues de las peticiones
+  // el navegador la bloquearia por emergente.
+  // OJO: NADA de "noopener" aqui. Con esa opcion window.open devuelve null, nos
+  // quedamos sin referencia y el usuario se queda tirado en about:blank.
+  const pestana=window.open("about:blank","_blank");
+  if(pestana)pestana.document.write(
+    '<title>Preparando el pago…</title>'+
+    '<body style="background:#12140f;color:#eee;font:16px system-ui;display:flex;'+
+    'align-items:center;justify-content:center;height:100vh">Preparando el pago…</body>');
+  btn.disabled=true; err.textContent="";
+  try{
+    const base=location.origin+location.pathname;
+
+    // Para regalar hace falta el ID interno del destinatario, no su nombre. La
+    // unica via en esta API es pedirle a Tebex una cesta suya y quedarnos con el id.
+    let destinoId=null;
+    if(destinatario){
+      const rd=await fetch(`${TEBEX_API}/accounts/${TEBEX_TOKEN}/baskets`,{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({username:destinatario,complete_url:base,cancel_url:base})
+      });
+      const dj=await rd.json().catch(()=>({}));
+      destinoId=(dj.data||{}).username_id;
+      if(!destinoId)throw new Error("No encuentro a «"+destinatario+"». Revisa el nombre.");
+    }
+
+    const rb=await fetch(`${TEBEX_API}/accounts/${TEBEX_TOKEN}/baskets`,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({username:name,complete_url:base+"?compra=ok",cancel_url:base,complete_auto_redirect:true})
+    });
+    // OJO: el cuerpo de una respuesta solo se puede leer UNA vez.
+    const cesta=await rb.json().catch(()=>({}));
+    if(!rb.ok||!cesta.data)throw new Error(cesta.detail||"No se pudo crear la cesta.");
+
+    // El paquete EXIGE un discord_id. Si no quieren el rol (o es un regalo) se
+    // manda "0", que Tebex acepta y simplemente no entrega nada en Discord.
+    const cuerpo={package_id:Number(tbxPaqueteId),quantity:1,
+                  variable_data:{discord_id:discordId||"0"}};
+    if(destinoId)cuerpo.target_username_id=destinoId;
+
+    const rp=await fetch(`${TEBEX_API}/baskets/${cesta.data.ident}/packages`,{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(cuerpo)
+    });
+    const añadido=await rp.json().catch(()=>({}));
+    if(!rp.ok||!añadido.data)throw new Error(añadido.detail||"No se pudo añadir el producto.");
+
+    const link=(añadido.data.links||{}).checkout;
+    if(!link)throw new Error("Tebex no devolvió enlace de pago.");
+    localStorage.setItem("sillamc_name",name);
+    if(pestana&&!pestana.closed){ pestana.location.href=link; }
+    else { window.open(link,"_blank"); }        // por si bloquearon la emergente
+    btn.disabled=false;
+    cerrarCompra();
+    toast("Te hemos abierto el pago en otra pestaña.");
+  }catch(e){
+    // Se cierra la pestaña en blanco para no dejar al comprador tirado en ella.
+    if(pestana&&!pestana.closed)pestana.close();
+    // Se muestra el motivo real de Tebex: si no, es imposible saber que pasa.
+    err.textContent=(e&&e.message)?e.message:"No se pudo preparar el pago.";
+    btn.disabled=false;
+  }
+});
+
+// Aviso al volver de un pago correcto.
+if(new URLSearchParams(location.search).get("compra")==="ok"){
+  setTimeout(()=>toast("¡Gracias! El rango se aplica en unos segundos. Entra al servidor para verlo."),400);
+}
+cargarTiendaTebex();
+/* Se recarga sola cada 20s (solo con la pestaña a la vista y sin la ventana de
+   compra abierta): asi los cambios que hagas en Tebex —descripciones, precios,
+   paquetes nuevos— aparecen aqui sin tener que recargar la pagina. */
+setInterval(()=>{
+  if(document.visibilityState!=="visible")return;
+  if(tbxModal.classList.contains("is-open"))return;
+  cargarTiendaTebex();
+},20000);
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible")cargarTiendaTebex();
+});
+</script>
+</body>
+</html>

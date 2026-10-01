@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Estadísticas — SillaMC Survival</title>
+<meta name="description" content="Estadísticas de SillaMC Survival: clasificación de jugadores por tiempo jugado, kills, muertes y SillaCoins. Datos reales del servidor." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <img src="logo.png" alt="SillaMC" class="sitemenu__logo" />
+  <nav class="sitemenu__links">
+    <a href="index" data-i18n="nav.home">← Inicio</a>
+    <a href="index#features">Características</a>
+    <a href="guias">Guías</a>
+    <a href="tienda">Tienda</a>
+    <a href="finder" class="is-active" data-i18n="nav.finder">Estadísticas</a>
+  </nav>
+  <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
+  <a class="btn btn--access sitemenu__access" id="accessBtn" href="dashboard" title="Panel de jugador">
+    <svg class="btn__head" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <rect x="2" y="2" width="12" height="12" rx="1" fill="#8b5a2b"/>
+      <rect x="2" y="2" width="12" height="5" fill="#4a3018"/>
+      <rect x="4" y="7" width="2.5" height="2.5" fill="#fff"/>
+      <rect x="9.5" y="7" width="2.5" height="2.5" fill="#fff"/>
+    </svg>
+    <img class="btn__avatar" alt="" width="18" height="18" style="display:none" />
+    <span class="btn__label">Acceder</span>
+  </a>
+</div>
+
+<main class="section">
+  <h1 class="section__title" data-i18n="finder.title">Estadísticas</h1>
+  <p class="section__sub" data-i18n="finder.sub">Clasificación de jugadores con datos reales del servidor. Ordena por lo que quieras.</p>
+
+  <input type="search" id="finderSearch" class="finder__search" autocomplete="off" maxlength="17" spellcheck="false" />
+  <div class="finder__tabs" id="finderTabs"></div>
+  <ol class="finder" id="finderList"></ol>
+  <p class="finder__foot" data-i18n="finder.foot">Se actualiza cada pocos segundos. El tiempo jugado, kills y muertes salen de las estadísticas del juego.</p>
+</main>
+
+<div class="toast" id="toast"></div>
+<script src="mc-icons-index.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

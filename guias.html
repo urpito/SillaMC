@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guías — SillaMC Survival</title>
+  <meta name="description" content="Guías paso a paso de casas, protecciones, economía, trabajos, subastas y warps de SillaMC." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <img src="logo.png" alt="SillaMC" class="sitemenu__logo" />
+  <nav class="sitemenu__links">
+    <a href="index">Inicio</a>
+    <a href="index#features">Características</a>
+    <a href="guias" class="is-active">Guías</a>
+    <a href="tienda">Tienda</a>
+    <a href="finder">Estadísticas</a>
+  </nav>
+  <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
+  <a class="btn btn--primary btn--lg sitemenu__access" href="dashboard">Acceder a mi panel</a>
+</div>
+
+<main>
+  <section class="guidehero">
+    <img class="guidehero__logo" src="logo.png" alt="SillaMC Survival" />
+    <h1>Guías de SillaMC</h1>
+    <p>Todo lo necesario para jugar, explicado sin rodeos. También puedes abrir cada sección desde <code>/menu</code>.</p>
+  </section>
+
+  <nav class="guidebar" aria-label="Secciones"><div class="guidebar__inner">
+    <a href="#primeros-pasos">Primeros pasos</a><a href="#menu">Menú</a><a href="#casas">Casas</a><a href="#protecciones">Protecciones</a><a href="#economia">Economía</a><a href="#panel-web">Panel web</a><a href="#trabajos">Trabajos</a><a href="#subastas">Subastas</a><a href="#warps">Warps</a>
+  </div></nav>
+
+  <div class="guidepage">
+    <article class="guide" id="primeros-pasos">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/compass_00.png" alt="" /></div><div><h2>Primeros pasos</h2><p class="guide__lead">Entra y llega al survival.</p></div></div>
+      <ol class="steps"><li>Conéctate a <code>sillamc.ddns.net</code>. En Bedrock usa el puerto <code>19132</code>. Funciona desde la versión 1.7 hasta la 1.21.10.</li><li>Regístrate o inicia sesión siguiendo el mensaje del chat.</li><li>Abre <code>/menu</code>: desde ahí tendrás casas, warps, economía, trabajos y ajustes.</li></ol>
+      <p class="tip">Consejo: guarda <code>/menu</code>. Es el acceso más rápido a casi todo SillaMC.</p>
+      <div class="video-slot"><div class="video-slot__play">▶</div><div><b>Vídeo: tu primer día en SillaMC</b><span>Espacio preparado para el tutorial oficial grabado dentro del servidor.</span></div></div>
+    </article>
+
+    <article class="guide" id="menu">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/writable_book.png" alt="" /></div><div><h2>El menú</h2><p class="guide__lead">Escribe <code>/menu</code> y tienes casi todo SillaMC en una sola pantalla.</p></div></div>
+      <p>Cada categoría del menú tiene su propio icono, para que sea fácil reconocerlas de un vistazo:</p>
+      <ol class="steps">
+        <li class="has-icon"><span>Casas: guarda y viaja a tus lugares favoritos.</span><img class="steps__icon" src="icon-bed.png" alt="" /></li>
+        <li class="has-icon"><span>Protecciones: gestiona tus zonas de ProtectionStones.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/emerald_ore.png" alt="" /></li>
+        <li class="has-icon"><span>Economía: mira tu saldo y paga a otros jugadores.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/sunflower_front.png" alt="" /></li>
+        <li class="has-icon"><span>Trabajos: elige un oficio y sigue tu progreso.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/iron_pickaxe.png" alt="" /></li>
+        <li class="has-icon"><span>Subastas: compra y vende objetos entre jugadores.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/gold_ingot.png" alt="" /></li>
+        <li class="has-icon"><span>Warps: viaja rápido a los lugares públicos.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/ender_pearl.png" alt="" /></li>
+      </ol>
+      <p class="tip">Debajo tienes cada una de estas secciones explicada con más detalle — y con el mismo icono, para que sepas siempre dónde estás.</p>
+    </article>
+
+    <article class="guide" id="casas">
+      <div class="guide__head"><div class="guide__icon"><img src="icon-bed.png" alt="" /></div><div><h2>Casas</h2><p class="guide__lead">Guarda lugares y vuelve a ellos desde un menú interactivo.</p></div></div>
+      <ol class="steps"><li>Colócate en el lugar que quieras guardar.</li><li>Escribe <code>/hogarcrear &lt;name&gt;</code> o <code>/sethome &lt;name&gt;</code>. El nombre es obligatorio.</li><li class="has-icon"><span>Abre <code>/menu → Casas</code>. Verás cada casa con mundo y coordenadas.</span><img class="steps__icon" src="icon-bed.png" alt="" /></li><li>Haz clic en una casa para teletransportarte. Para borrarla usa <code>/delhome &lt;name&gt;</code>.</li></ol>
+      <p class="tip">Usa nombres claros: <code>base</code>, <code>mina</code> o <code>granja</code>.</p>
+    </article>
+
+    <article class="guide" id="protecciones">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/emerald_ore.png" alt="" /></div><div><h2>Protecciones</h2><p class="guide__lead">Protege tu terreno con ProtectionStones: cómo conseguir el bloque, viajar a tus zonas y gestionarlas.</p></div></div>
+
+      <h3 class="guide__sub">1. Consigue tu bloque de protección</h3>
+      <ol class="steps"><li class="has-icon"><span>Escribe <code>/ps get 20x20</code>. Puedes hacerlo tantas veces como quieras. El bloque es un Bloque de Hueso.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/bone_block_side.png" alt="" /></li><li>Coloca el bloque en el suelo, en el centro de la zona que quieres proteger.</li><li>Al colocarlo se crea la zona automáticamente a tu nombre.</li></ol>
+      <p class="tip">Cuántas puedes tener a la vez según tu rango: <b>Taburete 1</b> · <b>Sillón 3</b> · <b>Trono 5</b>. <code>/ps get 20x20</code> no tiene límite, el límite es de cuántas puedes tener activas a la vez.</p>
+
+      <h3 class="guide__sub">2. Viaja a tus protecciones</h3>
+      <ol class="steps"><li class="has-icon"><span>Lo más fácil: abre <code>/menu → Protecciones</code>. Verás la lista con nombre, mundo y coordenadas de cada una, estés donde estés.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/emerald_ore.png" alt="" /></li><li>Haz clic en una para teletransportarte al instante, aunque estés en otro mundo.</li><li>Por comandos: <code>/ps home</code> te lleva a tu protección si estás dentro del mismo mundo, o <code>/ps home &lt;name&gt;</code> si le pusiste nombre con <code>/ps name</code>.</li><li><code>/ps tp &lt;name&gt;</code> hace lo mismo que <code>/ps home</code> pero puede usarse para ir a protecciones donde eres miembro, no solo dueño.</li></ol>
+      <p class="tip">Para renombrar una protección y encontrarla más fácil luego: <code>/ps name &lt;newname&gt;</code> estando dentro de ella.</p>
+
+      <h3 class="guide__sub">3. Consulta y gestiona una protección</h3>
+      <ol class="steps"><li><code>/ps info</code> — muestra dueño, miembros y datos de la zona en la que estás.</li><li><code>/ps list</code> — lista todas tus protecciones con su ID.</li><li><code>/ps count</code> — cuántas tienes y cuál es tu límite según tu rango.</li><li><code>/ps add &lt;username&gt;</code> — deja entrar y construir a alguien sin hacerlo dueño (<code>/ps remove &lt;username&gt;</code> para quitarlo).</li><li><code>/ps addowner &lt;username&gt;</code> — añade otro dueño con los mismos permisos que tú (<code>/ps removeowner &lt;username&gt;</code> para quitarlo).</li></ol>
+      <p class="warn">⚠️ Ojo con <code>/ps addowner</code>: le da a esa persona el <b>mismo control total</b> que tú sobre la protección (puede echarte, cambiar flags, incluso desproteger la zona). Es lo mismo que darle las llaves de tu casa. Para dejar entrar y construir a alguien de confianza, usa <code>/ps add</code> — casi nunca hace falta usar <code>/ps addowner</code>.</p>
+
+      <h3 class="guide__sub">4. Flags: qué se puede hacer dentro de tu protección</h3>
+      <ol class="steps"><li><code>/ps info flags</code> — mira qué flags tiene tu protección ahora mismo.</li><li><code>/ps flag &lt;flag&gt; &lt;valor&gt;</code> — cambia una flag (usa <code>null</code> como valor para quitarla y volver al valor por defecto).</li><li><code>mob-spawning deny/allow</code> — si aparecen o no mobs hostiles dentro.</li><li><code>creeper-explosion</code>, <code>wither-damage</code>, <code>ghast-fireball</code> <code>deny/allow</code> — si esos mobs pueden destruir bloques dentro.</li><li><code>greeting</code> / <code>farewell</code> &lt;mensaje&gt; — mensaje al entrar/salir de tu protección.</li></ol>
+      <p class="tip">Por defecto, al crear la protección ya viene con <b>PvP y TNT bloqueados</b> y sin daño de creepers/wither/ghast, para que nadie te destroce la base sin querer. Puedes cambiarlo si quieres jugar distinto.</p>
+
+      <h3 class="guide__sub">5. Oculta el bloque y desprotege</h3>
+      <ol class="steps"><li><code>/ps hide</code> — el bloque protector se vuelve invisible (sigue protegiendo igual), útil para que no se vea feo en tu casa.</li><li><code>/ps unhide</code> — lo vuelve a mostrar.</li><li>El indicador verde/rojo del menú te dice si está oculto o visible sin tener que comprobarlo.</li><li><code>/ps unclaim</code> — elimina la protección para siempre y te devuelve el bloque (o <code>/ps unclaim &lt;name&gt;</code> desde lejos, sin estar dentro).</li></ol>
+      <p class="tip">Antes de hacer <code>/ps unclaim</code> asegúrate: no se puede deshacer y cuenta para tu límite si quieres protegerla otra vez.</p>
+
+      <h3 class="guide__sub">6. Vídeo: todo lo de <code>/ps</code> en 4 minutos</h3>
+      <div class="vplayer" id="guiaProtPlayer">
+        <video class="vplayer__video" id="guiaProtVideo" controls preload="metadata" playsinline
+               poster="guia-protecciones.jpg">
+          <source src="guia-protecciones.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir el vídeo. <a href="guia-protecciones.mp4">Descárgalo aquí</a>.
+        </video>
+        <div class="vbar" id="guiaProtBar" hidden>
+          <button class="vbar__btn" id="vPlay" type="button" aria-label="Reproducir"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg></button>
+          <span class="vbar__t" id="vCur">0:00</span>
+          <div class="vseek" id="vSeekWrap">
+            <div class="vseek__segs" id="vSegs" aria-hidden="true"></div>
+            <span class="vseek__dot" id="vDot" aria-hidden="true"></span>
+            <input class="vseek__input" id="vSeek" type="range" min="0" max="1000" value="0" step="1" aria-label="Posición del vídeo" />
+            <div class="vseek__tip" id="vTip" hidden></div>
+          </div>
+          <span class="vbar__t" id="vDur">4:18</span>
+          <button class="vbar__btn" id="vMute" type="button" aria-label="Silenciar"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3Zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Z"/></svg></button>
+          <button class="vbar__btn" id="vChapsBtn" type="button" aria-label="Capítulos" aria-expanded="false" aria-controls="vChaps"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M3 5h2v2H3V5Zm4 0h14v2H7V5ZM3 11h2v2H3v-2Zm4 0h14v2H7v-2ZM3 17h2v2H3v-2Zm4 0h14v2H7v-2Z"/></svg></button>
+          <button class="vbar__btn" id="vFull" type="button" aria-label="Pantalla completa"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M4 9V4h5v2H6v3H4Zm11-5h5v5h-2V6h-3V4ZM4 15h2v3h3v2H4v-5Zm14 0h2v5h-5v-2h3v-3Z"/></svg></button>
+        </div>
+        <div class="vnow" id="vNow" hidden></div>
+        <div class="vchaps" id="vChaps">
+          <div class="chapters__head"><b>Salta a lo que necesites</b><span>Pulsa un minuto y el vídeo va directo a esa parte.</span></div>
+          <ol class="chapters" id="guiaProtChapters">
+          <li><button class="chapter" type="button" data-t="0"><span class="chapter__t">0:00</span><span class="chapter__txt"><span class="chapter__label">Obtener el bloque de protección</span><code class="chapter__cmd" data-cmd-ready="1">/ps get</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="11"><span class="chapter__t">0:11</span><span class="chapter__txt"><span class="chapter__label">Colocar el bloque de protección</span></span></button></li>
+          <li><button class="chapter" type="button" data-t="22"><span class="chapter__t">0:22</span><span class="chapter__txt"><span class="chapter__label">Volver a tu bloque de protección</span><code class="chapter__cmd" data-cmd-ready="1">/ps home</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="41"><span class="chapter__t">0:41</span><span class="chapter__txt"><span class="chapter__label">Ver la información de una protección</span><code class="chapter__cmd" data-cmd-ready="1">/ps info</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="57"><span class="chapter__t">0:57</span><span class="chapter__txt"><span class="chapter__label">Ver tu lista de protecciones</span><code class="chapter__cmd" data-cmd-ready="1">/ps list</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="68"><span class="chapter__t">1:08</span><span class="chapter__txt"><span class="chapter__label">Ver cuántas protecciones tienes</span><code class="chapter__cmd" data-cmd-ready="1">/ps count</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="78"><span class="chapter__t">1:18</span><span class="chapter__txt"><span class="chapter__label">Dar permisos normales a alguien</span><code class="chapter__cmd" data-cmd-ready="1">/ps add</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="91"><span class="chapter__t">1:31</span><span class="chapter__txt"><span class="chapter__label">Quitar permisos normales a alguien</span><code class="chapter__cmd" data-cmd-ready="1">/ps remove</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="104"><span class="chapter__t">1:44</span><span class="chapter__txt"><span class="chapter__label">Dar permisos de dueño a alguien</span><code class="chapter__cmd" data-cmd-ready="1">/ps addowner</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="120"><span class="chapter__t">2:00</span><span class="chapter__txt"><span class="chapter__label">Quitar permisos de dueño a alguien</span><code class="chapter__cmd" data-cmd-ready="1">/ps removeowner</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="134"><span class="chapter__t">2:14</span><span class="chapter__txt"><span class="chapter__label">Establecer las flags de tu protección</span><code class="chapter__cmd" data-cmd-ready="1">/ps flag</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="161"><span class="chapter__t">2:41</span><span class="chapter__txt"><span class="chapter__label">Elegir un mensaje de entrada</span><code class="chapter__cmd" data-cmd-ready="1">/ps flag greeting</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="191"><span class="chapter__t">3:11</span><span class="chapter__txt"><span class="chapter__label">Elegir un mensaje de despedida</span><code class="chapter__cmd" data-cmd-ready="1">/ps flag farewell</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="218"><span class="chapter__t">3:38</span><span class="chapter__txt"><span class="chapter__label">Esconder tu bloque de protección</span><code class="chapter__cmd" data-cmd-ready="1">/ps hide</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="233"><span class="chapter__t">3:53</span><span class="chapter__txt"><span class="chapter__label">Dejar de esconder tu bloque</span><code class="chapter__cmd" data-cmd-ready="1">/ps unhide</code></span></button></li>
+          <li><button class="chapter" type="button" data-t="245"><span class="chapter__t">4:05</span><span class="chapter__txt"><span class="chapter__label">Quitar tu bloque de protección</span><code class="chapter__cmd" data-cmd-ready="1">/ps unclaim</code></span></button></li>
+          </ol>
+        </div>
+      </div>
+    </article>
+
+    <article class="guide" id="economia">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/sunflower_front.png" alt="" /></div><div><h2>Economía y pagos</h2><p class="guide__lead">Consulta tus SillaCoins y paga a otros jugadores con seguridad.</p></div></div>
+      <ol class="steps"><li class="has-icon"><span>Abre <code>/menu → Saldo</code> para ver tus SC actuales.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/blocks/sunflower_front.png" alt="" /></li><li>Elige Pagar a un jugador y selecciona a quién.</li><li>El chat preparará <code>/pay &lt;username&gt; &lt;amount&gt;</code>; escribe la cantidad y envíalo.</li><li>Comprueba siempre el nombre y la cantidad antes de confirmar.</li></ol>
+      <p class="tip">Las SillaCoins bloqueadas obtenidas mediante anuncios pueden gastarse, pero no enviarse a otros jugadores.</p>
+      <p class="tip">También puedes ver tu saldo sin entrar al juego: entra a tu <a href="dashboard">panel web</a>, se actualiza en vivo.</p>
+    </article>
+
+    <article class="guide" id="panel-web">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/map.png" alt="" /></div><div><h2>Panel web</h2><p class="guide__lead">Todo lo importante de tu cuenta, sin abrir el juego.</p></div></div>
+      <ol class="steps"><li>Entra a <a href="dashboard">sillaweb.ddns.net/dashboard</a>. La primera vez, escribe <code>/cuentaweb</code> en el juego para conseguir un código de 6 dígitos.</li><li>Con el código entras al momento — no hace falta contraseña, aunque puedes crear una para la próxima vez.</li><li>Verás tu saldo de SillaCoins en vivo, tu nivel de cuenta y el pase de temporada con sus 50 niveles.</li><li>En "Misiones" ves el progreso de tus misiones de hoy y de esta semana, sin tener que escribir <code>/sillapass</code>.</li><li>Cuando alcances un nivel del pase, pulsa "Reclamar" para recibir la recompensa cuando tú quieras (útil si tienes el inventario lleno).</li></ol>
+      <p class="tip">Ojo: la contraseña del panel web es distinta a la de <code>/register</code> en el juego — son dos cuentas separadas. Si no quieres crear una, siempre puedes volver a pedir un código nuevo con <code>/cuentaweb</code>.</p>
+    </article>
+
+    <article class="guide" id="trabajos">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/iron_pickaxe.png" alt="" /></div><div><h2>Trabajos</h2><p class="guide__lead">Gana experiencia y SC realizando actividades normales.</p></div></div>
+      <ol class="steps"><li class="has-icon"><span>Abre <code>/menu → Trabajos</code>.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/iron_pickaxe.png" alt="" /></li><li>Jobs Reborn mostrará los trabajos disponibles y sus condiciones.</li><li>Elige el que encaje contigo: minero, leñador y los demás trabajos configurados.</li><li>Tu botón del menú cambiará de icono según tu trabajo principal y mostrará nivel/progreso.</li></ol>
+      <p class="tip">Puedes cambiar de oficio, pero revisa antes las consecuencias que muestre Jobs Reborn.</p>
+    </article>
+
+    <article class="guide" id="subastas">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/gold_ingot.png" alt="" /></div><div><h2>Casa de subastas</h2><p class="guide__lead">Compra y vende objetos entre jugadores.</p></div></div>
+      <ol class="steps"><li class="has-icon"><span>Abre <code>/menu → Subastas</code> o escribe <code>/ah</code>.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/gold_ingot.png" alt="" /></li><li>Revisa objeto, cantidad y precio antes de comprar.</li><li>Para vender, sostén el objeto y usa la orden de venta indicada por la ayuda de <code>/ah</code>.</li><li>Ten en cuenta que cada venta aplica el impuesto configurado del servidor.</li></ol>
+      <p class="tip">Nunca confirmes una compra solo por el nombre: revisa también encantamientos y descripción.</p>
+    </article>
+
+    <article class="guide" id="warps">
+      <div class="guide__head"><div class="guide__icon"><img src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/ender_pearl.png" alt="" /></div><div><h2>Warps</h2><p class="guide__lead">Viajes rápidos a lugares públicos de SillaMC.</p></div></div>
+      <ol class="steps"><li class="has-icon"><span>Abre <code>/menu → Warps</code>.</span><img class="steps__icon" src="https://cdn.jsdelivr.net/gh/PrismarineJS/minecraft-assets@master/data/1.21.1/items/ender_pearl.png" alt="" /></li><li>Verás los destinos disponibles con mundo y coordenadas.</li><li>Haz clic para viajar a Lobby, Spawn, Tienda u otros warps que se añadan.</li></ol>
+      <p class="tip">La tienda todavía está en preparación; el menú quedará listo para llevarte en cuanto se abra.</p>
+    </article>
+  </div>
+</main>
+
+<footer class="footer"><div class="footer__brand"><span class="brand__silla">Silla</span><span class="brand__mc">MC</span> <span class="footer__surv">Survival</span></div><p class="footer__ip">Java: <code>sillamc.ddns.net</code> · Bedrock: <code>19132</code></p><p class="footer__legal">No afiliado a Mojang ni Microsoft.</p></footer>
+<script src="mc-icons-index.js"></script>
+<script src="script.js"></script>
+<script>
+/* Reproductor propio de la guia de protecciones.
+   1) Los controles van DEBAJO del video, nunca encima: los nativos se dibujan
+      sobre la imagen y tapaban la franja de abajo, que es donde Minecraft
+      escribe el chat con los comandos.
+   2) Los capitulos se marcan en la propia linea de tiempo (estilo YouTube) y
+      la lista entera se abre en un panel flotante, porque como lista suelta se
+      comia media pantalla en el movil.
+   El atributo controls se deja en el HTML y se quita aqui: si fallara el JS,
+   quedan los controles del navegador y la lista de capitulos normal. */
+(function(){
+  var v=document.getElementById('guiaProtVideo'),
+      list=document.getElementById('guiaProtChapters');
+  if(!v||!list)return;
+
+  var wrap=document.getElementById('guiaProtPlayer'),
+      bar=document.getElementById('guiaProtBar'),
+      bPlay=document.getElementById('vPlay'),
+      bMute=document.getElementById('vMute'),
+      bChaps=document.getElementById('vChapsBtn'),
+      bFull=document.getElementById('vFull'),
+      seek=document.getElementById('vSeek'),
+      seekWrap=document.getElementById('vSeekWrap'),
+      segsEl=document.getElementById('vSegs'),
+      dot=document.getElementById('vDot'),
+      tip=document.getElementById('vTip'),
+      elCur=document.getElementById('vCur'),
+      elDur=document.getElementById('vDur'),
+      now=document.getElementById('vNow'),
+      panel=document.getElementById('vChaps');
+
+  if(!bar||!seek)return;
+
+  var btns=[].slice.call(list.querySelectorAll('.chapter')),
+      times=btns.map(function(b){return parseFloat(b.getAttribute('data-t'))||0;}),
+      labels=btns.map(function(b){return b.querySelector('.chapter__label').textContent;}),
+      stamps=btns.map(function(b){return b.querySelector('.chapter__t').textContent;}),
+      cmds=btns.map(function(b){var c=b.querySelector('.chapter__cmd');return c?c.textContent:'';}),
+      segs=[], cur=-1;
+
+  var I_PLAY='<path fill="currentColor" d="M8 5v14l11-7z"/>',
+      I_PAUSE='<path fill="currentColor" d="M6 5h4v14H6V5Zm8 0h4v14h-4V5Z"/>',
+      I_VOL='<path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3Zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Z"/>',
+      I_MUTE='<path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3Zm18.6-1.6-1.4-1.4L17 9.2 13.8 6l-1.4 1.4L15.6 10.6 12.4 13.8l1.4 1.4L17 12l3.2 3.2 1.4-1.4-3.2-3.2 3.2-3.2Z"/>';
+
+  function fmt(t){
+    if(!isFinite(t))return '0:00';
+    t=Math.max(0,Math.floor(t));
+    return Math.floor(t/60)+':'+('0'+(t%60)).slice(-2);
+  }
+  function chapterAt(t){
+    var i=0;
+    for(var n=0;n<times.length;n++){if(t>=times[n]-0.25)i=n;else break;}
+    return i;
+  }
+  function toggle(){
+    if(v.paused){var p=v.play();if(p&&p['catch'])p['catch'](function(){});}
+    else v.pause();
+  }
+
+  /* --- linea de tiempo troceada por capitulos --- */
+  function buildSegs(){
+    if(!v.duration||!isFinite(v.duration))return;
+    segsEl.innerHTML='';segs=[];
+    for(var i=0;i<times.length;i++){
+      var a=times[i],b=(i+1<times.length)?times[i+1]:v.duration,d=Math.max(.001,b-a);
+      var seg=document.createElement('div');
+      seg.className='vseg';
+      seg.style.flexGrow=d;
+      var fill=document.createElement('i');
+      fill.className='vseg__fill';
+      seg.appendChild(fill);
+      segsEl.appendChild(seg);
+      segs.push({fill:fill,a:a,b:b});
+    }
+    paint();
+  }
+  function paint(){
+    var t=v.currentTime;
+    for(var i=0;i<segs.length;i++){
+      var s=segs[i],pct=t<=s.a?0:(t>=s.b?100:((t-s.a)/(s.b-s.a))*100);
+      s.fill.style.width=pct+'%';
+    }
+    if(v.duration)dot.style.left=((v.currentTime/v.duration)*100)+'%';
+  }
+  function mark(i){
+    if(i===cur)return;
+    cur=i;
+    btns.forEach(function(b,n){
+      b.classList.toggle('is-active',n===i);
+      if(n===i)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current');
+    });
+    now.innerHTML='<b>'+stamps[i]+'</b><span class="vnow__txt">'+labels[i]+'</span>'
+      +(cmds[i]?'<code class="vnow__cmd">'+cmds[i]+'</code>':'');
+    now.hidden=false;
+    /* el boton de copiar de la web se aplica a los <code>/comando</code> al
+       cargar; como esta linea se reescribe sola, hay que volver a pedirlo. */
+    if(window.addCommandCopyButtons)window.addCommandCopyButtons();
+    sizePanel();
+  }
+
+  /* el panel flotante se ancla justo encima de la barra */
+  function sizePanel(){
+    var h=bar.offsetHeight+(now.hidden?0:now.offsetHeight);
+    wrap.style.setProperty('--barh',h+'px');
+  }
+
+  /* --- arranque --- */
+  v.removeAttribute('controls');
+  bar.hidden=false;
+  wrap.classList.add('is-enhanced');
+  panel.hidden=true;
+  sizePanel();
+
+  bPlay.addEventListener('click',toggle);
+  v.addEventListener('click',toggle);
+  v.addEventListener('play',function(){
+    bPlay.querySelector('svg').innerHTML=I_PAUSE;
+    bPlay.setAttribute('aria-label','Pausar');
+  });
+  v.addEventListener('pause',function(){
+    bPlay.querySelector('svg').innerHTML=I_PLAY;
+    bPlay.setAttribute('aria-label','Reproducir');
+  });
+
+  function onMeta(){elDur.textContent=fmt(v.duration);buildSegs();}
+  v.addEventListener('loadedmetadata',onMeta);
+  if(v.readyState>0)onMeta();
+
+  v.addEventListener('timeupdate',function(){
+    elCur.textContent=fmt(v.currentTime);
+    if(!seek._drag){seek.value=v.duration?Math.round((v.currentTime/v.duration)*1000):0;}
+    paint();
+    mark(chapterAt(v.currentTime));
+  });
+
+  seek.addEventListener('pointerdown',function(){seek._drag=true;});
+  seek.addEventListener('input',function(){
+    if(!v.duration)return;
+    v.currentTime=(seek.value/1000)*v.duration;
+    elCur.textContent=fmt(v.currentTime);
+    paint();
+  });
+  seek.addEventListener('change',function(){seek._drag=false;});
+
+  /* nombre del capitulo al pasar por la linea de tiempo */
+  function showTip(e){
+    if(!v.duration)return;
+    var r=seekWrap.getBoundingClientRect();
+    if(!r.width)return;               /* barra sin ancho: evita un pct NaN */
+    var pct=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),
+        t=pct*v.duration,i=chapterAt(t);
+    tip.innerHTML='<b>'+stamps[i]+'</b> '+labels[i];
+    tip.hidden=false;
+    var half=tip.offsetWidth/2,
+        x=Math.min(r.width-half,Math.max(half,pct*r.width));
+    tip.style.left=x+'px';
+  }
+  seekWrap.addEventListener('pointermove',showTip);
+  seekWrap.addEventListener('pointerdown',showTip);
+  seekWrap.addEventListener('pointerleave',function(){tip.hidden=true;});
+  seekWrap.addEventListener('pointercancel',function(){tip.hidden=true;});
+
+  bMute.addEventListener('click',function(){v.muted=!v.muted;});
+  v.addEventListener('volumechange',function(){
+    bMute.querySelector('svg').innerHTML=v.muted?I_MUTE:I_VOL;
+    bMute.setAttribute('aria-label',v.muted?'Quitar silencio':'Silenciar');
+  });
+
+  /* --- panel de capitulos --- */
+  function openPanel(on){
+    panel.hidden=!on;
+    bChaps.setAttribute('aria-expanded',on?'true':'false');
+    bChaps.classList.toggle('is-on',on);
+    if(on){
+      sizePanel();
+      var act=panel.querySelector('.chapter.is-active');
+      if(act)act.scrollIntoView({block:'nearest'});
+    }
+  }
+  bChaps.addEventListener('click',function(e){
+    e.stopPropagation();
+    openPanel(panel.hidden);
+  });
+  document.addEventListener('click',function(e){
+    if(!panel.hidden&&!panel.contains(e.target)&&e.target!==bChaps)openPanel(false);
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&!panel.hidden)openPanel(false);
+  });
+
+  btns.forEach(function(b,i){
+    b.addEventListener('click',function(){
+      v.currentTime=times[i];
+      mark(i);
+      paint();
+      openPanel(false);
+      var p=v.play();
+      if(p&&p['catch'])p['catch'](function(){});
+    });
+  });
+
+  /* Pantalla completa sobre el contenedor, no sobre el <video>: asi la barra
+     sigue debajo y tampoco tapa la imagen a pantalla completa. */
+  bFull.addEventListener('click',function(){
+    if(document.fullscreenElement)document.exitFullscreen();
+    else if(wrap.requestFullscreen)wrap.requestFullscreen();
+    else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();
+  });
+  window.addEventListener('resize',sizePanel);
+})();
+</script>
+</body>
+</html>
