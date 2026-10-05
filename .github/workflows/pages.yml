@@ -27,10 +27,12 @@ jobs:
         uses: actions/configure-pages@v5
         with:
           enablement: true
-      - name: Upload site
+      # El repositorio guarda la web completa con su historial, pero GitHub Pages
+      # solo publica una redirección: la web de verdad vive en https://sillamc.es.
+      - name: Upload redirect
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "pages-redirect"
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
