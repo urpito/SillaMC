@@ -6,6 +6,9 @@ After=network-online.target docker.service
 ExecStart=/usr/bin/python3 /opt/panel-correo/panel_correo.py
 LoadCredential=apikey:/etc/panel-correo/apikey
 DynamicUser=yes
+# auth.json (hash del código de acceso + secreto 2FA) vive aquí, 0600.
+StateDirectory=panel-correo
+StateDirectoryMode=0700
 NoNewPrivileges=yes
 ProtectSystem=strict
 ProtectHome=yes

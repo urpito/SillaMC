@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Panel de correo de SillaMC: buzones y alias de @sillamc.es sobre la API de Mailcow.
 
-Escucha solo en 127.0.0.1; nginx lo publica en /correo/ para la red local y
-WireGuard, con contraseña. La API key de Mailcow llega como credencial de
-systemd y nunca sale hacia el navegador.
+Escucha solo en 127.0.0.1; nginx lo publica en https://mail.sillamc.es/cuentas/
+y en /correo/ de la red local. Para entrar hace falta código de acceso + 2FA
+(auth.py). La API key de Mailcow llega como credencial de systemd y nunca sale
+hacia el navegador.
 """
+import http.cookies
 import json
 import os
 import re
@@ -15,7 +17,10 @@ import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+import auth
+
 DOMAIN = "sillamc.es"
+COOKIE = "pc_sess"
 MAILCOW = "https://127.0.0.1:8443/api/v1/"
 PORT = int(os.environ.get("PANEL_PORT", "8795"))
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -204,12 +209,30 @@ class Handler(BaseHTTPRequestHandler):
         # Sin cuerpos ni cabeceras en el log: ahí viajan contraseñas.
         print("%s %s" % (self.command, self.path.split("?")[0]), flush=True)
 
-    def send(self, code, body, ctype="application/json"):
+    # ---------- utilidades ----------
+
+    def ip(self):
+        # nginx (en 127.0.0.1) pone la IP real; sin él, la del socket.
+        return self.headers.get("X-Real-IP") or self.client_address[0]
+
+    def token(self):
+        c = http.cookies.SimpleCookie(self.headers.get("Cookie", ""))
+        return c[COOKIE].value if COOKIE in c else ""
+
+    def cookie(self, value, max_age):
+        secure = "; Secure" if self.headers.get("X-Forwarded-Proto") == "https" else ""
+        return f"{COOKIE}={value}; Path=/; Max-Age={max_age}; HttpOnly; SameSite=Strict{secure}"
+
+    def send(self, code, body, ctype="application/json", cookie=None):
         data = body if isinstance(body, bytes) else json.dumps(body, ensure_ascii=False).encode()
         self.send_response(code)
         self.send_header("Content-Type", ctype + ("; charset=utf-8" if "json" in ctype or "html" in ctype else ""))
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        if cookie:
+            self.send_header("Set-Cookie", cookie)
         self.send_header("Content-Length", str(len(data)))
         self.end_headers()
         self.wfile.write(data)
@@ -217,6 +240,8 @@ class Handler(BaseHTTPRequestHandler):
     def run(self, fn, *a):
         try:
             self.send(200, fn(*a))
+        except PermissionError as e:
+            self.send(403, {"error": str(e)})
         except ValueError as e:
             self.send(400, {"error": str(e)})
         except urllib.error.URLError as e:
@@ -224,29 +249,55 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:  # noqa: BLE001
             self.send(500, {"error": type(e).__name__})
 
+    def start_session(self, fn, *a):
+        try:
+            token = fn(*a)
+        except PermissionError as e:
+            return self.send(403, {"error": str(e)})
+        except ValueError as e:
+            return self.send(400, {"error": str(e)})
+        self.send(200, {"ok": True}, cookie=self.cookie(token, auth.SESSION_TTL))
+
+    # ---------- rutas ----------
+
     def do_GET(self):
         path = self.path.split("?")[0]
         if path in ("/", "/index.html"):
             with open(os.path.join(HERE, "index.html"), "rb") as f:
                 return self.send(200, f.read(), "text/html")
-        if path in GET:
-            return self.run(GET[path])
-        self.send(404, {"error": "no existe"})
+        if path == "/api/session":
+            return self.send(200, auth.status(self.ip(), self.token()))
+        if path == "/api/setup":
+            return self.run(auth.setup_start, self.ip())
+        if path not in GET:
+            return self.send(404, {"error": "no existe"})
+        if not auth.session_ok(self.token()):
+            return self.send(401, {"error": "Inicia sesión"})
+        self.run(GET[path])
 
     def do_POST(self):
         path = self.path.split("?")[0]
-        # Solo peticiones del propio panel (nginx reescribe Host al de la LAN).
+        # Solo peticiones del propio panel.
         origin = self.headers.get("Origin", "")
-        host = self.headers.get("X-Forwarded-Host") or self.headers.get("Host", "")
-        if origin and origin.split("://", 1)[-1] != host:
+        host = self.headers.get("Host", "")
+        if not origin or origin.split("://", 1)[-1] != host:
             return self.send(403, {"error": "origen no permitido"})
-        if path not in POST:
-            return self.send(404, {"error": "no existe"})
         try:
             n = int(self.headers.get("Content-Length") or 0)
             data = json.loads(self.rfile.read(min(n, 65536)) or b"{}")
         except Exception:
             return self.send(400, {"error": "JSON no válido"})
+        if path == "/api/login":
+            return self.start_session(auth.login, self.ip(), data.get("access_code"), data.get("code"))
+        if path == "/api/setup":
+            return self.start_session(auth.setup_finish, self.ip(), data.get("access_code"), data.get("code"))
+        if path == "/api/logout":
+            auth.logout(self.token())
+            return self.send(200, {"ok": True}, cookie=self.cookie("", 0))
+        if path not in POST:
+            return self.send(404, {"error": "no existe"})
+        if not auth.session_ok(self.token()):
+            return self.send(401, {"error": "Inicia sesión"})
         self.run(POST[path], data)
 
 

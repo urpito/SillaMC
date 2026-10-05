@@ -83,6 +83,18 @@ dialog h3{margin:0 0 6px;font:800 18px Inter}
   background:var(--card2);border:1px solid var(--line);padding:10px 16px;border-radius:10px;pointer-events:none;z-index:9}
 #toast.show{opacity:1;transform:translateX(-50%)}
 #toast.err{border-color:var(--danger);color:#ffc9bb}
+#gate{max-width:420px;margin:8vh auto 0}
+#gate .card{padding:24px}
+#gate h1{font-family:"Archivo Black",sans-serif;font-size:26px;margin:0 0 4px}
+#gate h1 .s{color:var(--gold)} #gate h1 .m{color:var(--green)}
+#gate form{display:flex;flex-direction:column;gap:14px;margin-top:16px}
+#gate .code{font:800 26px ui-monospace,Consolas,monospace;letter-spacing:8px;text-align:center}
+#gate ol{padding-left:18px;color:var(--muted);font-size:14px;margin:12px 0 0}
+#gate ol li{margin-bottom:6px}
+#qr{background:#fff;padding:12px;border-radius:12px;width:max-content;margin:14px auto}
+#qr img,#qr canvas{display:block}
+.manual{font:600 13px ui-monospace,Consolas,monospace;word-break:break-all;color:var(--gold)}
+[hidden]{display:none!important}
 @media (max-width:760px){
   .grid{grid-template-columns:repeat(2,1fr)} .cfg{grid-template-columns:1fr}
   thead{display:none} tr{display:block;padding:10px 0;border-bottom:1px solid var(--line)}
@@ -91,13 +103,48 @@ dialog h3{margin:0 0 6px;font:800 18px Inter}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="gate" hidden>
+  <div class="card" id="vLogin" hidden>
+    <h1><span class="s">Silla</span><span class="m">MC</span> · Correo</h1>
+    <p class="note">Gestión de cuentas de @sillamc.es</p>
+    <form id="fLogin" autocomplete="off">
+      <label>Código de acceso<input name="access_code" type="password" required autocomplete="current-password"></label>
+      <label>Código del móvil (6 dígitos)<input name="code" class="code" inputmode="numeric" pattern="[0-9 ]{6,7}" maxlength="7" required autocomplete="one-time-code"></label>
+      <button>Entrar</button>
+    </form>
+  </div>
+
+  <div class="card" id="vSetup" hidden>
+    <h1><span class="s">Silla</span><span class="m">MC</span> · Primer acceso</h1>
+    <p class="note">Configura cómo entrar. Esto solo se hace una vez, y solo desde casa.</p>
+    <ol>
+      <li>Abre en el móvil Google Authenticator, Microsoft Authenticator o la app Contraseñas del iPhone y añade un código escaneando este QR.</li>
+      <li>Elige un código de acceso (mínimo 10 caracteres) y escribe los 6 dígitos que muestra el móvil.</li>
+    </ol>
+    <div id="qr"></div>
+    <p class="note" style="text-align:center">¿No puedes escanear? Clave manual:<br><span class="manual" id="manualKey"></span></p>
+    <form id="fSetup" autocomplete="off">
+      <label>Código de acceso nuevo<input name="access_code" type="password" minlength="10" required autocomplete="new-password"></label>
+      <label>Repítelo<input name="access_code2" type="password" minlength="10" required autocomplete="new-password"></label>
+      <label>Código del móvil (6 dígitos)<input name="code" class="code" inputmode="numeric" maxlength="7" required autocomplete="one-time-code"></label>
+      <button>Emparejar y entrar</button>
+    </form>
+  </div>
+
+  <div class="card" id="vAway" hidden>
+    <h1><span class="s">Silla</span><span class="m">MC</span> · Correo</h1>
+    <p class="note">Todavía no hay ningún móvil emparejado. El primer acceso solo se puede configurar desde la red de casa (o con WireGuard).</p>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
   <header>
     <div class="brand"><span class="s">Silla</span><span class="m">MC</span> · Correo
       <small>Buzones y alias de @sillamc.es</small></div>
     <div class="spacer"></div>
     <span class="pill" id="dnsPill"><span class="dot"></span><span>Comprobando dominio…</span></span>
-    <a class="pill" href="https://localhost:8443/SOGo/" target="_blank" rel="noopener" id="webmailLink">Abrir webmail ↗</a>
+    <a class="pill" href="https://mail.sillamc.es/" target="_blank" rel="noopener">Abrir webmail ↗</a>
+    <button class="ghost sm" id="bLogout" type="button">Salir</button>
   </header>
 
   <div class="grid">
@@ -192,6 +239,9 @@ dialog h3{margin:0 0 6px;font:800 18px Inter}
 
 <div id="toast" role="status"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+  integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -202,9 +252,44 @@ function toast(msg, err){ const t=$("#toast"); t.textContent=msg; t.className="s
 async function call(path, body){
   const r = await fetch("api/" + path, body ? {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)} : {});
   const j = await r.json().catch(()=>({error:"Respuesta no válida"}));
+  if (r.status === 401) { boot(); throw new Error(j.error || "Inicia sesión"); }
   if (!r.ok) throw new Error(j.error || ("Error " + r.status));
   return j;
 }
+
+// ---------- acceso ----------
+function view(id){
+  $("#app").hidden = id !== "app"; $("#gate").hidden = id === "app";
+  for (const v of ["vLogin","vSetup","vAway"]) $("#"+v).hidden = v !== id;
+  const first = id !== "app" && $("#"+id+" input"); if (first) first.focus();
+}
+async function boot(){
+  let s;
+  try { s = await (await fetch("api/session")).json(); } catch { return toast("Sin conexión con el panel", true); }
+  if (s.logged_in) { view("app"); load(); loadDns(); return; }
+  if (s.configured) return view("vLogin");
+  if (!s.can_setup) return view("vAway");
+  view("vSetup");
+  try {
+    const p = await call("setup");
+    $("#qr").innerHTML = ""; new QRCode($("#qr"), {text:p.uri, width:200, height:200, correctLevel:QRCode.CorrectLevel.M});
+    $("#manualKey").textContent = p.secret.replace(/(.{4})/g, "$1 ").trim();
+  } catch(e){ toast(e.message, true); }
+}
+async function enter(form, path){
+  const btn = form.querySelector("button"); btn.disabled = true;
+  try {
+    const d = Object.fromEntries(new FormData(form));
+    if (path === "setup" && d.access_code !== d.access_code2) throw new Error("Los dos códigos de acceso no coinciden");
+    await call(path, {access_code:d.access_code, code:d.code});
+    form.reset(); $("#qr").innerHTML = ""; $("#manualKey").textContent = "";
+    await boot();
+  } catch(e){ toast(e.message, true); form.code.value = ""; form.code.focus(); }
+  btn.disabled = false;
+}
+$("#fLogin").onsubmit = e => { e.preventDefault(); enter(e.target, "login"); };
+$("#fSetup").onsubmit = e => { e.preventDefault(); enter(e.target, "setup"); };
+$("#bLogout").onclick = async () => { await call("logout", {}).catch(()=>{}); boot(); };
 
 function showSecret(title, addr, pass){
   $("#dsTitle").textContent = title; $("#dsAddr").textContent = addr; $("#dsPass").value = pass;
@@ -315,10 +400,7 @@ document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
 });
 try { const t = localStorage.getItem("correoTab"); if (t) document.querySelector(`.tab[data-tab="${t}"]`)?.click(); } catch {}
 
-// Desde la LAN el webmail va por el túnel hasta que mail.sillamc.es tenga certificado.
-fetch("https://mail.sillamc.es/SOGo/", {mode:"no-cors"}).then(()=>{ $("#webmailLink").href="https://mail.sillamc.es/SOGo/"; }).catch(()=>{});
-
-load(); loadDns();
+boot();
 </script>
 </body>
 </html>
