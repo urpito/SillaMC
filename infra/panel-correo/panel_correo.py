@@ -291,6 +291,11 @@ class Handler(BaseHTTPRequestHandler):
             return self.start_session(auth.login, self.ip(), data.get("access_code"), data.get("code"))
         if path == "/api/setup":
             return self.start_session(auth.setup_finish, self.ip(), data.get("access_code"), data.get("code"))
+        if path == "/api/access-code":
+            if not auth.session_ok(self.token()):
+                return self.send(401, {"error": "Inicia sesión"})
+            return self.start_session(auth.change_access_code, self.ip(), data.get("current"),
+                                      data.get("new"), data.get("code"))
         if path == "/api/logout":
             auth.logout(self.token())
             return self.send(200, {"ok": True}, cookie=self.cookie("", 0))

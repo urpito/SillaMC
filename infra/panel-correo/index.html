@@ -144,6 +144,7 @@ dialog h3{margin:0 0 6px;font:800 18px Inter}
     <div class="spacer"></div>
     <span class="pill" id="dnsPill"><span class="dot"></span><span>Comprobando dominio…</span></span>
     <a class="pill" href="https://mail.sillamc.es/" target="_blank" rel="noopener">Abrir webmail ↗</a>
+    <button class="ghost sm" id="bAccess" type="button">Cambiar código de acceso</button>
     <button class="ghost sm" id="bLogout" type="button">Salir</button>
   </header>
 
@@ -237,6 +238,18 @@ dialog h3{margin:0 0 6px;font:800 18px Inter}
   </form>
 </dialog>
 
+<dialog id="dAccess">
+  <h3>Cambiar código de acceso</h3>
+  <p class="note">Es la contraseña del panel (la que pones junto a los 6 dígitos del móvil). El móvil emparejado no cambia.</p>
+  <form id="fAccess" autocomplete="off" style="display:flex;flex-direction:column;gap:12px;margin-top:14px">
+    <label>Código de acceso actual<input name="current" type="password" required autocomplete="current-password"></label>
+    <label>Código de acceso nuevo (mínimo 10)<input name="new" type="password" minlength="10" required autocomplete="new-password"></label>
+    <label>Repite el nuevo<input name="new2" type="password" minlength="10" required autocomplete="new-password"></label>
+    <label>Código del móvil (6 dígitos)<input name="code" inputmode="numeric" maxlength="7" required autocomplete="one-time-code"></label>
+    <div class="row" style="justify-content:flex-end"><button class="ghost" type="button" id="daCancel">Cancelar</button><button>Cambiar</button></div>
+  </form>
+</dialog>
+
 <div id="toast" role="status"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
@@ -289,7 +302,18 @@ async function enter(form, path){
 }
 $("#fLogin").onsubmit = e => { e.preventDefault(); enter(e.target, "login"); };
 $("#fSetup").onsubmit = e => { e.preventDefault(); enter(e.target, "setup"); };
-$("#bLogout").onclick = async () => { await call("logout", {}).catch(()=>{}); boot(); };
+$("#bAccess").onclick = () => { $("#fAccess").reset(); $("#dAccess").showModal(); };
+$("#daCancel").onclick = () => $("#dAccess").close();
+$("#fAccess").onsubmit = async e => {
+  e.preventDefault(); const f = e.target, btn = f.querySelector("button:last-child"); btn.disabled = true;
+  try {
+    if (f.new.value !== f.new2.value) throw new Error("Los dos códigos nuevos no coinciden");
+    await call("access-code", {current:f.current.value, new:f.new.value, code:f.code.value});
+    f.reset(); $("#dAccess").close(); toast("Código de acceso cambiado");
+  } catch(err){ toast(err.message, true); f.code.value = ""; }
+  btn.disabled = false;
+};
+$("#bLogout").onclick =async () => { await call("logout", {}).catch(()=>{}); boot(); };
 
 function showSecret(title, addr, pass){
   $("#dsTitle").textContent = title; $("#dsAddr").textContent = addr; $("#dsPass").value = pass;

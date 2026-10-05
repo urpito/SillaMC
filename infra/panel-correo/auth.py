@@ -183,6 +183,25 @@ def setup_finish(ip, access_code, code):
         return _new_session()
 
 
+def change_access_code(ip, current, new, code):
+    """Pide el código actual y uno del móvil, para que una sesión abierta no baste."""
+    new = new or ""
+    if len(new) < 10:
+        raise ValueError("El código de acceso nuevo debe tener al menos 10 caracteres")
+    with _lock:
+        if _blocked(ip):
+            raise PermissionError("Demasiados intentos. Espera 15 minutos")
+        d = _load()
+        step = _match_totp(d.get("totp", ""), code, d.get("last_step", -1))
+        if not _check_pw(current or "", d.get("pw", "")) or step is None:
+            _fail(ip)
+            raise ValueError("Código de acceso actual o código del móvil incorrecto")
+        d.update(pw=_hash_pw(new), last_step=step)
+        _save(d)
+        _sessions.clear()  # cierra las demás sesiones abiertas
+        return _new_session()
+
+
 def login(ip, access_code, code):
     with _lock:
         if _blocked(ip):
