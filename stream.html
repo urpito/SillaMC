@@ -22,18 +22,18 @@
   <div class="overlay" id="overlay">
     <img src="logo.png" alt="SillaMC" />
     <div style="min-width:0;flex:1">
-      <div class="slidebox" id="slidebox"><div class="kicker" id="kicker">Juega con nosotros · Java + Bedrock</div><div class="ip" id="ip">sillamc.ddns.net</div></div>
+      <div class="slidebox" id="slidebox"><div class="kicker" id="kicker">Juega con nosotros · Java + Bedrock</div><div class="ip" id="ip">play.sillamc.es</div></div>
       <div class="meta"><span class="online"><i class="dot"></i><span id="players">SillaMC online</span></span><span>Bedrock 19132</span></div>
     </div>
   </div>
   <script>
-    async function refresh(){try{const r=await fetch('https://api.mcstatus.io/v2/status/java/sillamc.ddns.net',{cache:'no-store'});if(!r.ok)return;const d=await r.json();const n=d.players?.online;if(d.online&&Number.isFinite(Number(n)))document.getElementById('players').textContent=`${n} jugador${Number(n)===1?'':'es'} online`;}catch{}}
+    async function refresh(){try{const r=await fetch('https://api.mcstatus.io/v2/status/java/play.sillamc.es',{cache:'no-store'});if(!r.ok)return;const d=await r.json();const n=d.players?.online;if(d.online&&Number.isFinite(Number(n)))document.getElementById('players').textContent=`${n} jugador${Number(n)===1?'':'es'} online`;}catch{}}
     refresh();setInterval(refresh,15000);
 
     // Alterna entre la IP del server y el Discord cada 10s, con un fundido corto
     // para que el cambio se note pero el cartel nunca cambie de tamaño por fuera.
     const SLIDES=[
-      {kicker:'Juega con nosotros · Java + Bedrock',text:'sillamc.ddns.net',discord:false},
+      {kicker:'Juega con nosotros · Java + Bedrock',text:'play.sillamc.es',discord:false},
       {kicker:'Únete a la comunidad',text:'discord.gg/aTeaB9yQkJ',discord:true}
     ];
     let slideIdx=0;

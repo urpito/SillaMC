@@ -551,12 +551,12 @@ const MC_COLORS={
 function mcCodeToHtml(raw){
   const preview=String(raw||"")
     .replace(/\{player\}/g,"TuNombre")
-    .replace(/\{dashboard\}/g,"https://sillaweb.ddns.net/dashboard.html")
+    .replace(/\{dashboard\}/g,"https://panel.sillamc.es/")
     .replace(/\{discord\}/g,"https://discord.gg/aTeaB9yQkJ")
-    .replace(/\{web_short\}/g,"sillaweb.ddns.net")
-    .replace(/\{web\}/g,"https://sillaweb.ddns.net")
+    .replace(/\{web_short\}/g,"sillamc.es")
+    .replace(/\{web\}/g,"https://sillamc.es")
     .replace(/\{online\}/g,"7").replace(/\{max\}/g,"20").replace(/\{ping\}/g,"42")
-    .replace(/\{ip\}/g,"sillamc.ddns.net").replace(/\{balance\}/g,"1.234")
+    .replace(/\{ip\}/g,"play.sillamc.es").replace(/\{balance\}/g,"1.234")
     .replace(/\{rank\}/g,"Taburete");
   let html="",color="#FFFFFF",bold=false,italic=false,underline=false,strike=false,buf="";
   const flush=()=>{

@@ -4,21 +4,22 @@
    · Backend: API_BASE. Sin él, el panel avisa de que no está conectado.
    ============================================================ */
 /* Backend.
-   · En el propio servidor (sillaweb.ddns.net) la API cuelga de /api: mismo
+   · En el propio servidor (sillamc.es, panel.sillamc.es) la API cuelga de /api: mismo
      origen, asi que no hay permisos entre dominios que configurar.
    · En local (Live Server) hace falta un tunel SSH al puerto 8770.
    · Desde cualquier otro sitio (github.io) apuntamos al servidor por su nombre. */
-const WEB_HOST = "sillaweb.ddns.net";
+// sillaweb.ddns.net se mantiene mientras dure la migración (hasta el 21/10/2026).
+const WEB_HOSTS = ["sillamc.es", "panel.sillamc.es", "sillaweb.ddns.net"];
 const API_BASE = (() => {
   const h = location.hostname;
   if (h === "127.0.0.1" || h === "localhost") return "http://127.0.0.1:8770";
-  if (h === WEB_HOST) return "/api";
-  return "https://" + WEB_HOST + "/api";
+  if (WEB_HOSTS.includes(h)) return "/api";
+  return "https://sillamc.es/api";
 })();
 
 /* ===== Servidor. El registro SRV hace que en Java no haga falta escribir el puerto.
    Bedrock no soporta SRV, por eso sí lleva el 19132 a mano. ===== */
-const SERVER = { host: "sillamc.ddns.net", bedrockPort: 19132 };
+const SERVER = { host: "play.sillamc.es", bedrockPort: 19132 };
 
 /* ===== Google AdSense — pon tus 2 IDs para activar anuncios reales =====
    1) Crea cuenta en adsense.google.com y aprueba tu sitio (tu URL de Pages).

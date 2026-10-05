@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-05T10:01:09.810Z",
+        "reason": "Claude: Inter + Archivo Black son las fuentes de marca de la web SillaMC (/var/www/sillaweb/index.html); el panel las reutiliza a propósito"
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sillaweb.ddns.net/sitemap.xml
+Sitemap: https://sillamc.es/sitemap.xml

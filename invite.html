@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Únete a la beta — SillaMC Survival</title>
-<meta name="description" content="Únete a la beta abierta de SillaMC Survival: descubre el servidor y pide tu hueco en la whitelist." />
+<title>Únete a SillaMC Survival</title>
+<meta name="description" content="SillaMC Survival: servidor de Minecraft survival vanilla++ en español, con crossplay Java y Bedrock. Entra gratis en play.sillamc.es." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="styles.css" />
@@ -20,6 +20,7 @@
     <a href="guias">Guías</a>
     <a href="tienda">Tienda</a>
     <a href="finder">Estadísticas</a>
+      <a href="reportes">Reportes</a>
   </nav>
   <a class="sitemenu__discord" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" aria-label="Discord" title="Únete al Discord"><svg viewBox="0 0 127.14 96.36" aria-hidden="true"><path fill="currentColor" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.25,60,73.25,53s5-12.74,11.44-12.74S96.23,46,96.12,53,91.08,65.69,84.69,65.69Z"/></svg></a>
   <a class="btn btn--access sitemenu__access" href="dashboard">Mi panel</a>
@@ -30,8 +31,8 @@
 
     <section class="invite__slide is-active" data-slide="0">
       <img src="logo.png" alt="SillaMC Survival" class="invite__logo" />
-      <h1>¡Bienvenido a la beta de SillaMC!</h1>
-      <p>Te han invitado a probar <b>SillaMC Survival</b> antes que nadie. Esto va a tardar un minuto — te enseñamos lo importante y al final te metemos directamente en la whitelist.</p>
+      <h1>¡Bienvenido a SillaMC!</h1>
+      <p>Te han invitado a <b>SillaMC Survival</b>. En un minuto te enseñamos lo importante y al final te decimos cómo entrar.</p>
     </section>
 
     <section class="invite__slide" data-slide="1">
@@ -67,23 +68,12 @@
     </section>
 
     <section class="invite__slide" data-slide="6">
-      <div class="invite__icon">📝</div>
-      <h2>¡Último paso!</h2>
-      <p>Escribe tu nombre de Minecraft (el mismo con el que entras al juego) y te añadimos a la whitelist ahora mismo.</p>
-      <div class="invite__form">
-        <input type="text" id="inviteName" placeholder="TuNombreDeMinecraft" maxlength="17" autocomplete="off" spellcheck="false" />
-        <button class="btn btn--primary btn--lg" id="inviteSubmit">Unirme a la beta</button>
-      </div>
-      <p class="invite__hint" id="inviteMsg"></p>
-    </section>
-
-    <section class="invite__slide" data-slide="done">
       <div class="invite__icon">✅</div>
-      <h2 id="doneTitle">¡Ya estás dentro!</h2>
-      <p id="doneText">Ya puedes conectarte al servidor.</p>
+      <h2>¡Ya puedes entrar!</h2>
+      <p>El servidor está abierto para todo el mundo: no hace falta apuntarse a nada. Copia la IP y entra.</p>
       <div class="serverip" style="margin:1.2rem auto 0">
         <div class="serverip__label">IP del servidor</div>
-        <div class="serverip__row"><code id="doneIp">sillamc.ddns.net</code>
+        <div class="serverip__row"><code id="doneIp">play.sillamc.es</code>
           <button class="btn btn--copy" id="copyIpDone">Copiar</button></div>
         <div class="serverip__meta">
           <span class="serverip__version"><b>Versión</b> 1.7 – 1.21.10</span>
@@ -98,10 +88,10 @@
       </div>
       <p class="invite__hint">Después, escribe <code>/cuentaweb</code> para vincular tu panel web.</p>
       <div class="invite__important">
-        <b>💬 Únete al Discord de la beta</b>
-        Este es el Discord solo para beta testers — ahí te damos el rol y es donde <b>reportas los bugs</b> (imprescindible, es lo más importante que puedes hacer ahora mismo).
+        <b>💬 Únete al Discord</b>
+        Ahí avisamos de los eventos y las novedades, y es donde puedes <b>reportar bugs</b> o pedir ayuda al staff.
       </div>
-      <a class="btn btn--discord btn--lg" href="https://discord.gg/E7K7ZeSPEN" target="_blank" rel="noopener" style="margin-top:.8rem">Unirme al Discord de la beta</a>
+      <a class="btn btn--discord btn--lg" href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener" style="margin-top:.8rem">Unirme al Discord</a>
       <a class="btn btn--primary btn--lg" href="dashboard" style="margin-top:.6rem">Ir a mi panel</a>
     </section>
 
@@ -128,8 +118,11 @@ function renderDots(){
   dots.innerHTML=SLIDE_IDS.map((_,i)=>`<span class="invite__dot${i===inviteStep?" is-active":""}"></span>`).join("");
 }
 function updateNav(){
+  const last=SLIDE_IDS.length-1;
   $("invitePrev").style.visibility=inviteStep===0?"hidden":"visible";
-  $("inviteNext").textContent=inviteStep===SLIDE_IDS.length-1?"Ver el paso final ›":"Siguiente ›";
+  // En la última diapositiva ya están los botones de entrar, Discord y panel.
+  $("inviteNext").style.visibility=inviteStep===last?"hidden":"visible";
+  $("inviteNext").textContent=inviteStep===last-1?"¿Cómo entro? ›":"Siguiente ›";
 }
 function goTo(step){
   inviteStep=Math.max(0,Math.min(SLIDE_IDS.length-1,step));
@@ -142,47 +135,8 @@ $("invitePrev").addEventListener("click",()=>goTo(inviteStep-1));
 renderDots();updateNav();
 
 $("copyIpDone").addEventListener("click",()=>{
-  navigator.clipboard.writeText("sillamc.ddns.net").then(()=>toast("IP copiada"));
+  navigator.clipboard.writeText("play.sillamc.es").then(()=>toast("IP copiada"));
 });
-
-$("inviteSubmit").addEventListener("click",async()=>{
-  const btn=$("inviteSubmit"), msg=$("inviteMsg");
-  const name=$("inviteName").value.trim();
-  if(!/^\.?[A-Za-z0-9_]{1,16}$/.test(name)){
-    msg.textContent="Escribe un nombre de Minecraft válido.";
-    return;
-  }
-  btn.disabled=true;
-  msg.textContent="Añadiéndote a la whitelist…";
-  try{
-    const {ok,data}=await api("/invite/whitelist",{method:"POST",body:{name}});
-    if(ok&&data.ok){
-      if(data.already){
-        $("doneTitle").textContent="¡Ya estabas dentro!";
-        $("doneText").textContent=name+" ya está en la whitelist — nos vemos en el servidor.";
-      }else{
-        $("doneTitle").textContent="¡Ya estás dentro!";
-        $("doneText").textContent="Hemos añadido a "+name+" a la whitelist. Ya puedes conectarte al servidor.";
-      }
-      showSlide("done");
-      $("inviteDots").style.display="none";
-      document.querySelector(".invite__nav").style.display="none";
-    }else{
-      const err=(data&&data.error)||"";
-      msg.textContent=err==="too_many_attempts"
-        ?"Demasiados intentos seguidos, espera un poco y vuelve a probar."
-        :err==="bedrock_first_try"
-        // En Bedrock necesitamos su UUID real, y solo lo sabemos tras un intento.
-        ?"Si juegas en Bedrock (móvil/consola): entra una vez al servidor (te dirá que no estás en la whitelist), y luego vuelve aquí y dale otra vez."
-        :"No se pudo añadir ese nombre, revísalo e inténtalo de nuevo.";
-      btn.disabled=false;
-    }
-  }catch(e){
-    msg.textContent="No se pudo conectar con el servidor, inténtalo de nuevo.";
-    btn.disabled=false;
-  }
-});
-$("inviteName").addEventListener("keydown",e=>{if(e.key==="Enter")$("inviteSubmit").click();});
 </script>
 </body>
 </html>
