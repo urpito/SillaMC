@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Tarjetas Google · SillaMC</title>
+  <meta name="description" content="Herramienta privada para encontrar negocios con potencial y crear enlaces directos de reseña.">
+  <link rel="stylesheet" href="/vendor/leaflet.css">
+  <link rel="stylesheet" href="/tarjetasgoogle.css">
+  <script src="/vendor/leaflet.js" defer></script>
+  <script src="/vendor/qrcode.min.js" defer></script>
+  <script src="/tarjetasgoogle.js" defer></script>
+  <!-- iconos SillaMC -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0c0f0a">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back-link" href="/">← SillaMC</a>
+    <div class="mini-brand"><span class="mini-brand__mark">★</span><span>Tarjetas Google</span></div>
+    <span class="private-pill">Herramienta</span>
+  </header>
+
+  <main>
+    <div id="app">
+      <section class="app-hero">
+        <div>
+          <p class="overline">PROSPECCIÓN LOCAL</p>
+          <h1>Encuentra negocios que necesitan más reseñas.</h1>
+          <p>Localiza oportunidades, crea el enlace NFC y guarda tus próximos clientes.</p>
+        </div>
+        <div class="quota-badge" id="quotaBadge"><span></span> API conectada</div>
+      </section>
+
+      <nav class="tabs" aria-label="Secciones">
+        <button class="tab is-active" data-view="opportunities">Oportunidades</button>
+        <button class="tab" data-view="review-link">Crear enlace</button>
+        <button class="tab" data-view="leads">Mis negocios <span id="leadCount">0</span></button>
+      </nav>
+
+      <section class="view is-active" id="view-opportunities">
+        <div class="search-shell">
+          <div class="search-shell__head">
+            <div>
+              <p class="step-label">01 · UBICACIÓN</p>
+              <h2>¿Dónde quieres buscar?</h2>
+            </div>
+            <button class="button button--location" type="button" id="useLocation">◎ Usar mi ubicación</button>
+          </div>
+
+          <div class="location-grid">
+            <label class="field field--wide">
+              <span>Ubicación manual</span>
+              <input id="locationInput" placeholder="Quartu Sant'Elena, Cagliari, Madrid Retiro…" autocomplete="off">
+            </label>
+            <label class="field">
+              <span>Radio</span>
+              <select id="radiusSelect">
+                <option value="500">500 m</option>
+                <option value="1000">1 km</option>
+                <option value="2000" selected>2 km</option>
+                <option value="5000">5 km</option>
+                <option value="10000">10 km</option>
+              </select>
+            </label>
+          </div>
+          <p class="location-status" id="locationStatus">Escribe una ubicación o usa la posición del móvil.</p>
+
+          <details class="filters" id="filtersPanel">
+            <summary>Filtros de oportunidad <span>Opcional</span></summary>
+            <div class="filter-grid">
+              <label class="field">
+                <span>Número máximo de reseñas</span>
+                <select id="maxReviews">
+                  <option value="10">Menos de 10</option>
+                  <option value="25">Menos de 25</option>
+                  <option value="50">Menos de 50</option>
+                  <option value="100" selected>Menos de 100</option>
+                  <option value="250">Menos de 250</option>
+                  <option value="custom">Personalizado</option>
+                </select>
+              </label>
+              <label class="field" id="customReviewsField" hidden>
+                <span>Límite personalizado</span>
+                <input id="customReviews" type="number" min="1" max="100000" inputmode="numeric" value="100">
+              </label>
+              <label class="field">
+                <span>Valoración</span>
+                <select id="ratingMax">
+                  <option value="">Cualquiera</option>
+                  <option value="5">Menos de 5</option>
+                  <option value="4.8">Menos de 4,8</option>
+                  <option value="4.5">Menos de 4,5</option>
+                  <option value="4">Menos de 4</option>
+                </select>
+              </label>
+            </div>
+
+            <fieldset class="categories">
+              <legend>Categorías <button type="button" id="toggleCategories">Seleccionar todas</button></legend>
+              <div class="category-chips" id="categoryChips">
+                <label><input type="checkbox" value="restaurants"><span>Restaurantes</span></label>
+                <label><input type="checkbox" value="pizzerias"><span>Pizzerías</span></label>
+                <label><input type="checkbox" value="bars"><span>Bares</span></label>
+                <label><input type="checkbox" value="cafes"><span>Cafeterías</span></label>
+                <label><input type="checkbox" value="hairdressers"><span>Peluquerías</span></label>
+                <label><input type="checkbox" value="barbers"><span>Barberías</span></label>
+                <label><input type="checkbox" value="dentists"><span>Dentistas</span></label>
+                <label><input type="checkbox" value="clinics"><span>Clínicas</span></label>
+                <label><input type="checkbox" value="gyms"><span>Gimnasios</span></label>
+                <label><input type="checkbox" value="workshops"><span>Talleres</span></label>
+                <label><input type="checkbox" value="hotels"><span>Hoteles</span></label>
+                <label><input type="checkbox" value="shops"><span>Tiendas</span></label>
+                <label><input type="checkbox" value="real_estate"><span>Inmobiliarias</span></label>
+                <label><input type="checkbox" value="beauty"><span>Estética</span></label>
+                <label><input type="checkbox" value="vets"><span>Veterinarios</span></label>
+                <label><input type="checkbox" value="others"><span>Otros</span></label>
+              </div>
+            </fieldset>
+          </details>
+
+          <button class="search-cta" type="button" id="searchOpportunities">
+            <span>Buscar oportunidades</span><b>→</b>
+          </button>
+          <p class="search-hint">Modo rápido: 2 km · menos de 100 reseñas · mayor oportunidad primero.</p>
+        </div>
+
+        <section class="results" id="resultsSection" hidden>
+          <div class="results-head">
+            <div><p class="step-label">02 · RESULTADOS</p><h2 id="resultsTitle">Negocios encontrados</h2></div>
+            <div class="results-tools">
+              <label class="compact-select"><span>Ordenar</span><select id="sortResults">
+                <option value="opportunity">Mayor oportunidad</option>
+                <option value="reviews-asc">Menos reseñas</option>
+                <option value="distance">Más cercanos</option>
+                <option value="rating">Mejor valoración</option>
+                <option value="reviews-desc">Más reseñas</option>
+              </select></label>
+              <div class="view-toggle" aria-label="Vista de resultados">
+                <button class="is-active" type="button" data-results-view="list">Lista</button>
+                <button type="button" data-results-view="map">Mapa</button>
+              </div>
+            </div>
+          </div>
+          <div class="result-list" id="resultList"></div>
+          <div class="map-panel" id="mapPanel" hidden><div id="businessMap"></div></div>
+          <div class="empty-state" id="resultsEmpty" hidden><h3>No hay coincidencias</h3><p>Amplía el radio o sube el límite de reseñas.</p></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-review-link">
+        <div class="review-tool">
+          <p class="step-label">GENERADOR DIRECTO</p>
+          <h2>Crea un enlace de reseña.</h2>
+          <p>Escribe nombre + localidad o pega una URL completa o corta de Google Maps.</p>
+          <form id="reviewForm">
+            <label class="field"><span>Negocio o enlace de Google Maps</span>
+              <textarea id="reviewInput" rows="3" placeholder="Pizzetiamo Quartu Sant'Elena o https://maps.app.goo.gl/…"></textarea>
+            </label>
+            <button class="search-cta" type="submit"><span>Encontrar negocio</span><b>→</b></button>
+          </form>
+          <div id="reviewResult"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-leads">
+        <div class="leads-head">
+          <div><p class="step-label">CRM LIGERO</p><h2>Mis negocios</h2><p>Contactos guardados y evolución de sus reseñas.</p></div>
+          <button class="button button--secondary" type="button" id="exportCsv">Exportar CSV</button>
+        </div>
+        <div class="lead-filters">
+          <label class="field"><span>Buscar</span><input id="leadSearch" placeholder="Nombre, dirección o notas"></label>
+          <label class="field"><span>Estado</span><select id="leadStatusFilter"><option value="">Todos</option><option>Nuevo</option><option>Contactar</option><option>Contactado</option><option>Interesado</option><option>Vendido</option><option>No interesado</option></select></label>
+        </div>
+        <div class="lead-list" id="leadList"></div>
+        <div class="empty-state" id="leadsEmpty" hidden><h3>Aún no hay negocios guardados</h3><p>Guarda una oportunidad y aparecerá aquí.</p></div>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="business-dialog" id="businessDialog">
+    <button class="dialog-close" type="button" data-close-dialog aria-label="Cerrar">×</button>
+    <div id="businessDialogBody"></div>
+  </dialog>
+
+  <dialog class="qr-dialog" id="qrDialog">
+    <button class="dialog-close" type="button" data-close-qr aria-label="Cerrar">×</button>
+    <div class="qr-dialog__body">
+      <p class="step-label">QR DE RESEÑA</p><h2 id="qrTitle">Código QR</h2>
+      <div class="qr-canvas" id="qrCanvas"></div>
+      <p class="qr-url" id="qrUrl"></p>
+      <div class="qr-actions"><button class="button button--primary" id="downloadQrPng">Descargar PNG</button><button class="button button--secondary" id="downloadQrSvg">Descargar SVG</button><button class="button button--secondary" id="printQr">Imprimir</button></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

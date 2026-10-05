@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reportar un problema — SillaMC</title>
+  <meta name="description" content="Reporta jugadores, bugs del juego o fallos de la web de SillaMC. Ayúdanos a mejorar la comunidad.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="reportes.css">
+  <!-- iconos SillaMC -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#0c0f0a">
+</head>
+<body>
+<button class="menu-fab" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="siteMenu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3V6Zm0 5h18v2H3v-2Zm0 5h18v2H3v-2Z"/></svg></button>
+<div class="sitemenu-backdrop" id="siteMenuBackdrop"></div>
+<div class="sitemenu" id="siteMenu" aria-hidden="true">
+  <button class="sitemenu__close" id="menuClose" aria-label="Cerrar menú">✕</button>
+  <a href="/"><img src="logo.png" alt="SillaMC — Inicio" class="sitemenu__logo"></a>
+  <nav class="sitemenu__links"><a href="/">Inicio</a><a href="guias">Guías</a><a href="tienda">Tienda</a><a href="finder">Estadísticas</a><a href="reportes" class="is-active" aria-current="page">Reportes</a><a href="dashboard">Mi panel</a></nav>
+  <a href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener">Únete al Discord</a>
+</div>
+<main class="reports-page">
+  <header class="reports-header"><img src="report-warning.svg" alt="" width="64" height="64"><div><h1>¿Algo no va bien?</h1><p>Un bug, un fallo en la web o una conducta sospechosa. Cuéntanos qué ha pasado y ayúdanos a cuidar SillaMC.</p></div></header>
+  <div class="reports-layout">
+    <div>
+      <section id="reportSuccess" class="report-success" tabindex="-1" hidden><h2>Reporte enviado</h2><p>¡Gracias por echarnos una mano! El equipo lo revisará y podrá pedirte más información en el hilo.</p><a id="reportThread" class="btn btn--primary" target="_blank" rel="noopener">Ver mi reporte en Discord</a><p class="report-hint">Necesitas entrar al Discord de SillaMC para consultar el hilo.</p><button type="button" class="btn btn--ghost" id="reportAnother">Reportar otro caso</button></section>
+      <form id="reportForm">
+        <div class="report-form">
+          <fieldset><legend>¿Qué quieres reportar?</legend><div class="report-types"><label><input type="radio" name="category" value="players" required><span>🧍 Jugadores</span></label><label><input type="radio" name="category" value="game" required><span>🎮 Juego</span></label><label><input type="radio" name="category" value="web" required><span>🌐 Web</span></label></div><p id="categoryHint" class="report-hint">Elige una etiqueta para preparar tu reporte.</p></fieldset>
+          <label class="report-field"><span>Tu nombre en Minecraft</span><input name="reporter" autocomplete="username" maxlength="32" required placeholder="Tu nombre exacto"><small id="reportIdentity">No necesitas iniciar sesión. Los nombres sin sesión se indican como no verificados.</small></label>
+          <label class="report-field"><span>Título</span><input name="title" minlength="5" maxlength="100" required placeholder="Un resumen breve y claro del problema"></label>
+          <label class="report-field"><span>Descripción</span><textarea name="description" minlength="15" maxlength="1000" required placeholder="Qué ocurrió y dónde: servidor, mundo, coordenadas o página…"></textarea></label>
+          <div class="report-row"><label class="report-field"><span>Fecha y hora del incidente</span><input type="datetime-local" name="occurred_at" required></label><label class="report-field"><span>Zona horaria</span><input name="timezone" maxlength="64" required placeholder="Europe/Madrid" list="reportTimezones"><datalist id="reportTimezones"><option value="Europe/Madrid"><option value="Atlantic/Canary"><option value="America/Mexico_City"><option value="America/Bogota"><option value="America/Argentina/Buenos_Aires"><option value="UTC"></datalist><small>Detectada en tu dispositivo; puedes corregirla.</small></label></div>
+          <fieldset id="playerFields" hidden disabled><legend>Sobre el jugador</legend><label class="report-field"><span>Nombre exacto del jugador reportado</span><input name="player" maxlength="32" required placeholder="Incluye el punto inicial si juega en Bedrock"></label><label class="report-field"><span>Conducta que reportas</span><textarea name="behavior" minlength="10" maxlength="600" required placeholder="Describe lo que observaste, sin insultos ni acusaciones sin fundamento."></textarea></label></fieldset>
+          <fieldset id="bugFields" hidden disabled><legend>Sobre el fallo</legend><label class="report-field"><span>Pasos para reproducirlo</span><textarea name="steps" minlength="10" maxlength="800" required placeholder="1. Entré en…&#10;2. Pulsé…&#10;3. Apareció…"></textarea></label><label class="report-field"><span>¿Qué esperabas que ocurriera?</span><textarea name="expected" minlength="5" maxlength="500" required></textarea></label><label class="report-field"><span>¿Qué ocurrió realmente?</span><textarea name="actual" minlength="5" maxlength="500" required></textarea></label></fieldset>
+          <label class="report-field"><span>Pruebas <small>(opcional)</small></span><textarea name="evidence" maxlength="800" placeholder="Enlaces a capturas o vídeos (https://…), o el mensaje de error exacto."></textarea><small>Pega enlaces que el equipo pueda abrir. También puedes añadir archivos al hilo de Discord después de enviarlo.</small></label>
+          <div class="report-trap" aria-hidden="true"><label>Deja esto vacío<input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <label class="report-consent"><input type="checkbox" name="consent" required><span>He comprobado si ya existe un reporte y acepto que este caso se publique en el canal de reportes de Discord. No contiene datos personales ni información sensible.</span></label>
+          <p id="reportFeedback" class="report-feedback" role="alert"></p>
+          <button id="reportSubmit" class="btn btn--primary" type="submit">Enviar reporte</button>
+          <p class="report-hint">Se creará una publicación con la etiqueta que has elegido.</p>
+        </div>
+      </form>
+      <noscript><p>Activa JavaScript para enviar el formulario o publica tu reporte directamente en <a href="https://discord.com/channels/1135595151885078529/1556223248319123526">Discord</a>.</p></noscript>
+    </div>
+    <aside class="report-rules"><h2>Antes de enviar</h2><p><a href="https://discord.com/channels/1135595151885078529/1556223248319123526" target="_blank" rel="noopener">Consulta los reportes existentes ↗</a>. Si ya hay un hilo sobre tu caso, añade allí tu información.</p><ul><li>Una publicación por cada caso.</li><li>Mantén un trato respetuoso: sin insultos, spam ni menciones innecesarias al equipo.</li><li>Cuenta lo que has observado y aporta pruebas si las tienes.</li></ul><details><summary>Datos sensibles y seguridad</summary><p>No publiques contraseñas, datos personales ni información de pago. Si el caso contiene información sensible o un fallo de seguridad, <a href="https://discord.gg/aTeaB9yQkJ" target="_blank" rel="noopener">contacta al equipo por privado en Discord</a>.</p></details></aside>
+  </div>
+</main>
+<footer class="footer"><a href="/">SillaMC Survival · Volver al inicio</a></footer>
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+<script src="reportes.js"></script>
+</body>
+</html>

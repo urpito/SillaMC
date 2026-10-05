@@ -4,12 +4,10 @@
    · Backend: API_BASE. Sin él, el panel avisa de que no está conectado.
    ============================================================ */
 /* Backend.
-   · En el propio servidor (sillamc.es, panel.sillamc.es) la API cuelga de /api: mismo
+   · En sillamc.es y panel.sillamc.es la API cuelga de /api: mismo
      origen, asi que no hay permisos entre dominios que configurar.
-   · En local (Live Server) hace falta un tunel SSH al puerto 8770.
-   · Desde cualquier otro sitio (github.io) apuntamos al servidor por su nombre. */
-// sillaweb.ddns.net se mantiene mientras dure la migración (hasta el 21/10/2026).
-const WEB_HOSTS = ["sillamc.es", "panel.sillamc.es", "sillaweb.ddns.net"];
+   · En local (Live Server) hace falta un tunel SSH al puerto 8770. */
+const WEB_HOSTS = ["sillamc.es", "panel.sillamc.es"];
 const API_BASE = (() => {
   const h = location.hostname;
   if (h === "127.0.0.1" || h === "localhost") return "http://127.0.0.1:8770";
