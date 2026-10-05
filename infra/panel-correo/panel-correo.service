@@ -1,0 +1,16 @@
+[Unit]
+Description=Panel de correo de SillaMC (buzones y alias)
+After=network-online.target docker.service
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/panel-correo/panel_correo.py
+LoadCredential=apikey:/etc/panel-correo/apikey
+DynamicUser=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

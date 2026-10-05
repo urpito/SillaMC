@@ -1,0 +1,15 @@
+[Unit]
+Description=Actualiza la IP de sillamc.es en Hostinger
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/bin/sillamc-ddns.py
+LoadCredential=token:/etc/sillamc-ddns/token
+DynamicUser=yes
+StateDirectory=sillamc-ddns
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes

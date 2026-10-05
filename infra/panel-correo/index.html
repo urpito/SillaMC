@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Correo SillaMC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0f0a; --bg2:#111509; --card:#171c11; --card2:#1e2616; --line:#2c3620;
+  --text:#e9f0e0; --muted:#9db089; --gold:#f4b63a; --gold2:#e08a17;
+  --green:#7ec241; --danger:#f2836a; --r:14px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 500px at 10% -10%,#1d2a12 0,transparent 60%),var(--bg);
+  color:var(--text);font:15px/1.5 Inter,system-ui,sans-serif;min-height:100vh}
+a{color:var(--gold)}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 16px 60px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.brand{font-family:"Archivo Black",sans-serif;font-size:28px;letter-spacing:.5px}
+.brand .s{color:var(--gold)} .brand .m{color:var(--green)}
+.brand small{display:block;font:600 13px Inter;color:var(--muted);letter-spacing:0}
+.spacer{flex:1}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;border:1px solid var(--line);
+  background:var(--bg2);font-size:13px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.ok .dot{background:var(--green)} .warn .dot{background:var(--gold)} .bad .dot{background:var(--danger)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+.stat b{display:block;font:800 26px Inter;color:var(--gold)}
+.stat span{color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--muted);padding:9px 16px;border-radius:10px;
+  font:600 14px Inter;cursor:pointer}
+.tab:hover{background:var(--card2);color:var(--text);border-color:var(--gold)}
+.tab[aria-selected=true],.tab[aria-selected=true]:hover{background:var(--gold);color:#1b1305;border-color:var(--gold)}
+section{display:none} section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:16px}
+.card h2{margin:0 0 12px;font:800 17px Inter}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted);font-weight:600;flex:1;min-width:150px}
+input,select{background:var(--bg2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;
+  font:14px Inter;width:100%}
+input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:transparent}
+.suffix{display:flex;align-items:stretch}
+.suffix input{border-radius:10px 0 0 10px}
+.suffix span{background:var(--card2);border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;
+  padding:10px 12px;color:var(--muted);white-space:nowrap}
+button{background:var(--gold);color:#1b1305;border:0;border-radius:10px;padding:10px 16px;font:800 14px Inter;cursor:pointer;white-space:nowrap}
+button:hover{background:var(--gold2)}
+button.ghost{background:transparent;color:var(--text);border:1px solid var(--line);font-weight:600}
+button.ghost:hover{border-color:var(--gold);color:var(--gold)}
+button.danger{background:transparent;color:var(--danger);border:1px solid #4a2a20;font-weight:600}
+button.danger:hover{background:#2a1510}
+button.sm{padding:6px 10px;font-size:13px}
+button:disabled{opacity:.5;cursor:wait}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid #20281a;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.addr{font-weight:800} .sub{color:var(--muted);font-size:13px}
+.bar{height:6px;background:var(--bg2);border-radius:9px;overflow:hidden;width:110px;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--green)}
+.acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.tag.on{background:#1f3315;color:var(--green)} .tag.off{background:#2e1a14;color:var(--danger)}
+.arrow{color:var(--muted);margin:0 6px}
+.empty{color:var(--muted);text-align:center;padding:24px}
+.cfg{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.cfg div{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.cfg b{color:var(--gold)} code{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
+.dns td:first-child{font-weight:800;width:90px}
+.dns code{word-break:break-all}
+dialog{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:440px;width:calc(100% - 32px)}
+dialog::backdrop{background:#000a}
+dialog h3{margin:0 0 6px;font:800 18px Inter}
+.secret{display:flex;gap:8px;margin:14px 0}
+.secret input{font:700 16px ui-monospace,Consolas,monospace;color:var(--gold)}
+.note{color:var(--muted);font-size:13px;margin:6px 0 0}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;transition:.2s;
+  background:var(--card2);border:1px solid var(--line);padding:10px 16px;border-radius:10px;pointer-events:none;z-index:9}
+#toast.show{opacity:1;transform:translateX(-50%)}
+#toast.err{border-color:var(--danger);color:#ffc9bb}
+@media (max-width:760px){
+  .grid{grid-template-columns:repeat(2,1fr)} .cfg{grid-template-columns:1fr}
+  thead{display:none} tr{display:block;padding:10px 0;border-bottom:1px solid var(--line)}
+  td{display:block;border:0;padding:4px 0} .acts{justify-content:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="s">Silla</span><span class="m">MC</span> · Correo
+      <small>Buzones y alias de @sillamc.es</small></div>
+    <div class="spacer"></div>
+    <span class="pill" id="dnsPill"><span class="dot"></span><span>Comprobando dominio…</span></span>
+    <a class="pill" href="https://localhost:8443/SOGo/" target="_blank" rel="noopener" id="webmailLink">Abrir webmail ↗</a>
+  </header>
+
+  <div class="grid">
+    <div class="stat"><b id="sBoxes">–</b><span>buzones</span></div>
+    <div class="stat"><b id="sAliases">–</b><span>alias</span></div>
+    <div class="stat"><b id="sMsgs">–</b><span>correos guardados</span></div>
+    <div class="stat"><b id="sUsed">–</b><span>espacio usado</span></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-tab="boxes">Buzones</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="aliases">Alias</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="setup">Configurar móvil / PC</button>
+    <button class="tab" role="tab" aria-selected="false" data-tab="dns">Estado del dominio</button>
+  </div>
+
+  <section id="boxes" class="on">
+    <div class="card">
+      <h2>Nuevo buzón</h2>
+      <form class="row" id="fBox">
+        <label>Dirección
+          <div class="suffix"><input name="local_part" placeholder="urpi" required autocomplete="off"><span>@sillamc.es</span></div></label>
+        <label>Nombre visible<input name="name" placeholder="Urpi"></label>
+        <label style="max-width:140px">Espacio
+          <select name="quota_mb"><option value="1024">1 GB</option><option value="2048" selected>2 GB</option>
+          <option value="5120">5 GB</option><option value="10240">10 GB</option></select></label>
+        <label>Contraseña <input name="password" type="text" placeholder="vacío = generar una segura" autocomplete="new-password"></label>
+        <button>Crear buzón</button>
+      </form>
+    </div>
+    <div class="card">
+      <table><thead><tr><th>Buzón</th><th>Uso</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="tBoxes"><tr><td colspan="4" class="empty">Cargando…</td></tr></tbody></table>
+    </div>
+  </section>
+
+  <section id="aliases">
+    <div class="card">
+      <h2>Nuevo alias</h2>
+      <p class="note" style="margin:-6px 0 12px">Un alias no tiene buzón propio: lo que llega se reenvía a otra dirección.</p>
+      <form class="row" id="fAlias">
+        <label>Alias<div class="suffix"><input name="address" placeholder="youtube" required autocomplete="off"><span>@sillamc.es</span></div></label>
+        <label>Reenviar a<select name="goto" id="aliasGoto"></select></label>
+        <button>Crear alias</button>
+      </form>
+    </div>
+    <div class="card">
+      <table><thead><tr><th>Alias</th><th>Llega a</th><th></th></tr></thead>
+      <tbody id="tAliases"><tr><td colspan="3" class="empty">Cargando…</td></tr></tbody></table>
+    </div>
+  </section>
+
+  <section id="setup">
+    <div class="card">
+      <h2>Datos para iPhone Mail, Outlook o Thunderbird</h2>
+      <div class="cfg">
+        <div><b>Entrante (IMAP)</b><br>Servidor <code>mail.sillamc.es</code><br>Puerto <code>993</code> · SSL/TLS</div>
+        <div><b>Saliente (SMTP)</b><br>Servidor <code>mail.sillamc.es</code><br>Puerto <code>587</code> · STARTTLS (o <code>465</code> SSL)</div>
+        <div><b>Usuario</b><br>La dirección completa, p. ej. <code>urpi@sillamc.es</code></div>
+        <div><b>Contraseña</b><br>La del buzón (la puedes cambiar en la pestaña Buzones)</div>
+      </div>
+      <p class="note">En iPhone: Ajustes → Mail → Cuentas → Añadir cuenta → Otra → Añadir cuenta de correo, y elige IMAP.
+      Funcionará desde fuera de casa cuando el dominio esté activo y el router abra los puertos de correo.</p>
+    </div>
+  </section>
+
+  <section id="dns">
+    <div class="card">
+      <h2>Lo que ve Internet ahora</h2>
+      <table class="dns"><tbody id="tDns"><tr><td class="empty">Cargando…</td></tr></tbody></table>
+      <p class="note">Se consulta a los DNS públicos de Google en cada visita.</p>
+    </div>
+  </section>
+</div>
+
+<dialog id="dSecret">
+  <h3 id="dsTitle">Buzón creado</h3>
+  <p class="note" id="dsAddr"></p>
+  <div class="secret"><input id="dsPass" readonly><button class="ghost" id="dsCopy" type="button">Copiar</button></div>
+  <p class="note">Guárdala ahora: el panel no la vuelve a mostrar.</p>
+  <div class="row" style="justify-content:flex-end;margin-top:14px"><button id="dsClose" type="button">Hecho</button></div>
+</dialog>
+
+<dialog id="dPass">
+  <h3>Cambiar contraseña</h3>
+  <p class="note" id="dpAddr"></p>
+  <form id="fPass" method="dialog">
+    <label style="margin:14px 0">Nueva contraseña<input name="password" type="text" placeholder="vacío = generar una segura" autocomplete="new-password"></label>
+    <div class="row" style="justify-content:flex-end"><button class="ghost" value="cancel" type="button" id="dpCancel">Cancelar</button><button>Cambiar</button></div>
+  </form>
+</dialog>
+
+<div id="toast" role="status"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let boxes = [], aliases = [];
+
+function toast(msg, err){ const t=$("#toast"); t.textContent=msg; t.className="show"+(err?" err":""); clearTimeout(t._h); t._h=setTimeout(()=>t.className="",3200); }
+
+async function call(path, body){
+  const r = await fetch("api/" + path, body ? {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)} : {});
+  const j = await r.json().catch(()=>({error:"Respuesta no válida"}));
+  if (!r.ok) throw new Error(j.error || ("Error " + r.status));
+  return j;
+}
+
+function showSecret(title, addr, pass){
+  $("#dsTitle").textContent = title; $("#dsAddr").textContent = addr; $("#dsPass").value = pass;
+  $("#dSecret").showModal(); $("#dsPass").select();
+}
+$("#dsCopy").onclick = async () => { await navigator.clipboard.writeText($("#dsPass").value).catch(()=>{}); toast("Contraseña copiada"); };
+$("#dsClose").onclick = () => { $("#dsPass").value = ""; $("#dSecret").close(); };
+
+function fmtMB(mb){ return mb >= 1024 ? (mb/1024).toFixed(mb%1024?1:0)+" GB" : Math.round(mb)+" MB"; }
+function ago(ts){ if(!ts) return "nunca ha entrado"; const d=(Date.now()/1000-ts)/86400; return d<1?"entró hoy":d<2?"entró ayer":`entró hace ${Math.floor(d)} días`; }
+
+function render(){
+  $("#sBoxes").textContent = boxes.length;
+  $("#sAliases").textContent = aliases.length;
+  $("#sMsgs").textContent = boxes.reduce((a,b)=>a+b.messages,0);
+  $("#sUsed").textContent = fmtMB(boxes.reduce((a,b)=>a+b.used_mb,0));
+
+  $("#tBoxes").innerHTML = boxes.length ? boxes.map(b => {
+    const pct = b.quota_mb ? Math.min(100, b.used_mb/b.quota_mb*100) : 0;
+    return `<tr>
+      <td><div class="addr">${esc(b.address)}</div><div class="sub">${esc(b.name)} · ${ago(b.last_login)}</div></td>
+      <td><div class="sub">${fmtMB(b.used_mb)} de ${fmtMB(b.quota_mb)} · ${b.messages} correos</div><div class="bar"><i style="width:${pct}%"></i></div></td>
+      <td><span class="tag ${b.active?"on":"off"}">${b.active?"Activo":"Desactivado"}</span></td>
+      <td><div class="acts">
+        <button class="ghost sm" data-act="pass" data-a="${esc(b.address)}">Contraseña</button>
+        <button class="ghost sm" data-act="toggle" data-a="${esc(b.address)}" data-v="${b.active?0:1}">${b.active?"Desactivar":"Activar"}</button>
+        <button class="danger sm" data-act="del" data-a="${esc(b.address)}">Borrar</button>
+      </div></td></tr>`;
+  }).join("") : `<tr><td colspan="4" class="empty">Todavía no hay buzones</td></tr>`;
+
+  $("#tAliases").innerHTML = aliases.length ? aliases.map(a => `<tr>
+      <td class="addr">${esc(a.address)}</td>
+      <td class="sub"><span class="arrow">→</span>${a.goto.map(esc).join(", ")}</td>
+      <td><div class="acts"><button class="danger sm" data-act="delalias" data-id="${a.id}" data-a="${esc(a.address)}">Borrar</button></div></td></tr>`).join("")
+    : `<tr><td colspan="3" class="empty">Todavía no hay alias</td></tr>`;
+
+  const sel = $("#aliasGoto"), cur = sel.value;
+  sel.innerHTML = boxes.filter(b=>b.active).map(b=>`<option>${esc(b.address)}</option>`).join("");
+  if (cur) sel.value = cur;
+}
+
+async function load(){
+  try { [boxes, aliases] = await Promise.all([call("mailboxes"), call("aliases")]); render(); }
+  catch(e){ toast(e.message, true); }
+}
+
+async function loadDns(){
+  const pill = $("#dnsPill");
+  try {
+    const d = await call("dns");
+    const okA = d.a && d.a.length, okMx = d.mx && d.mx.length;
+    pill.className = "pill " + (okA && okMx ? "ok" : okA ? "warn" : "bad");
+    pill.lastElementChild.textContent = okA && okMx ? "sillamc.es activo" : okA ? "Dominio activo · falta MX" : "Dominio aún no activo";
+    const row = (k, v, want) => `<tr><td>${k}</td><td>${v && v.length ? v.map(x=>`<code>${esc(x)}</code>`).join(" ") : `<span class="tag off">sin publicar</span>`}${want?`<div class="note">Debe ser: <code>${esc(want)}</code></div>`:""}</td></tr>`;
+    $("#tDns").innerHTML =
+      row("A", d.a, "84.123.235.198") + row("MX", d.mx, "10 mail.sillamc.es.") +
+      row("SPF", d.spf) + row("DKIM", d.dkim, d.dkim && d.dkim.length ? "" : d.dkim_txt ? `${d.dkim_selector}._domainkey → ${d.dkim_txt}` : "") +
+      row("DMARC", d.dmarc);
+  } catch(e){ pill.className="pill bad"; pill.lastElementChild.textContent="No se pudo comprobar"; }
+}
+
+document.addEventListener("click", async e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const a = b.dataset.a;
+  try {
+    if (b.dataset.act === "pass") { $("#dpAddr").textContent = a; $("#fPass").dataset.a = a; $("#fPass").reset(); $("#dPass").showModal(); return; }
+    if (b.dataset.act === "toggle") { b.disabled = true; await call("mailboxes/active", {address:a, active:b.dataset.v==="1"}); toast(b.dataset.v==="1"?"Buzón activado":"Buzón desactivado"); }
+    if (b.dataset.act === "del") {
+      const c = prompt(`Se borrará ${a} con TODOS sus correos. No se puede deshacer.\n\nEscribe la dirección completa para confirmar:`);
+      if (c === null) return;
+      b.disabled = true; await call("mailboxes/delete", {address:a, confirm:c.trim().toLowerCase()}); toast("Buzón borrado");
+    }
+    if (b.dataset.act === "delalias") {
+      if (!confirm(`¿Borrar el alias ${a}?`)) return;
+      b.disabled = true; await call("aliases/delete", {id:b.dataset.id}); toast("Alias borrado");
+    }
+    await load();
+  } catch(err){ toast(err.message, true); b.disabled = false; }
+});
+
+$("#fBox").onsubmit = async e => {
+  e.preventDefault(); const f = e.target, btn = f.querySelector("button"); btn.disabled = true;
+  try {
+    const r = await call("mailboxes", Object.fromEntries(new FormData(f)));
+    f.reset(); await load(); showSecret("Buzón creado", r.address, r.password);
+  } catch(err){ toast(err.message, true); }
+  btn.disabled = false;
+};
+$("#fAlias").onsubmit = async e => {
+  e.preventDefault(); const f = e.target, btn = f.querySelector("button"); btn.disabled = true;
+  try { await call("aliases", Object.fromEntries(new FormData(f))); f.reset(); toast("Alias creado"); await load(); }
+  catch(err){ toast(err.message, true); }
+  btn.disabled = false;
+};
+$("#fPass").onsubmit = async e => {
+  e.preventDefault(); const f = e.target;
+  try {
+    const r = await call("mailboxes/password", {address:f.dataset.a, password:f.password.value});
+    $("#dPass").close(); showSecret("Contraseña cambiada", r.address, r.password);
+  } catch(err){ toast(err.message, true); }
+};
+$("#dpCancel").onclick = () => $("#dPass").close();
+
+document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x===t));
+  document.querySelectorAll("section").forEach(s => s.classList.toggle("on", s.id === t.dataset.tab));
+  try { localStorage.setItem("correoTab", t.dataset.tab); } catch {}
+});
+try { const t = localStorage.getItem("correoTab"); if (t) document.querySelector(`.tab[data-tab="${t}"]`)?.click(); } catch {}
+
+// Desde la LAN el webmail va por el túnel hasta que mail.sillamc.es tenga certificado.
+fetch("https://mail.sillamc.es/SOGo/", {mode:"no-cors"}).then(()=>{ $("#webmailLink").href="https://mail.sillamc.es/SOGo/"; }).catch(()=>{});
+
+load(); loadDns();
+</script>
+</body>
+</html>
